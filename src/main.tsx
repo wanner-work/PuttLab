@@ -4,6 +4,8 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 
 import './styles/style.css'
+import '@fontsource/erica-one';
+import '@fontsource-variable/inter';
 
 // Create a new router instance
 const router = createRouter({ routeTree })
