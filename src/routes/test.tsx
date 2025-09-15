@@ -17,7 +17,7 @@ import {
 import { Slider } from '@/components/ui/slider'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Putt } from '@/data/entities/putt'
-import DataSource from '@/data/sources/DataSource'
+import DataSource from '@/data/sources/PuttLabDataSource'
 import connection from '@/database'
 import getAllPutts from '@/methods/fetcher/getAllPuts'
 import { Capacitor } from '@capacitor/core'
@@ -28,7 +28,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
-export const Route = createFileRoute('/sessions')({
+export const Route = createFileRoute('/test')({
   component: RouteComponent
 })
 

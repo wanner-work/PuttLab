@@ -1,16 +1,22 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('putt')
-export class Putt {
+@Entity('session')
+export class Session {
   @PrimaryGeneratedColumn()
   id!: number
 
   @Column('text')
   date!: string
 
-  @Column('text')
-  result!: 'hit' | 'miss'
+  @Column('integer')
+  attempts!: number
+
+  @Column('integer')
+  hits!: number
 
   @Column('integer')
   distance!: number
+
+  @Column('integer', { nullable: true })
+  maxAttempts!: number
 }
