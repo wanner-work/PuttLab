@@ -1,4 +1,4 @@
-import connection from '@/database'
+import connection from '@/data/connections/defaultConnection'
 import { DataSource } from 'typeorm'
 import { Session } from '../entities/session'
 

@@ -17,6 +17,6 @@ export class Session {
   @Column('integer')
   distance!: number
 
-  @Column('integer', { nullable: true })
+  @Column({ nullable: true, type: 'integer' })
   maxAttempts!: number
 }

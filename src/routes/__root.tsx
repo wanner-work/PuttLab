@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 function RootLayout() {
   return (
-    <div className="min-h-dvh p-6 font-sans">
+    <div className="min-h-dvh font-sans">
       <Outlet />
       <TanStackRouterDevtools />
     </div>
