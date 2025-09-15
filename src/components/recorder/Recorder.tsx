@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import RecorderBatch from './RecorderBatch'
 import RecorderSingle from './RecorderSingle'
@@ -9,7 +10,9 @@ interface Props {
   batch: (attempts: number, hits: number) => void
 }
 
-export default function Recorder({ hit, miss, batch, disabled }: Props) {
+export default memo(Recorder)
+
+function Recorder({ hit, miss, batch, disabled }: Props) {
   return (
     <div>
       <Tabs defaultValue="byPutt">

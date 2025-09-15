@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Button } from '../ui/button'
 
 interface Props {
@@ -6,7 +7,9 @@ interface Props {
   miss: () => void
 }
 
-export default function RecorderSingle({ hit, miss, disabled }: Props) {
+export default memo(RecorderSingle)
+
+function RecorderSingle({ hit, miss, disabled }: Props) {
   return (
     <>
       <Button

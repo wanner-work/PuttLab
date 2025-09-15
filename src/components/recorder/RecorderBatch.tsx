@@ -1,6 +1,6 @@
 import NumberFlow from '@number-flow/react'
 import { AlertCircleIcon } from 'lucide-react'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
@@ -11,9 +11,11 @@ interface Props {
   batch: (attempts: number, hits: number) => void
 }
 
-export default function RecorderBatch({ batch, disabled }: Props) {
+export default memo(RecorderBatch)
+
+function RecorderBatch({ batch, disabled }: Props) {
   const [displayAlert, setDisplayAlert] = useState(true)
-  const [batchAmount, setBatchAmount] = useState<number>(6)
+  const [batchAmount, setBatchAmount] = useState<number>(8)
 
   const onBatch = (hits: number) => {
     batch(batchAmount, hits)
