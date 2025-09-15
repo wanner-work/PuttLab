@@ -1,4 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: Index
@@ -6,8 +7,14 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <div className="">
-      <h3 className="text-5xl font-extrabold">Welcome Home!</h3>
+    <div className="p-6">
+      <h1 className="mt-6 text-3xl font-bold">Sessions</h1>
+      <p className="text-muted-foreground mb-8">
+        Here you can view and manage all your training sessions.
+      </p>
+      <Link to="/sessions">
+        <Button>Sessions</Button>
+      </Link>
     </div>
   )
 }

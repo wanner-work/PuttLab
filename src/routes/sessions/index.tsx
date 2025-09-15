@@ -1,3 +1,4 @@
+import PercentageChart from '@/components/analytics/PercentageChart'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -21,12 +22,15 @@ import {
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
 import QUERY from '@/constants/QUERY'
+import calculatePercentage from '@/methods/calculations/calculatePercentage'
 import createSession from '@/methods/data/create/createSession'
 import getAllSessions from '@/methods/data/get/getAllSessions'
 import NumberFlow from '@number-flow/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Loader2Icon } from 'lucide-react'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import clsx from 'clsx'
+import dayjs from 'dayjs'
+import { Loader2Icon, Plus } from 'lucide-react'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/sessions/')({
@@ -66,11 +70,77 @@ function Sessions() {
 
   return (
     <>
-      Hello from Sessions!
-      <pre>{JSON.stringify(sessions, null, 2)}</pre>
+      <div className="p-6">
+        <h1 className="mt-6 text-3xl font-bold">Sessions</h1>
+        <p className="text-muted-foreground">
+          Here you can view and manage all your training sessions.
+        </p>
+
+        <div className="mt-6 flex flex-col gap-4">
+          {sessions
+            ?.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
+            ?.map((session) => (
+              <Link
+                to="/sessions/$sessionId"
+                params={{ sessionId: String(session.id) }}
+                key={session.id}
+                className={clsx(
+                  'bg-background hover:bg-accent hover:text-accent-foreground gap-4 rounded-md border p-4 shadow-xs',
+                  session.attempts > 0 && 'grid'
+                )}
+                style={{
+                  gridTemplateColumns: 'minmax(0, auto) minmax(0, 1fr)'
+                }}
+              >
+                {session.attempts > 0 && (
+                  <div className="self-center">
+                    <PercentageChart
+                      hits={session.hits}
+                      attempts={session.attempts}
+                      size="sm"
+                    />
+                  </div>
+                )}
+                <div className="">
+                  <p>{session.distance} meters</p>
+                  <p className="text-sm text-neutral-400">
+                    {dayjs(session.date).format('MM.DD.YYYY - HH:mm')}
+                  </p>
+
+                  <div className="mt-2 grid grid-cols-3">
+                    <div>
+                      <p className="text-xs font-bold text-neutral-400 uppercase">
+                        Attempts
+                      </p>
+                      <p className="text-sm">{session.attempts}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-neutral-400 uppercase">
+                        Hits
+                      </p>
+                      <p className="text-sm">{session.hits}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-neutral-400 uppercase">
+                        Average
+                      </p>
+                      <p className="text-sm">
+                        {calculatePercentage(session.attempts, session.hits)}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+        </div>
+      </div>
+
       <Drawer>
         <DrawerTrigger>
-          <Button>Create Session</Button>
+          <Button className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full p-6 font-bold">
+            <Plus />
+            Create Session
+          </Button>
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>

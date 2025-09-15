@@ -1,6 +1,7 @@
+import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import clsx from 'clsx'
 import { memo, useMemo } from 'react'
-import { Label, Pie, PieChart, Sector } from 'recharts'
-import type { PieSectorDataItem } from 'recharts/types/polar/Pie'
+import { Label, Pie, PieChart } from 'recharts'
 import {
   ChartContainer,
   ChartTooltip,
@@ -11,14 +12,14 @@ import {
 interface Props {
   hits: number
   attempts: number
+  size?: 'sm' | 'default'
 }
 
 export default memo(PercentageChart)
 
-function PercentageChart({ hits, attempts }: Props) {
+function PercentageChart({ hits, attempts, size = 'default' }: Props) {
   const percentage = useMemo(() => {
-    if (attempts === 0) return 0
-    return Math.round((hits / attempts) * 100)
+    return calculatePercentage(attempts, hits)
   }, [hits, attempts])
 
   const chartData = useMemo(() => {
@@ -46,57 +47,63 @@ function PercentageChart({ hits, attempts }: Props) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="mx-auto aspect-square max-h-[250px]"
+      className={clsx(
+        size === 'sm'
+          ? 'size-[60px]'
+          : 'mx-auto h-full max-h-[250px] max-w-full'
+      )}
     >
       <PieChart>
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
+        {size !== 'sm' && (
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+        )}
         <Pie
           data={chartData}
           dataKey="value"
           nameKey="name"
-          innerRadius={60}
+          innerRadius={size === 'sm' ? 0 : 50}
+          outerRadius={size === 'sm' ? 20 : 90}
           strokeWidth={5}
           activeIndex={0}
           animationBegin={0}
           animationDuration={120}
-          activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
-            <Sector {...props} outerRadius={outerRadius + 10} />
-          )}
         >
-          <Label
-            content={({ viewBox }) => {
-              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                return (
-                  <text
-                    x={viewBox.cx}
-                    y={viewBox.cy}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                  >
-                    <tspan
+          {size !== 'sm' && (
+            <Label
+              content={({ viewBox }) => {
+                if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                  return (
+                    <text
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-foreground text-3xl font-bold"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
                     >
-                      {percentage}%
-                    </tspan>
-                    <tspan
-                      x={viewBox.cx}
-                      y={(viewBox.cy || 0) + 24}
-                      className="fill-muted-foreground"
-                    >
-                      {percentage > 50 && attempts >= 20
-                        ? 'lets go!'
-                        : 'get better!'}
-                    </tspan>
-                  </text>
-                )
-              }
-            }}
-          />
+                      <tspan
+                        x={viewBox.cx}
+                        y={(viewBox.cy || 0) - 4}
+                        className="fill-foreground text-3xl font-bold"
+                      >
+                        {percentage}%
+                      </tspan>
+                      <tspan
+                        x={viewBox.cx}
+                        y={(viewBox.cy || 0) + 20}
+                        className="fill-muted-foreground"
+                      >
+                        {percentage < 50 && attempts >= 20
+                          ? 'get better!'
+                          : 'lets go!'}
+                      </tspan>
+                    </text>
+                  )
+                }
+              }}
+            />
+          )}
         </Pie>
       </PieChart>
     </ChartContainer>

@@ -14,7 +14,7 @@ export default memo(Recorder)
 
 function Recorder({ hit, miss, batch, disabled }: Props) {
   return (
-    <div>
+    <div className="bg-white">
       <Tabs defaultValue="byPutt">
         <TabsList className="h-auto w-full">
           <TabsTrigger value="byPutt" className="p-2" disabled={disabled}>

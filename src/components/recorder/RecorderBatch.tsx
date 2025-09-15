@@ -54,14 +54,14 @@ function RecorderBatch({ batch, disabled }: Props) {
           gridTemplateColumns: `repeat(auto-fit, minmax(3rem, 1fr))`
         }}
       >
-        {Array.from({ length: batchAmount }).map((_, index) => (
+        {Array.from({ length: batchAmount + 1 }).map((_, index) => (
           <Button
             key={index}
             className="w-full p-3 font-mono text-lg font-bold"
-            onClick={() => onBatch(index + 1)}
+            onClick={() => onBatch(index)}
             disabled={disabled}
           >
-            {index + 1}
+            {index}
           </Button>
         ))}
       </div>
