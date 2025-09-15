@@ -32,8 +32,8 @@ function RouteComponent() {
   })
 
   const { data: sameDistanceSessions } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
-    queryFn: () => getSameDistanceSessions(session?.distance || 0),
+    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session?.distance],
+    queryFn: ({ queryKey }) => getSameDistanceSessions(Number(queryKey[1])),
     enabled: !!session
   })
 
