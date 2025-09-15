@@ -6,21 +6,26 @@ import {
   ChartTooltipContent,
   type ChartConfig
 } from '@/components/ui/chart'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type PuttData from '@/interfaces/data/PuttData'
+import { Putt } from '@/data/entities/putt'
+import DataSource from '@/data/sources/DataSource'
+import connection from '@/database'
+import getAllPutts from '@/methods/fetcher/getAllPuts'
+import { Capacitor } from '@capacitor/core'
 import NumberFlow from '@number-flow/react'
+import { SelectGroup } from '@radix-ui/react-select'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 export const Route = createFileRoute('/sessions')({
@@ -39,13 +44,29 @@ const chartConfig = {
 } satisfies ChartConfig
 
 function RouteComponent() {
-  const [batchPutts, setBatchPutts] = useState<number>(0)
-  const [batchHits, setBatchHits] = useState<number>(0)
+  const { data: putts } = useQuery({
+    queryKey: ['putts'],
+    queryFn: getAllPutts
+  })
+
+  useEffect(() => {
+    console.log('Fetched putts:', putts)
+
+    if (putts) {
+      const hits = putts.filter((p) => p.result === 'hit')
+      const misses = putts.filter((p) => p.result === 'miss')
+
+      setHits(hits as Putt[])
+      setMisses(misses as Putt[])
+    }
+  }, [putts])
+
+  const [batchAmount, setBatchAmount] = useState<number>(6)
 
   const [selectedDistance, setSelectedDistance] = useState<string>('4')
   const [customDistance, setCustomDistance] = useState<number>(10)
-  const [hits, setHits] = useState<PuttData[]>([])
-  const [misses, setMisses] = useState<PuttData[]>([])
+  const [hits, setHits] = useState<Putt[]>([])
+  const [misses, setMisses] = useState<Putt[]>([])
 
   const chartData = useMemo(() => {
     const data: { distance: string; misses: number; hits: number }[] = []
@@ -85,17 +106,27 @@ function RouteComponent() {
     return data
   }, [hits, misses])
 
-  const addHits = (amount: number = 1) => {
+  const addHits = async (amount: number = 1) => {
     const distance =
       selectedDistance === 'custom'
         ? customDistance
         : parseInt(selectedDistance || '0')
 
     for (let i = 0; i < amount; i++) {
-      setHits((prev) => [
-        ...prev,
-        { date: new Date().toISOString(), distance, result: 'hit' }
-      ])
+      const putt = new Putt()
+      putt.distance = distance
+      putt.result = 'hit'
+      putt.date = new Date().toISOString()
+      setHits((prev) => [...prev, putt])
+
+      const puttRepository = DataSource.getRepository(Putt)
+      await puttRepository.save(putt)
+    }
+
+    const database = DataSource.options.database
+
+    if (Capacitor.getPlatform() === 'web' && typeof database === 'string') {
+      await connection.saveToStore(database)
     }
   }
 
@@ -125,28 +156,33 @@ function RouteComponent() {
     return null
   }, [selectedDistance, customDistance, hits, misses])
 
-  const addMisses = (amount: number = 1) => {
+  const addMisses = async (amount: number = 1) => {
     const distance =
       selectedDistance === 'custom'
         ? customDistance
         : parseInt(selectedDistance || '0')
 
     for (let i = 0; i < amount; i++) {
-      setMisses((prev) => [
-        ...prev,
-        { date: new Date().toISOString(), distance, result: 'miss' }
-      ])
+      const putt = new Putt()
+      putt.distance = distance
+      putt.result = 'miss'
+      putt.date = new Date().toISOString()
+      setMisses((prev) => [...prev, putt])
+
+      const puttRepository = DataSource.getRepository(Putt)
+      await puttRepository.save(putt)
+    }
+
+    const database = DataSource.options.database
+
+    if (Capacitor.getPlatform() === 'web' && typeof database === 'string') {
+      await connection.saveToStore(database)
     }
   }
 
-  const submitBatch = () => {
-    const misses = batchPutts - batchHits
-
-    addHits(batchHits)
-    addMisses(misses)
-
-    setBatchPutts(0)
-    setBatchHits(0)
+  const submitBatch = (hits: number) => {
+    addHits(hits)
+    addMisses(batchAmount - hits)
   }
 
   return (
@@ -206,10 +242,26 @@ function RouteComponent() {
           <SelectValue placeholder="Distance" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="4">4m</SelectItem>
-          <SelectItem value="6">6m</SelectItem>
-          <SelectItem value="8">8m</SelectItem>
           <SelectItem value="custom">Custom</SelectItem>
+
+          <SelectGroup>
+            <SelectLabel>Inside Bullseye</SelectLabel>
+            <SelectItem value="2">2 meters</SelectItem>
+            <SelectItem value="3">3 meters</SelectItem>
+          </SelectGroup>
+          <SelectGroup>
+            <SelectLabel>Inside Circle 1</SelectLabel>
+            <SelectItem value="4">4 meters</SelectItem>
+            <SelectItem value="6">6 meters</SelectItem>
+            <SelectItem value="8">8 meters</SelectItem>
+            <SelectItem value="10">10 meters</SelectItem>
+          </SelectGroup>
+          <SelectGroup>
+            <SelectLabel>Inside Circle 2</SelectLabel>
+            <SelectItem value="12">12 meters</SelectItem>
+            <SelectItem value="16">16 meters</SelectItem>
+            <SelectItem value="20">20 meters</SelectItem>
+          </SelectGroup>
         </SelectContent>
       </Select>
       {selectedDistance === 'custom' && (
@@ -254,41 +306,38 @@ function RouteComponent() {
           </Button>
         </TabsContent>
         <TabsContent value="byBatch" className="flex flex-col gap-2">
-          <div className="mt-1">
-            <Label htmlFor="batchPutts" className="mb-2">
-              Total Putts
-            </Label>
-            <Input
-              id="batchPutts"
-              value={batchPutts}
-              onChange={(e) => setBatchPutts(parseInt(e.target.value) || 0)}
-              type="number"
-              placeholder="Total amount of putts..."
-              className="w-full px-4 py-6"
+          <div className="mt-2 flex gap-2">
+            <Slider
+              defaultValue={[10]}
+              min={1}
+              max={25}
+              step={1}
+              value={[batchAmount]}
+              onValueChange={(value) => setBatchAmount(value[0])}
             />
+            <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+              <NumberFlow value={batchAmount} /> throws
+            </Badge>
           </div>
-          <div className="mt-1">
-            <Label htmlFor="batchHits" className="mb-2">
-              Hits
-            </Label>
-            <Input
-              id="batchHits"
-              value={batchHits}
-              onChange={(e) => setBatchHits(parseInt(e.target.value) || 0)}
-              type="number"
-              max={batchPutts}
-              placeholder="Amount of hits..."
-              className="w-full px-4 py-6"
-            />
-          </div>
-          <Button
-            color="primary"
-            className="w-full p-6 font-bold"
-            onClick={submitBatch}
-            disabled={batchPutts === 0 || batchHits > batchPutts}
+          <p className="text-sm text-neutral-500">
+            Select how many of the {batchAmount} throws you hit
+          </p>
+          <div
+            className="grid max-w-full gap-2"
+            style={{
+              gridTemplateColumns: `repeat(auto-fit, minmax(4rem, 1fr))`
+            }}
           >
-            Save
-          </Button>
+            {Array.from({ length: batchAmount }).map((_, index) => (
+              <Button
+                key={index}
+                className="w-full p-5 font-mono text-lg font-bold"
+                onClick={() => submitBatch(index + 1)}
+              >
+                {index + 1}
+              </Button>
+            ))}
+          </div>
         </TabsContent>
       </Tabs>
     </div>

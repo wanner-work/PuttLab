@@ -15,6 +15,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
