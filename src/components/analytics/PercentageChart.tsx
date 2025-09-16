@@ -13,6 +13,7 @@ import {
 interface Props {
   hits: number
   attempts: number
+  index?: number
   size?: 'sm' | 'default'
 }
 
@@ -21,6 +22,7 @@ export default memo(PercentageChart)
 function PercentageChart({
   hits,
   attempts,
+  index = 0,
   size = 'default'
 }: Readonly<Props>) {
   const percentage = useMemo(() => {
@@ -69,7 +71,7 @@ function PercentageChart({
           outerRadius={size === 'sm' ? 20 : 80}
           strokeWidth={5}
           activeIndex={0}
-          animationBegin={0}
+          animationBegin={index * 40}
           animationDuration={120}
           activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
             <Sector

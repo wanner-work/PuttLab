@@ -139,47 +139,49 @@ function RouteComponent() {
       style={{
         gridTemplateRows: 'minmax(0, auto) minmax(0, 1fr) minmax(0, auto)'
       }}
-    >
-      <div className="flex items-center justify-between gap-4">
-        <Link to="/sessions">
-          <Button size="sm" variant="outline">
-            <ChevronLeft />
-            Back
-          </Button>
-        </Link>
-        <Drawer>
-          <DrawerTrigger className="focus-visible:border-ring aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md px-5 py-2 font-medium whitespace-nowrap text-white shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
-            <Trash2 />
-            Delete
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Delete this session?</DrawerTitle>
-              <DrawerDescription>
-                Are you sure you want to delete this session?{' '}
-                {attempts > 0 &&
-                  `All ${attempts} recorded attempts will be lost.`}{' '}
-                <strong>This action cannot be undone.</strong>
-              </DrawerDescription>
-            </DrawerHeader>
-            <DrawerFooter className="mx-4">
-              <Button
-                onClick={() => remove(session!.id)}
-                disabled={isRemoving}
-                variant="destructive"
-              >
-                {isRemoving && <Loader2Icon className="animate-spin" />}
-                Delete
-              </Button>
-              <DrawerClose>
-                <Button variant="outline" className="w-full">
-                  Cancel
+      actions={
+        <div className="flex items-center justify-between gap-4">
+          <Link to="/sessions">
+            <Button size="sm" variant="outline">
+              <ChevronLeft />
+              Back
+            </Button>
+          </Link>
+          <Drawer>
+            <DrawerTrigger className="focus-visible:border-ring aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md px-5 py-2 font-medium whitespace-nowrap text-white shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+              <Trash2 />
+              Delete
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Delete this session?</DrawerTitle>
+                <DrawerDescription>
+                  Are you sure you want to delete this session?{' '}
+                  {attempts > 0 &&
+                    `All ${attempts} recorded attempts will be lost.`}{' '}
+                  <strong>This action cannot be undone.</strong>
+                </DrawerDescription>
+              </DrawerHeader>
+              <DrawerFooter className="mx-4">
+                <Button
+                  onClick={() => remove(session!.id)}
+                  disabled={isRemoving}
+                  variant="destructive"
+                >
+                  {isRemoving && <Loader2Icon className="animate-spin" />}
+                  Delete
                 </Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      </div>
+                <DrawerClose>
+                  <Button variant="outline" className="w-full">
+                    Cancel
+                  </Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      }
+    >
       {isPending && (
         <div className="absolute top-0 right-0 m-4">
           <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />

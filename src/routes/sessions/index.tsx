@@ -3,19 +3,6 @@ import PageContainer from '@/components/basic/PageContainer.tsx'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart.tsx'
-import {
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -44,9 +31,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
-import { ChevronRight, Loader2Icon, Plus } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { PolarAngleAxis, RadialBar, RadialBarChart } from 'recharts'
+import { ChevronLeft, ChevronRight, Loader2Icon, Plus } from 'lucide-react'
+import { useState } from 'react'
 
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -87,153 +73,25 @@ function Sessions() {
     mutate(distance)
   }
 
-  const {
-    bullseyeAverage,
-    circleOneAverage,
-    circleTwoAverage,
-    outsideAverage
-  } = useMemo(() => {
-    const bullseyeSessions = sessions?.filter((s) => s.distance <= 3) || []
-    const circleOneSessions =
-      sessions?.filter((s) => s.distance > 3 && s.distance <= 10) || []
-    const circleTwoSessions =
-      sessions?.filter((s) => s.distance > 10 && s.distance <= 20) || []
-    const outsideSessions = sessions?.filter((s) => s.distance > 20) || []
-
-    const bullseyeAverage = calculatePercentage(
-      bullseyeSessions.reduce((sum, session) => sum + session.attempts, 0),
-      bullseyeSessions.reduce((sum, session) => sum + session.hits, 0)
-    )
-
-    const circleOneAverage = calculatePercentage(
-      circleOneSessions.reduce((sum, session) => sum + session.attempts, 0),
-      circleOneSessions.reduce((sum, session) => sum + session.hits, 0)
-    )
-
-    const circleTwoAverage = calculatePercentage(
-      circleTwoSessions.reduce((sum, session) => sum + session.attempts, 0),
-      circleTwoSessions.reduce((sum, session) => sum + session.hits, 0)
-    )
-
-    const outsideAverage = calculatePercentage(
-      outsideSessions.reduce((sum, session) => sum + session.attempts, 0),
-      outsideSessions.reduce((sum, session) => sum + session.hits, 0)
-    )
-
-    return {
-      bullseyeAverage,
-      circleOneAverage,
-      circleTwoAverage,
-      outsideAverage
-    }
-  }, [sessions])
-
-  const chartData = useMemo(() => {
-    return [
-      {
-        position: 'bullseye',
-        average: bullseyeAverage,
-        fill: 'var(--chart-1)'
-      },
-      {
-        position: 'one',
-        average: circleOneAverage,
-        fill: 'var(--chart-2)'
-      },
-      {
-        position: 'two',
-        average: circleTwoAverage,
-        fill: 'var(--chart-3)'
-      },
-      { position: 'outside', average: outsideAverage, fill: 'var(--chart-4)' }
-    ]
-  }, [bullseyeAverage, circleOneAverage, circleTwoAverage, outsideAverage])
-
-  const chartConfig = useMemo(() => {
-    return {
-      position: {
-        label: 'Position'
-      },
-      bullseye: {
-        label: 'Bullseye'
-      },
-      one: {
-        label: 'Circle One'
-      },
-      two: {
-        label: 'Circle Two'
-      },
-      outside: {
-        label: 'Outside'
-      }
-    } satisfies ChartConfig
-  }, [])
-
   return (
-    <PageContainer title="Sessions" subtitle="Manage your training sessions">
-      <Card className="flex flex-col">
-        <CardHeader className="items-center pb-0">
-          <CardTitle>Analytics</CardTitle>
-          <CardDescription>Your stats over all sessions.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-between gap-4 pb-0">
-          <div className="shrink-0">
-            <div>
-              <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-                Bullseye
-              </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={bullseyeAverage} suffix="%" />
-              </p>
-            </div>
-            <div className="mt-2">
-              <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-                C1X
-              </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleOneAverage} suffix="%" />
-              </p>
-            </div>
-            <div className="mt-2">
-              <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-                C2X
-              </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleTwoAverage} suffix="%" />
-              </p>
-            </div>
-            <div className="mt-2">
-              <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-                Outside
-              </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={outsideAverage} suffix="%" />
-              </p>
-            </div>
-          </div>
-          <ChartContainer config={chartConfig} className="size-[180px]">
-            <RadialBarChart data={chartData} innerRadius={20} outerRadius={100}>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent nameKey="position" hideLabel />}
-              />
-              <PolarAngleAxis
-                type="number"
-                domain={[0, 100]}
-                dataKey="average"
-                angleAxisId={0}
-                tick={false}
-              />
-              <RadialBar dataKey="average" background angleAxisId={0} />
-            </RadialBarChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-
-      <div className="mt-8 mb-16 flex flex-col gap-3">
+    <PageContainer
+      title="Sessions"
+      subtitle="Manage your training sessions"
+      actions={
+        <div className="flex items-center justify-between gap-4">
+          <Link to="/">
+            <Button size="sm" variant="outline">
+              <ChevronLeft />
+              Back
+            </Button>
+          </Link>
+        </div>
+      }
+    >
+      <div className="mt-8 mb-20 flex flex-col gap-3">
         {sessions
           ?.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
-          ?.map((session) => (
+          ?.map((session, index) => (
             <Link
               to="/sessions/$sessionId"
               params={{ sessionId: String(session.id) }}
@@ -249,6 +107,7 @@ function Sessions() {
               {session.attempts > 0 && (
                 <div className="self-center">
                   <PercentageChart
+                    index={index}
                     hits={session.hits}
                     attempts={session.attempts}
                     size="sm"
@@ -257,13 +116,15 @@ function Sessions() {
               )}
               <div className="flex items-center justify-between">
                 <div>
-                  <p>{session.distance} meter</p>
+                  <p className="font-mono font-bold uppercase">
+                    {session.distance} meter
+                  </p>
                   <p className="text-sm text-neutral-400">
                     {dayjs().to(dayjs(session.date))}
                   </p>
                 </div>
                 {session.attempts > 0 ? (
-                  <p className="pr-2 font-bold">
+                  <p className="pr-2 font-mono font-bold text-black/60">
                     {calculatePercentage(session.attempts, session.hits)}%
                   </p>
                 ) : (
