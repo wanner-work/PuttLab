@@ -228,6 +228,12 @@ export default function AnalyticsCard() {
       },
       outside: {
         label: 'Outside'
+      },
+      attempts: {
+        label: 'Attempts'
+      },
+      average: {
+        label: 'Average'
       }
     } satisfies ChartConfig
   }, [])
