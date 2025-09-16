@@ -291,9 +291,11 @@ function Sessions() {
       </div>
 
       <Drawer>
-        <DrawerTrigger className="fixed bottom-6 left-1/2 flex -translate-x-1/2 cursor-pointer items-center gap-2 rounded-full bg-black px-5 py-4 font-bold text-nowrap text-white">
-          <Plus />
-          Create Session
+        <DrawerTrigger className="fixed bottom-6 left-1/2 -translate-x-1/2">
+          <Button className="rounded-full">
+            <Plus />
+            Create Session
+          </Button>
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
@@ -352,7 +354,7 @@ function Sessions() {
               {isPending && <Loader2Icon className="animate-spin" />}
               Create
             </Button>
-            <DrawerClose>
+            <DrawerClose asChild>
               <Button variant="outline" className="w-full">
                 Cancel
               </Button>
