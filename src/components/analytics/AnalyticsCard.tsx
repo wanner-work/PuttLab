@@ -183,6 +183,14 @@ export default function AnalyticsCard() {
       })
     }
 
+    if (data.length === 0) {
+      data.push({
+        position: 'no data',
+        attempts: 1,
+        fill: 'var(--muted)'
+      })
+    }
+
     return data
   }, [bullseyeAttempts, circleOneAttempts, circleTwoAttempts, outsideAttempts])
 
@@ -330,37 +338,45 @@ export default function AnalyticsCard() {
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 Bullseye
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={bullseyeHits} /> /{' '}
-                <NumberFlow value={bullseyeAttempts} />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-1 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={bullseyeAttempts} />
+                </p>
+              </div>
             </div>
             <div>
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 Circle One
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleOneHits} /> /{' '}
-                <NumberFlow value={circleOneAttempts} />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-2 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={circleOneAttempts} />
+                </p>
+              </div>
             </div>
             <div>
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 Circle Two
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleTwoHits} /> /{' '}
-                <NumberFlow value={circleTwoAttempts} />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-3 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={circleTwoAttempts} />
+                </p>
+              </div>
             </div>
             <div>
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 Outside Circle
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={outsideHits} /> /{' '}
-                <NumberFlow value={outsideAttempts} />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-4 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={outsideAttempts} />
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

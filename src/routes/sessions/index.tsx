@@ -126,6 +126,9 @@ function Sessions() {
     }
 
     if (distanceFilter === undefined) {
+      if (allSessions.length === 0) {
+        return 'No sessions'
+      }
       return `${allSessions.length > 1 ? allSessions.length : 'one'} ${allSessions.length === 1 ? 'session' : 'sessions'}`
     } else if (sessions !== undefined) {
       return `${sessions.length > 1 ? sessions.length : 'one'} ${sessions.length === 1 ? 'session' : 'sessions'} for ${distanceFilter} meter`
