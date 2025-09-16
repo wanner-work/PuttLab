@@ -10,7 +10,7 @@ export const Route = createFileRoute('/')({
 function Index() {
   return (
     <PageContainer
-      className="pt-20 pb-26"
+      className="pt-12 pb-26"
       title="PuttLab"
       subtitle="Welcome to PuttLab"
     >

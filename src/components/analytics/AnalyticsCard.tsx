@@ -1,6 +1,6 @@
 import QUERY from '@/constants/QUERY'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
-import getAllSessions from '@/methods/data/get/getAllSessions'
+import getAllSessions from '@/methods/data/get/getSessions'
 import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
