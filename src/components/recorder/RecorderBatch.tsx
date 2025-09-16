@@ -8,6 +8,7 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer.tsx'
+import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import NumberFlow from '@number-flow/react'
 import { AlertCircleIcon } from 'lucide-react'
 import { memo, useState } from 'react'
@@ -25,8 +26,9 @@ export default memo(RecorderBatch)
 function RecorderBatch({ batch, disabled }: Props) {
   const [batchAmount, setBatchAmount] = useState<number>(8)
 
-  const onBatch = (hits: number) => {
+  const batchProxy = async (hits: number) => {
     batch(batchAmount, hits)
+    await Haptics.impact({ style: ImpactStyle.Medium })
   }
 
   return (
@@ -76,7 +78,7 @@ function RecorderBatch({ batch, disabled }: Props) {
           <Button
             key={index}
             className="w-full p-3 font-mono text-lg font-bold"
-            onClick={() => onBatch(index)}
+            onClick={() => batchProxy(index)}
             disabled={disabled}
           >
             {index}

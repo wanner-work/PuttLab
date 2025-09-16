@@ -23,7 +23,18 @@ const config: CapacitorConfig = {
       electronWindowsLocation: 'C:\\ProgramData\\CapacitorDatabases',
       electronMacLocation: '/Volumes/Development_Lacie/Development/Databases',
       electronLinuxLocation: 'Databases'
-    }
+    },
+    SplashScreen: {
+      launchAutoHide: false,
+      backgroundColor: "#ffffffff",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
+      splashFullScreen: true,
+      splashImmersive: true,
+      layoutName: "launch_screen",
+      useDialog: true,
+    },
   }
 }
 

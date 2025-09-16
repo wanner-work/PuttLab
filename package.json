@@ -13,7 +13,9 @@
   "dependencies": {
     "@capacitor-community/sqlite": "^7.0.1",
     "@capacitor/core": "^7.4.3",
+    "@capacitor/haptics": "^7.0.2",
     "@capacitor/ios": "^7.4.3",
+    "@capacitor/splash-screen": "^7.0.3",
     "@fontsource-variable/inter": "^5.2.6",
     "@fontsource/erica-one": "^5.2.6",
     "@number-flow/react": "^0.5.10",

@@ -1,3 +1,4 @@
+import { SplashScreen } from '@capacitor/splash-screen'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
@@ -31,5 +32,7 @@ if (!rootElement.innerHTML) {
     </StrictMode>
   )
 }
+
+await SplashScreen.hide()
 
 await initSqlite()
