@@ -1,7 +1,16 @@
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from '@/components/ui/drawer.tsx'
 import NumberFlow from '@number-flow/react'
 import { AlertCircleIcon } from 'lucide-react'
 import { memo, useState } from 'react'
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Slider } from '../ui/slider'
@@ -14,17 +23,15 @@ interface Props {
 export default memo(RecorderBatch)
 
 function RecorderBatch({ batch, disabled }: Props) {
-  const [displayAlert, setDisplayAlert] = useState(true)
   const [batchAmount, setBatchAmount] = useState<number>(8)
 
   const onBatch = (hits: number) => {
     batch(batchAmount, hits)
-    setDisplayAlert(false)
   }
 
   return (
     <>
-      <div className="mt-2 flex gap-2">
+      <div className="flex gap-2">
         <Slider
           defaultValue={[10]}
           min={1}
@@ -34,20 +41,31 @@ function RecorderBatch({ batch, disabled }: Props) {
           onValueChange={(value) => setBatchAmount(value[0])}
           disabled={disabled}
         />
-        <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
+        <Badge className="rounded-full font-mono tabular-nums">
           <NumberFlow value={batchAmount} /> throws
         </Badge>
+        <Drawer>
+          <DrawerTrigger>
+            <Button className="!p-1.5" variant="outline">
+              <AlertCircleIcon />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Throw and record your putts</DrawerTitle>
+              <DrawerDescription>
+                Throw your set amount of putts and then record how many you made
+                by clicking the correct button below.
+              </DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter className="mx-4">
+              <DrawerClose>
+                <Button className="w-full">Understood</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
-      {displayAlert && (
-        <Alert className="my-2">
-          <AlertCircleIcon />
-          <AlertTitle>Throw and record your putts</AlertTitle>
-          <AlertDescription>
-            Throw your set amount of putts and then record how many you made by
-            clicking the correct button below.
-          </AlertDescription>
-        </Alert>
-      )}
       <div
         className="grid max-w-full gap-2"
         style={{

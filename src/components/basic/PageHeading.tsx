@@ -5,9 +5,9 @@ interface Props {
 
 export default function PageHeading({ title, subtitle }: Props) {
   return (
-    <header className="mt-2 mb-8">
-      <h1 className="text-4xl font-bold">{title}</h1>
-      {subtitle && <p className="text-lg text-neutral-400">{subtitle}</p>}
+    <header className="mt-5 mb-8 text-center">
+      <h1 className="mb-2 text-3xl font-bold">{title}</h1>
+      {subtitle && <p className="text-muted-foreground text-lg">{subtitle}</p>}
     </header>
   )
 }

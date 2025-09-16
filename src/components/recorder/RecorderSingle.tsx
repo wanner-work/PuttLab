@@ -14,7 +14,7 @@ function RecorderSingle({ hit, miss, disabled }: Props) {
     <>
       <Button
         color="primary"
-        className="w-full p-6 font-bold"
+        className="w-full font-bold"
         disabled={disabled}
         onClick={() => hit()}
       >
@@ -22,7 +22,7 @@ function RecorderSingle({ hit, miss, disabled }: Props) {
       </Button>
       <Button
         variant="outline"
-        className="w-full p-6 font-bold"
+        className="w-full font-bold"
         disabled={disabled}
         onClick={() => miss()}
       >

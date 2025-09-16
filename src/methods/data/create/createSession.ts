@@ -9,6 +9,8 @@ export default async function createSession(distance: number, maxAttempts?: numb
     session.attempts = 0
     session.hits = 0
     session.distance = distance
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     session.maxAttempts = maxAttempts ?? null
 
     await PuttLabDataSource.getRepository(Session).save(session)
