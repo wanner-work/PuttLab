@@ -207,8 +207,6 @@ export default function AnalyticsCard() {
       })
     }
 
-    console.log(data)
-
     return data
   }, [sessions])
 
