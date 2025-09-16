@@ -11,8 +11,8 @@ export const Route = createFileRoute('/')({
 function Index() {
   return (
     <PageContainer className="pb-26">
-      <Logo className="mx-auto max-w-full px-12" />
-      <p className="text-muted-foreground mx-auto -mt-2 mb-8 max-w-64 text-center text-balance">
+      <Logo className="mx-auto mt-8 h-10 max-w-full" />
+      <p className="text-muted-foreground mx-auto mt-4 mb-8 max-w-64 text-center text-balance">
         Track and analyze your putting practice.
       </p>
 

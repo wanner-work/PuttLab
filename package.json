@@ -35,6 +35,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.18",
+    "dom-to-image-more": "^3.7.1",
+    "html2canvas": "^1.4.1",
     "jeep-sqlite": "^2.8.0",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.12",
