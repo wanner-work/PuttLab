@@ -9,15 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SessionsIndexRoute = SessionsIndexRouteImport.update({
   id: '/sessions/',
   path: '/sessions/',
@@ -30,44 +24,33 @@ const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions': typeof SessionsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions': typeof SessionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/': typeof SessionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sessions/$sessionId' | '/sessions'
+  fullPaths: '/sessions/$sessionId' | '/sessions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sessions/$sessionId' | '/sessions'
-  id: '__root__' | '/' | '/sessions/$sessionId' | '/sessions/'
+  to: '/sessions/$sessionId' | '/sessions'
+  id: '__root__' | '/sessions/$sessionId' | '/sessions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sessions/': {
       id: '/sessions/'
       path: '/sessions'
@@ -86,7 +69,6 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsIndexRoute: SessionsIndexRoute,
 }

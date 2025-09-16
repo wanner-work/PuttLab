@@ -2,13 +2,9 @@ import AnalyticsCard from '@/components/analytics/AnalyticsCard'
 import PageContainer from '@/components/basic/PageContainer'
 import Logo from '@/components/brand/Logo'
 import { Button } from '@/components/ui/button'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/')({
-  component: Index
-})
-
-function Index() {
+export default function Index() {
   return (
     <PageContainer className="pb-26">
       <Logo className="max-w-full px-12" />

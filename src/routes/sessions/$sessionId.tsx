@@ -30,7 +30,7 @@ export const Route = createFileRoute('/sessions/$sessionId')({
   component: RouteComponent
 })
 
-function RouteComponent() {
+export default function RouteComponent() {
   const { sessionId } = Route.useParams()
 
   const { mutate, isPending } = useMutation({

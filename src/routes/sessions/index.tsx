@@ -42,7 +42,7 @@ export const Route = createFileRoute('/sessions/')({
   component: Sessions
 })
 
-function Sessions() {
+export default function Sessions() {
   const navigate = useNavigate({ from: Route.fullPath })
 
   const [distanceFilter, setDistanceFilter] = useState<string | undefined>(
