@@ -44,9 +44,13 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
-import { Loader2Icon, Plus } from 'lucide-react'
+import { ChevronRight, Loader2Icon, Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { PolarAngleAxis, RadialBar, RadialBarChart } from 'recharts'
+
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 export const Route = createFileRoute('/sessions/')({
   component: Sessions
@@ -179,7 +183,7 @@ function Sessions() {
                 Bullseye
               </p>
               <p className="font-mono text-xl font-bold">
-                <NumberFlow value={bullseyeAverage} />%
+                <NumberFlow value={bullseyeAverage} suffix="%" />
               </p>
             </div>
             <div className="mt-2">
@@ -187,7 +191,7 @@ function Sessions() {
                 C1X
               </p>
               <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleOneAverage} />%
+                <NumberFlow value={circleOneAverage} suffix="%" />
               </p>
             </div>
             <div className="mt-2">
@@ -195,7 +199,7 @@ function Sessions() {
                 C2X
               </p>
               <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleTwoAverage} />%
+                <NumberFlow value={circleTwoAverage} suffix="%" />
               </p>
             </div>
             <div className="mt-2">
@@ -203,7 +207,7 @@ function Sessions() {
                 Outside
               </p>
               <p className="font-mono text-xl font-bold">
-                <NumberFlow value={outsideAverage} />%
+                <NumberFlow value={outsideAverage} suffix="%" />
               </p>
             </div>
           </div>
@@ -226,7 +230,7 @@ function Sessions() {
         </CardContent>
       </Card>
 
-      <div className="mt-8 mb-16 flex flex-col gap-4">
+      <div className="mt-8 mb-16 flex flex-col gap-3">
         {sessions
           ?.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
           ?.map((session) => (
@@ -235,7 +239,7 @@ function Sessions() {
               params={{ sessionId: String(session.id) }}
               key={session.id}
               className={clsx(
-                'bg-background hover:bg-accent hover:text-accent-foreground gap-4 rounded-lg border p-4 shadow-md',
+                'bg-background hover:bg-accent hover:text-accent-foreground gap-4 rounded-xl border p-4 shadow',
                 session.attempts > 0 && 'grid'
               )}
               style={{
@@ -251,45 +255,29 @@ function Sessions() {
                   />
                 </div>
               )}
-              <div className="">
-                <p>{session.distance} meters</p>
-                <p className="text-sm text-neutral-400">
-                  {dayjs(session.date).format('MM.DD.YYYY - HH:mm')}
-                </p>
-
-                <div className="mt-2 grid grid-cols-3">
-                  <div>
-                    <p className="text-xs font-bold text-neutral-400 uppercase">
-                      Attempts
-                    </p>
-                    <p className="text-sm">{session.attempts}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-neutral-400 uppercase">
-                      Hits
-                    </p>
-                    <p className="text-sm">{session.hits}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-neutral-400 uppercase">
-                      Average
-                    </p>
-                    <p className="text-sm">
-                      {calculatePercentage(session.attempts, session.hits)}%
-                    </p>
-                  </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p>{session.distance} meter</p>
+                  <p className="text-sm text-neutral-400">
+                    {dayjs().to(dayjs(session.date))}
+                  </p>
                 </div>
+                {session.attempts > 0 ? (
+                  <p className="pr-2 font-bold">
+                    {calculatePercentage(session.attempts, session.hits)}%
+                  </p>
+                ) : (
+                  <ChevronRight className="text-muted-foreground" />
+                )}
               </div>
             </Link>
           ))}
       </div>
 
       <Drawer>
-        <DrawerTrigger>
-          <Button className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full font-bold">
-            <Plus />
-            Create Session
-          </Button>
+        <DrawerTrigger className="fixed bottom-6 left-1/2 flex -translate-x-1/2 cursor-pointer items-center gap-2 rounded-full bg-black px-5 py-4 font-bold text-white">
+          <Plus />
+          Create Session
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>

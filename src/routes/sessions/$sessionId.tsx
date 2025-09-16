@@ -3,8 +3,19 @@ import PercentageChart from '@/components/analytics/PercentageChart'
 import PageContainer from '@/components/basic/PageContainer.tsx'
 import Recorder from '@/components/recorder/Recorder'
 import { Button } from '@/components/ui/button'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from '@/components/ui/drawer'
 import QUERY from '@/constants/QUERY'
 import calculateCirclePosition from '@/methods/calculations/calculateCirclePosition'
+import deleteSession from '@/methods/data/delete/deleteSession'
 import getSameDistanceSessions from '@/methods/data/get/getSameDistanceSessions'
 import getSession from '@/methods/data/get/getSession'
 import updateSession from '@/methods/data/update/updateSession'
@@ -12,7 +23,7 @@ import NumberFlow from '@number-flow/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
-import { Loader2Icon, MoveLeft } from 'lucide-react'
+import { ChevronLeft, Loader2Icon, Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 
 export const Route = createFileRoute('/sessions/$sessionId')({
@@ -24,6 +35,20 @@ function RouteComponent() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateSession
+  })
+
+  const navigate = Route.useNavigate()
+
+  const { mutate: remove, isPending: isRemoving } = useMutation({
+    mutationFn: deleteSession,
+    onSuccess: () => {
+      QUERY.CLIENT.invalidateQueries({
+        queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+      })
+      void navigate({
+        to: '/sessions'
+      })
+    }
   })
 
   const { data: session } = useQuery({
@@ -118,17 +143,49 @@ function RouteComponent() {
       <div className="flex items-center justify-between gap-4">
         <Link to="/sessions">
           <Button size="sm" variant="outline">
-            <MoveLeft />
+            <ChevronLeft />
             Back
           </Button>
         </Link>
+        <Drawer>
+          <DrawerTrigger className="focus-visible:border-ring aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md px-5 py-2 font-medium whitespace-nowrap text-white shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 has-[>svg]:px-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+            <Trash2 />
+            Delete
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Delete this session?</DrawerTitle>
+              <DrawerDescription>
+                Are you sure you want to delete this session?{' '}
+                {attempts > 0 &&
+                  `All ${attempts} recorded attempts will be lost.`}{' '}
+                <strong>This action cannot be undone.</strong>
+              </DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter className="mx-4">
+              <Button
+                onClick={() => remove(session!.id)}
+                disabled={isRemoving}
+                variant="destructive"
+              >
+                {isRemoving && <Loader2Icon className="animate-spin" />}
+                Delete
+              </Button>
+              <DrawerClose>
+                <Button variant="outline" className="w-full">
+                  Cancel
+                </Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
       {isPending && (
         <div className="absolute top-0 right-0 m-4">
           <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
         </div>
       )}
-      <div className="flex flex-col gap-8 overflow-auto py-8">
+      <div className="flex flex-col gap-8 overflow-auto pt-8">
         <div className="text-center">
           <p className="text-xs font-bold text-neutral-400 uppercase">
             {position}
