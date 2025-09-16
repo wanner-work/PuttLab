@@ -1,6 +1,6 @@
 import QUERY from '@/constants/QUERY'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
-import getAllSessions from '@/methods/data/get/getSessions'
+import getSessions from '@/methods/data/get/getSessions'
 import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
@@ -34,7 +34,7 @@ import {
 export default function AnalyticsCard() {
   const { data: sessions } = useQuery({
     queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
-    queryFn: getAllSessions
+    queryFn: () => getSessions()
   })
 
   const {
