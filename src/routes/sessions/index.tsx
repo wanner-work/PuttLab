@@ -238,8 +238,8 @@ function Sessions() {
         )}
       </div>
       <div className="my-4 flex items-center justify-between">
-        <p className="text-muted-foreground text-xs uppercase">{amount}</p>
-        <p className="text-muted-foreground font-mono text-xs font-bold">
+        <p className="text-muted-foreground text-sm uppercase">{amount}</p>
+        <p className="text-muted-foreground font-mono text-sm font-bold">
           <NumberFlow value={selectedAverage} suffix="%" />
         </p>
       </div>
