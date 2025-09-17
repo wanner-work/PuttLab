@@ -43,7 +43,7 @@ export default function PageContainer({
   return (
     <motion.div
       className={clsx(
-        'h-full bg-black p-6',
+        'min-h-dvh bg-black p-6',
         Capacitor.getPlatform() === 'ios' && 'pt-14',
         className
       )}
