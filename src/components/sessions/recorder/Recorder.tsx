@@ -1,6 +1,4 @@
-import { MoveRight } from 'lucide-react'
-import { motion } from 'motion/react'
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs'
 import RecorderBatch from './RecorderBatch'
 import RecorderSingle from './RecorderSingle'
@@ -15,61 +13,25 @@ interface Props {
 export default memo(Recorder)
 
 function Recorder({ hit, miss, batch, disabled }: Readonly<Props>) {
-  const [show, setShow] = useState(true)
-
   return (
     <div className="overflow-hidden">
       <Tabs defaultValue="byPutt">
         <div className="flex gap-2">
           <TabsList className="relative h-auto w-full">
-            <motion.div
-              className="text-muted-foreground absolute left-0 flex h-full w-full items-center justify-between px-4 text-left"
-              animate={{
-                opacity: show ? 0 : 0.4
-              }}
-              transition={{
-                duration: 0.15
-              }}
+            <TabsTrigger
+              value="byPutt"
+              className="w-full p-2"
+              disabled={disabled}
             >
-              Tap here to open controls
-              <MoveRight />
-            </motion.div>
-            <motion.div
-              className="w-full"
-              animate={{
-                opacity: show ? 1 : 0,
-                filter: show ? 'blur(0px)' : 'blur(5px)'
-              }}
-              transition={{
-                duration: 0.15
-              }}
+              By Putt
+            </TabsTrigger>
+            <TabsTrigger
+              value="byBatch"
+              className="w-full p-2"
+              disabled={disabled}
             >
-              <TabsTrigger
-                value="byPutt"
-                className="w-full p-2"
-                disabled={disabled}
-              >
-                By Putt
-              </TabsTrigger>
-            </motion.div>
-            <motion.div
-              className="w-full"
-              animate={{
-                opacity: show ? 1 : 0,
-                filter: show ? 'blur(0px)' : 'blur(5px)'
-              }}
-              transition={{
-                duration: 0.15
-              }}
-            >
-              <TabsTrigger
-                value="byBatch"
-                className="w-full p-2"
-                disabled={disabled}
-              >
-                By Batch
-              </TabsTrigger>
-            </motion.div>
+              By Batch
+            </TabsTrigger>
           </TabsList>
           {/**<div className="bg-muted rounded-lg p-[3px]">
             <Button
