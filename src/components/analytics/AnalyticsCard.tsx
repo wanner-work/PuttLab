@@ -271,7 +271,7 @@ export default function AnalyticsCard() {
             </div>
             <div className="mt-2">
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-                C2X
+                C2
               </p>
               <p className="font-mono text-xl font-bold">
                 <NumberFlow value={circleTwoAverage} suffix="%" />
