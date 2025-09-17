@@ -36,7 +36,8 @@ export default function DeleteSession({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
       })
       void navigate({
-        to: '/sessions'
+        to: '/sessions',
+        viewTransition: { types: ['slide-right'] }
       })
     }
   })

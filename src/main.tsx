@@ -12,8 +12,14 @@ import 'reflect-metadata'
 import '@fontsource-variable/inter'
 import '@fontsource/erica-one'
 import './styles/style.css'
+import './styles/transitions.css'
 
-const router = createRouter({ routeTree })
+const router = createRouter({
+  routeTree,
+  defaultPreload: 'intent',
+  defaultStaleTime: 5000,
+  scrollRestoration: true
+})
 
 declare module '@tanstack/react-router' {
   interface Register {

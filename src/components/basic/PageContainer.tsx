@@ -43,7 +43,7 @@ export default function PageContainer({
   return (
     <motion.div
       className={clsx(
-        'min-h-dvh bg-black p-6',
+        'min-h-dvh bg-black p-6 [view-transition-name:main-content]',
         Capacitor.getPlatform() === 'ios' && 'pt-14',
         className
       )}
@@ -69,6 +69,7 @@ export default function PageContainer({
           {back && (
             <Link
               to={back}
+              viewTransition={{ types: ['slide-right'] }}
               search={{ internal: true }}
               className="flex items-center justify-center"
             >
@@ -82,7 +83,12 @@ export default function PageContainer({
               </Reveal>
             </Link>
           )}
-          <Link to="/" search={{ internal: true }} className="inline-block">
+          <Link
+            to="/"
+            viewTransition={{ types: ['slide-right'] }}
+            search={{ internal: true }}
+            className="inline-block"
+          >
             <AnimatedIcon
               shouldExit={false}
               duration={0.4}

@@ -38,14 +38,17 @@ function Index() {
       title: 'View sessions',
       icon: Layers,
       action: () => {
-        navigate({ to: '/sessions' })
+        navigate({ to: '/sessions', viewTransition: { types: ['slide-left'] } })
       }
     },
     {
       title: 'Show analytics',
       icon: ChartPie,
       action: () => {
-        navigate({ to: '/analytics' })
+        navigate({
+          to: '/analytics',
+          viewTransition: { types: ['slide-left'] }
+        })
       }
     }
   ]
@@ -53,7 +56,7 @@ function Index() {
   return (
     <motion.div
       className={clsx(
-        'grid h-dvh bg-no-repeat p-6',
+        'grid h-dvh bg-no-repeat p-6 [view-transition-name:main-content]',
         Capacitor.getPlatform() === 'ios' && 'pt-20'
       )}
       style={{

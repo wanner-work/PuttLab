@@ -217,6 +217,7 @@ function Sessions() {
           ?.map((session, index) => (
             <Link
               to="/sessions/$sessionId"
+              viewTransition={{ types: ['slide-left'] }}
               params={{ sessionId: String(session.id) }}
               key={session.id}
               className="active:scale-[0.98]"

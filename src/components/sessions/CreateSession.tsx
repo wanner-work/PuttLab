@@ -42,7 +42,8 @@ export default function CreateSession({ open, onOpenChange, navigate }: Props) {
       })
       void navigate({
         to: '/sessions/$sessionId',
-        params: { sessionId: String(session.id) }
+        params: { sessionId: String(session.id) },
+        viewTransition: { types: ['slide-left'] }
       })
     }
   })
