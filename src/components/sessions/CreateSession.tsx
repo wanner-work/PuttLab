@@ -1,8 +1,8 @@
 import QUERY from '@/constants/QUERY'
 import createSession from '@/methods/data/create/createSession'
-import { Route } from '@/routes'
 import NumberFlow from '@number-flow/react'
 import { useMutation } from '@tanstack/react-query'
+import type { UseNavigateResult } from '@tanstack/react-router'
 import { Loader2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { Badge } from '../ui/badge'
@@ -28,13 +28,12 @@ import {
 import { Slider } from '../ui/slider'
 
 interface Props {
+  navigate: UseNavigateResult<string>
   open?: boolean
   onOpenChange?: (open: boolean) => void
 }
 
-export default function CreateSession({ open, onOpenChange }: Props) {
-  const navigate = Route.useNavigate()
-
+export default function CreateSession({ open, onOpenChange, navigate }: Props) {
   const { mutate, isPending } = useMutation({
     mutationFn: createSession,
     onSuccess: (session) => {

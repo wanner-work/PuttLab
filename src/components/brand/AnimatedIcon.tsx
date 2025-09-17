@@ -7,12 +7,14 @@ interface Props {
   shouldExit?: boolean
   className?: string
   delay?: number
+  duration?: number
 }
 
 export default function AnimatedIcon({
   shouldExit = true,
   className,
-  delay
+  delay,
+  duration
 }: Props) {
   const [exit, setExit] = useState(false)
 
@@ -36,7 +38,7 @@ export default function AnimatedIcon({
           : 'polygon(0 0, 100% 0%, 100% 100%, 0% 100%)'
       }}
       transition={{
-        duration: exit ? 0.6 : 1,
+        duration: exit ? 0.6 : (duration ?? 1),
         ease: 'easeInOut',
         delay: delay ?? 0
       }}

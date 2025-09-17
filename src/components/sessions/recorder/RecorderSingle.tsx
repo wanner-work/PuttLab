@@ -1,6 +1,6 @@
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import { memo } from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 
 interface Props {
   disabled?: boolean
@@ -32,7 +32,7 @@ function RecorderSingle({ hit, miss, disabled }: Props) {
         Hit
       </Button>
       <Button
-        variant="outline"
+        variant="secondary"
         className="w-full font-bold"
         disabled={disabled}
         onClick={missProxy}

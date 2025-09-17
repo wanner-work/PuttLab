@@ -1,17 +1,6 @@
 import PercentageChart from '@/components/analytics/PercentageChart'
 import PageContainer from '@/components/basic/PageContainer.tsx'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger
-} from '@/components/ui/drawer'
 import {
   Select,
   SelectContent,
@@ -21,18 +10,18 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { Slider } from '@/components/ui/slider'
 import QUERY from '@/constants/QUERY'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
-import createSession from '@/methods/data/create/createSession'
 import NumberFlow from '@number-flow/react'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
-import { ChevronLeft, ChevronRight, Loader2Icon, Plus, X } from 'lucide-react'
+import { ChevronRight, PlusIcon, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
+import CreateSession from '@/components/sessions/CreateSession'
+import { Card, CardContent } from '@/components/ui/card'
 import getSessions from '@/methods/data/get/getSessions'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -43,7 +32,9 @@ export const Route = createFileRoute('/sessions/')({
 })
 
 function Sessions() {
-  const navigate = useNavigate({ from: Route.fullPath })
+  const [createOpen, setCreateOpen] = useState(false)
+
+  const navigate = Route.useNavigate()
 
   const [distanceFilter, setDistanceFilter] = useState<string | undefined>(
     undefined
@@ -64,29 +55,6 @@ function Sessions() {
       return getSessions(Number(distance))
     }
   })
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: createSession,
-    onSuccess: (session) => {
-      QUERY.CLIENT.invalidateQueries({
-        queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
-      })
-      void navigate({
-        to: '/sessions/$sessionId',
-        params: { sessionId: String(session.id) }
-      })
-    }
-  })
-
-  const [selectedDistance, setSelectedDistance] = useState<string>('8')
-  const [customDistance, setCustomDistance] = useState<number>(10)
-
-  const create = () => {
-    const distance =
-      selectedDistance === 'custom' ? customDistance : Number(selectedDistance)
-
-    mutate(distance)
-  }
 
   const optionsBullseye = useMemo(() => {
     return allSessions
@@ -152,22 +120,14 @@ function Sessions() {
     <PageContainer
       title="Sessions"
       subtitle="Manage your training sessions"
-      actions={
-        <div className="flex items-center justify-between gap-4">
-          <Link
-            to="/"
-            search={{
-              internal: true
-            }}
-          >
-            <Button size="sm" variant="outline">
-              <ChevronLeft />
-              Back
-            </Button>
-          </Link>
-        </div>
-      }
+      back="/"
     >
+      <CreateSession
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        navigate={navigate}
+      />
+
       <div className="flex gap-3">
         <Select
           value={distanceFilter ?? ''}
@@ -259,117 +219,57 @@ function Sessions() {
               to="/sessions/$sessionId"
               params={{ sessionId: String(session.id) }}
               key={session.id}
-              className={clsx(
-                'bg-background hover:bg-accent hover:text-accent-foreground gap-4 rounded-xl border p-4 shadow',
-                session.attempts > 0 && 'grid'
-              )}
-              style={{
-                gridTemplateColumns: 'minmax(0, auto) minmax(0, 1fr)'
-              }}
+              className="active:scale-[0.98]"
             >
-              {session.attempts > 0 && (
-                <div className="self-center">
-                  <PercentageChart
-                    index={index}
-                    hits={session.hits}
-                    attempts={session.attempts}
-                    size="sm"
-                  />
-                </div>
-              )}
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-mono font-bold uppercase">
-                    {session.distance} meter
-                  </p>
-                  <p className="text-sm text-neutral-400">
-                    {dayjs().to(dayjs(session.date))}
-                  </p>
-                </div>
-                {session.attempts > 0 ? (
-                  <p className="pr-2 font-mono font-bold text-black/60">
-                    {calculatePercentage(session.attempts, session.hits)}%
-                  </p>
-                ) : (
-                  <ChevronRight className="text-muted-foreground" />
-                )}
-              </div>
+              <Card className="py-3">
+                <CardContent
+                  className={clsx(
+                    'gap-4 px-3',
+                    session.attempts > 0 ? 'grid' : 'pl-4'
+                  )}
+                  style={{
+                    gridTemplateColumns: 'minmax(0, auto) minmax(0, 1fr)'
+                  }}
+                >
+                  {session.attempts > 0 && (
+                    <div className="self-center">
+                      <PercentageChart
+                        index={index}
+                        hits={session.hits}
+                        attempts={session.attempts}
+                        size="sm"
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-mono font-bold uppercase">
+                        {session.distance} meter
+                      </p>
+                      <p className="text-sm text-neutral-400">
+                        {dayjs().to(dayjs(session.date))}
+                      </p>
+                    </div>
+                    {session.attempts > 0 ? (
+                      <p className="text-muted-foreground pr-2 font-mono font-bold">
+                        {calculatePercentage(session.attempts, session.hits)}%
+                      </p>
+                    ) : (
+                      <ChevronRight className="text-muted-foreground" />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </Link>
           ))}
       </div>
-
-      <Drawer>
-        <DrawerTrigger className="fixed bottom-6 left-1/2 -translate-x-1/2">
-          <Button className="rounded-full">
-            <Plus />
-            Create Session
-          </Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Create a new training session</DrawerTitle>
-            <DrawerDescription>Define the distance.</DrawerDescription>
-          </DrawerHeader>
-          <div className="mx-4 my-4 px-4">
-            <Select
-              onValueChange={setSelectedDistance}
-              value={selectedDistance}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Distance" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="custom">Custom</SelectItem>
-
-                <SelectGroup>
-                  <SelectLabel>Bullseye</SelectLabel>
-                  <SelectItem value="2">2 meters</SelectItem>
-                  <SelectItem value="3">3 meters</SelectItem>
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Circle 1</SelectLabel>
-                  <SelectItem value="4">4 meters</SelectItem>
-                  <SelectItem value="6">6 meters</SelectItem>
-                  <SelectItem value="8">8 meters</SelectItem>
-                  <SelectItem value="10">10 meters</SelectItem>
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Circle 2</SelectLabel>
-                  <SelectItem value="12">12 meters</SelectItem>
-                  <SelectItem value="16">16 meters</SelectItem>
-                  <SelectItem value="20">20 meters</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            {selectedDistance === 'custom' && (
-              <div className="mt-5 flex gap-2">
-                <Slider
-                  defaultValue={[10]}
-                  min={1}
-                  max={35}
-                  step={1}
-                  value={[customDistance]}
-                  onValueChange={(value) => setCustomDistance(value[0])}
-                />
-                <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
-                  <NumberFlow value={customDistance} />m
-                </Badge>
-              </div>
-            )}
-          </div>
-          <DrawerFooter className="mx-4">
-            <Button onClick={create} disabled={isPending}>
-              {isPending && <Loader2Icon className="animate-spin" />}
-              Create
-            </Button>
-            <DrawerClose asChild>
-              <Button variant="outline" className="w-full">
-                Cancel
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <Button
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full font-bold"
+        onClick={() => setCreateOpen(true)}
+      >
+        <PlusIcon strokeWidth={3} />
+        Create Session
+      </Button>
     </PageContainer>
   )
 }

@@ -33,11 +33,11 @@ function PercentageChart({
     const isDanger = percentage < 50 && attempts >= 20
 
     return [
-      { name: 'hits', value: hits, fill: 'rgb(22, 111, 251)' },
+      { name: 'hits', value: hits, fill: '#332d90' },
       {
         name: 'misses',
         value: attempts - hits,
-        fill: isDanger ? 'rgba(238, 0, 0, 0.4)' : 'rgba(22, 111, 251, 0.3)'
+        fill: isDanger ? '#c56e6e45' : '#332d9045'
       }
     ]
   }, [hits, attempts, percentage])
@@ -93,14 +93,14 @@ function PercentageChart({
                     >
                       <tspan
                         x={viewBox.cx}
-                        y={(viewBox.cy || 0) - 4}
+                        y={viewBox.cy || 0}
                         className="fill-foreground text-2xl font-bold"
                       >
                         {percentage}%
                       </tspan>
                       <tspan
                         x={viewBox.cx}
-                        y={(viewBox.cy || 0) + 20}
+                        y={(viewBox.cy || 0) + 16}
                         className="fill-muted-foreground"
                       >
                         {percentage < 50 && attempts >= 20

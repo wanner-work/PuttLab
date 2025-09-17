@@ -11,7 +11,12 @@ import { motion } from 'motion/react'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/')({
-  component: Index
+  component: Index,
+  validateSearch: (search: { internal: boolean }) => {
+    return {
+      internal: search.internal
+    }
+  }
 })
 
 function Index() {
@@ -74,7 +79,7 @@ function Index() {
         className="mt-2 -ml-[18px]"
       />
 
-      <CreateSession open={open} onOpenChange={setOpen} />
+      <CreateSession open={open} onOpenChange={setOpen} navigate={navigate} />
 
       <div className="mt-12 self-center">
         <Reveal delay={internal ? 0 : 3.4}>
@@ -90,7 +95,7 @@ function Index() {
               key={action.title}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: (internal ? 0 : 3.6) + index * 0.1 }}
+              transition={{ delay: (internal ? 0.1 : 3.6) + index * 0.1 }}
               className="hover:opacity-90 active:scale-[0.98] active:opacity-50"
               onClick={action.action}
             >

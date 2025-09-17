@@ -1,3 +1,5 @@
+import Reveal from '../animations/Reveal'
+
 interface Props {
   title: string
   subtitle?: string
@@ -5,9 +7,15 @@ interface Props {
 
 export default function PageHeading({ title, subtitle }: Props) {
   return (
-    <header className="mt-5 mb-8 text-center">
-      <h1 className="mb-2 text-3xl font-bold">{title}</h1>
-      {subtitle && <p className="text-muted-foreground text-lg">{subtitle}</p>}
+    <header className="mt-10 mb-6">
+      <Reveal>
+        <h1 className="text-4xl">{title}</h1>
+      </Reveal>
+      {subtitle && (
+        <Reveal delay={0.2}>
+          <p className="text-muted-foreground mt-1 text-lg">{subtitle}</p>
+        </Reveal>
+      )}
     </header>
   )
 }

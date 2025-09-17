@@ -12,9 +12,9 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import NumberFlow from '@number-flow/react'
 import { AlertCircleIcon } from 'lucide-react'
 import { memo, useState } from 'react'
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
-import { Slider } from '../ui/slider'
+import { Badge } from '../../ui/badge'
+import { Button } from '../../ui/button'
+import { Slider } from '../../ui/slider'
 
 interface Props {
   disabled?: boolean

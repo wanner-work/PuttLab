@@ -33,7 +33,7 @@ function AverageCompare({
     <div className="flex shrink-0 flex-col justify-center gap-2 pl-4">
       <div>
         <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-          Total
+          Average
         </p>
         <p className="font-mono text-2xl font-bold">
           <NumberFlow value={totalAverage} />%
