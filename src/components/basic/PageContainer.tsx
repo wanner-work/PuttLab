@@ -26,7 +26,7 @@ export default function PageContainer({
   return (
     <div
       className={clsx(
-        'p-6',
+        'h-dvh bg-black p-6',
         Capacitor.getPlatform() === 'ios' && 'pt-14',
         className
       )}
@@ -35,6 +35,7 @@ export default function PageContainer({
       {actions}
       {title && <PageHeading title={title} subtitle={subtitle} />}
       {children}
+      <div className="fixed bottom-0"></div>
     </div>
   )
 }

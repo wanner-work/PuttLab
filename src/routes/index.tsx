@@ -1,27 +1,57 @@
-import AnalyticsCard from '@/components/analytics/AnalyticsCard'
-import PageContainer from '@/components/basic/PageContainer'
 import Logo from '@/components/brand/Logo'
-import { Button } from '@/components/ui/button'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
+import { clsx } from 'clsx'
+import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/')({
   component: Index
 })
 
 function Index() {
-  return (
-    <PageContainer className="pb-26">
-      <Logo className="mx-auto mt-8 h-10 max-w-full" />
-      <p className="text-muted-foreground mx-auto mt-4 mb-8 max-w-64 text-center text-balance">
-        Track and analyze your putting practice.
-      </p>
+  const [exit, setExit] = useState(false)
 
-      <AnalyticsCard />
-      <div className="fixed bottom-6 left-1/2 w-full -translate-x-1/2 px-6">
-        <Link to="/sessions" className="w-full">
-          <Button className="w-full rounded-full font-bold">Sessions</Button>
-        </Link>
-      </div>
-    </PageContainer>
+  useEffect(() => {
+    setTimeout(() => {
+      setExit(true)
+    }, 3000)
+  }, [])
+
+  return (
+    <motion.div
+      className={clsx('flex h-dvh items-center justify-center bg-black p-6')}
+      initial={{
+        background:
+          'linear-gradient(-30deg, #C4C1EC 0%, #1D1775 0%, #000000 100%)'
+      }}
+      animate={{
+        background:
+          'linear-gradient(-30deg, #C4C1EC, #1D1775 15%, #000000 40%)',
+        y: exit ? '-100dvh' : 0
+      }}
+      transition={{
+        duration: 2
+      }}
+    >
+      <motion.div
+        initial={{
+          opacity: 0,
+          scale: 0.8,
+          translateY: 20,
+          rotate: 4
+        }}
+        animate={{
+          opacity: 1,
+          translateY: 0,
+          rotate: 0
+        }}
+        transition={{
+          duration: 2
+        }}
+      >
+        <Logo className="mx-auto h-10 max-w-full" />
+      </motion.div>
+      <div className="fixed bottom-0"></div>
+    </motion.div>
   )
 }

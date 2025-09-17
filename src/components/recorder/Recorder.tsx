@@ -19,7 +19,7 @@ function Recorder({ hit, miss, batch, disabled }: Readonly<Props>) {
   const [show, setShow] = useState(true)
 
   return (
-    <div className="overflow-hidden bg-white">
+    <div className="overflow-hidden">
       <Tabs defaultValue="byPutt">
         <div className="flex gap-2">
           <TabsList className="relative h-auto w-full">
