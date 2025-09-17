@@ -14,20 +14,20 @@ function Index() {
   useEffect(() => {
     setTimeout(() => {
       setExit(true)
-    }, 3000)
+    }, 2800)
   }, [])
 
   return (
     <motion.div
-      className={clsx('flex h-dvh items-center justify-center bg-black p-6')}
+      className={clsx(
+        'flex h-dvh items-center justify-center bg-no-repeat p-6'
+      )}
       initial={{
         background:
           'linear-gradient(-30deg, #C4C1EC 0%, #1D1775 0%, #000000 100%)'
       }}
       animate={{
-        background:
-          'linear-gradient(-30deg, #C4C1EC, #1D1775 15%, #000000 40%)',
-        y: exit ? '-100dvh' : 0
+        background: 'linear-gradient(-30deg, #C4C1EC, #1D1775 15%, #000000 40%)'
       }}
       transition={{
         duration: 2
@@ -37,19 +37,38 @@ function Index() {
         initial={{
           opacity: 0,
           scale: 0.8,
-          translateY: 20,
-          rotate: 4
+          rotate: -4,
+          clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)'
         }}
         animate={{
-          opacity: 1,
-          translateY: 0,
-          rotate: 0
+          opacity: exit ? 0 : 1,
+          scale: exit ? 0.8 : 1,
+          rotate: 0,
+          clipPath: exit
+            ? 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)'
+            : 'polygon(0 0, 100% 0%, 100% 100%, 0% 100%)'
         }}
         transition={{
-          duration: 2
+          duration: exit ? 0.6 : 2.1,
+          ease: 'easeInOut'
         }}
       >
-        <Logo className="mx-auto h-10 max-w-full" />
+        <motion.div
+          initial={{
+            clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)'
+          }}
+          animate={{
+            clipPath: exit
+              ? 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)'
+              : 'polygon(0 0, 100% 0%, 100% 100%, 0% 100%)'
+          }}
+          transition={{
+            duration: exit ? 0.6 : 1,
+            delay: 0.3
+          }}
+        >
+          <Logo className="mx-auto h-10 max-w-full" />
+        </motion.div>
       </motion.div>
       <div className="fixed bottom-0"></div>
     </motion.div>
