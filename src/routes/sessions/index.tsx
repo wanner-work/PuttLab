@@ -154,7 +154,12 @@ function Sessions() {
       subtitle="Manage your training sessions"
       actions={
         <div className="flex items-center justify-between gap-4">
-          <Link to="/">
+          <Link
+            to="/"
+            search={{
+              internal: true
+            }}
+          >
             <Button size="sm" variant="outline">
               <ChevronLeft />
               Back

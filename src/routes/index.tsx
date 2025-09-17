@@ -1,3 +1,4 @@
+import Reveal from '@/components/animations/Reveal'
 import AnimatedIcon from '@/components/brand/AnimatedIcon'
 import AnimatedLogo from '@/components/brand/AnimatedLogo'
 import CreateSession from '@/components/sessions/CreateSession'
@@ -14,6 +15,8 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
+  const { internal } = Route.useSearch()
+
   const navigate = Route.useNavigate()
 
   const [open, setOpen] = useState(false)
@@ -64,24 +67,22 @@ function Index() {
         ease: 'easeInOut'
       }}
     >
-      <AnimatedLogo />
-      <AnimatedIcon shouldExit={false} delay={3} className="mt-2 -ml-[18px]" />
+      {!internal && <AnimatedLogo />}
+      <AnimatedIcon
+        shouldExit={false}
+        delay={internal ? 0 : 3}
+        className="mt-2 -ml-[18px]"
+      />
 
       <CreateSession open={open} onOpenChange={setOpen} />
 
-      <motion.div
-        initial={{ opacity: 0, clipPath: 'polygon(0 0, 0 0, 0 100%, 0% 100%)' }}
-        animate={{
-          opacity: 1,
-          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)'
-        }}
-        transition={{ delay: 3.4 }}
-        className="mt-12 self-center"
-      >
-        <h1 className="text-4xl">
-          Step right <strong>back</strong>
-          <br /> into <strong>the action</strong>
-        </h1>
+      <div className="mt-12 self-center">
+        <Reveal delay={internal ? 0 : 3.4}>
+          <h1 className="text-4xl">
+            Step right <strong>back</strong>
+            <br /> into <strong>the action</strong>
+          </h1>
+        </Reveal>
 
         <div className="mt-14 grid grid-cols-2 gap-4">
           {actions.map((action, index) => (
@@ -89,7 +90,7 @@ function Index() {
               key={action.title}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 3.6 + index * 0.1 }}
+              transition={{ delay: (internal ? 0 : 3.6) + index * 0.1 }}
               className="hover:opacity-90 active:scale-[0.98] active:opacity-50"
               onClick={action.action}
             >
@@ -104,7 +105,7 @@ function Index() {
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       <div className="fixed bottom-0"></div>
     </motion.div>
