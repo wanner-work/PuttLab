@@ -43,12 +43,15 @@ function RecorderBatch({ batch, disabled }: Props) {
           onValueChange={(value) => setBatchAmount(value[0])}
           disabled={disabled}
         />
-        <Badge className="rounded-full font-mono tabular-nums">
+        <Badge
+          variant="secondary"
+          className="rounded-full font-mono tabular-nums"
+        >
           <NumberFlow value={batchAmount} /> throws
         </Badge>
         <Drawer>
           <DrawerTrigger>
-            <Button className="!p-1.5" variant="outline">
+            <Button className="!p-1.5" variant="secondary">
               <AlertCircleIcon />
             </Button>
           </DrawerTrigger>
@@ -77,6 +80,7 @@ function RecorderBatch({ batch, disabled }: Props) {
         {Array.from({ length: batchAmount + 1 }).map((_, index) => (
           <Button
             key={index}
+            variant="secondary"
             className="w-full p-3 font-mono text-lg font-bold"
             onClick={() => batchProxy(index)}
             disabled={disabled}

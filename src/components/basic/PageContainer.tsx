@@ -59,13 +59,13 @@ export default function PageContainer({
           'linear-gradient(-30deg, #363094FF 0%, #1D1775FF 15%, #000000FF 55%)'
       }}
       transition={{
-        duration: 2.6,
+        duration: 2.2,
         ease: 'easeInOut'
       }}
       {...props}
     >
       <div className="mt-2 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           {back && (
             <Link
               to={back}

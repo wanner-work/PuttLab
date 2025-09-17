@@ -226,7 +226,7 @@ function ChartTooltipContent({
                   >
                     <div className="grid gap-1.5">
                       {nestLabel ? tooltipLabel : null}
-                      <span className="text-muted-foreground">
+                      <span className="text-foreground">
                         {itemConfig?.label || item.name}
                       </span>
                     </div>
