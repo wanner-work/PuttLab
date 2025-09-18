@@ -100,8 +100,8 @@ function RouteComponent() {
     }
   }, [session])
 
-  const debouncedAttempts = useDebounce(attempts, 500)
-  const debouncedHits = useDebounce(hits, 500)
+  const debouncedAttempts = useDebounce(attempts, 400)
+  const debouncedHits = useDebounce(hits, 400)
 
   useEffect(() => {
     if (!session) return
