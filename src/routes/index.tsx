@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Capacitor } from '@capacitor/core'
 import { createFileRoute } from '@tanstack/react-router'
 import { clsx } from 'clsx'
-import { ChartPie, Layers, Play } from 'lucide-react'
+import { AlertCircle, ChartPie, Layers, Play } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useState } from 'react'
 
@@ -47,6 +47,16 @@ function Index() {
       action: () => {
         navigate({
           to: '/analytics',
+          viewTransition: { types: ['slide-left'] }
+        })
+      }
+    },
+    {
+      title: 'Information & Help',
+      icon: AlertCircle,
+      action: () => {
+        navigate({
+          to: '/info',
           viewTransition: { types: ['slide-left'] }
         })
       }

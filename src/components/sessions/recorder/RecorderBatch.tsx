@@ -11,6 +11,7 @@ import {
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import NumberFlow from '@number-flow/react'
 import { AlertCircleIcon } from 'lucide-react'
+import party, { Color } from 'party-js'
 import { memo, useState } from 'react'
 import { Badge } from '../../ui/badge'
 import { Button } from '../../ui/button'
@@ -28,6 +29,17 @@ function RecorderBatch({ batch, disabled }: Props) {
 
   const batchProxy = async (hits: number) => {
     batch(batchAmount, hits)
+
+    if (batchAmount > 3 && hits === batchAmount) {
+      party.sparkles(document.body, {
+        color: Color.fromHex('#332d90'),
+        count: Math.floor(Math.random() * (60 - 40 + 1)) + 40
+      })
+      await Haptics.impact({ style: ImpactStyle.Heavy })
+      await Haptics.impact({ style: ImpactStyle.Heavy })
+      await Haptics.impact({ style: ImpactStyle.Heavy })
+    }
+
     await Haptics.impact({ style: ImpactStyle.Medium })
   }
 
