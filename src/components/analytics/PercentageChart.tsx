@@ -54,7 +54,7 @@ function PercentageChart({
   return (
     <ChartContainer
       config={chartConfig}
-      className={clsx('grow-0', size === 'sm' ? 'size-[60px]' : 'size-[220px]')}
+      className={clsx('grow-0', size === 'sm' ? 'size-[60px]' : 'size-[200px]')}
     >
       <PieChart>
         {size !== 'sm' && (
@@ -67,12 +67,12 @@ function PercentageChart({
           data={chartData}
           dataKey="value"
           nameKey="name"
-          innerRadius={size === 'sm' ? 0 : 50}
-          outerRadius={size === 'sm' ? 20 : 80}
+          innerRadius={size === 'sm' ? 0 : 40}
+          outerRadius={size === 'sm' ? 20 : 75}
           strokeWidth={5}
           activeIndex={0}
           animationBegin={index * 40}
-          animationDuration={120}
+          animationDuration={180}
           activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
             <Sector
               {...props}
@@ -97,15 +97,6 @@ function PercentageChart({
                         className="fill-foreground text-2xl font-bold"
                       >
                         {percentage}%
-                      </tspan>
-                      <tspan
-                        x={viewBox.cx}
-                        y={(viewBox.cy || 0) + 16}
-                        className="fill-muted-foreground"
-                      >
-                        {percentage < 50 && attempts >= 20
-                          ? 'get better!'
-                          : 'lets go!'}
                       </tspan>
                     </text>
                   )

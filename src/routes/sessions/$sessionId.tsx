@@ -138,7 +138,7 @@ function RouteComponent() {
         sessionId={session ? session.id : 0}
         attempts={attempts}
       />
-      <div className="flex flex-col overflow-auto pt-6">
+      <div className="flex flex-col justify-evenly overflow-auto pt-6">
         <div className="text-center">
           <p className="text-xs font-bold text-neutral-400 uppercase">
             {position}
