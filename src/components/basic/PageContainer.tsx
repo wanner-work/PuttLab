@@ -65,13 +65,13 @@ export default function PageContainer({
       {...props}
     >
       <div className="mt-2 flex items-center justify-between">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-1">
           {back && (
             <Link
               to={back}
               viewTransition={{ types: ['slide-right'] }}
               search={{ internal: true }}
-              className="flex items-center justify-center"
+              className="-ml-3 flex items-center justify-center p-3"
             >
               <Reveal
                 duration={0.4}
