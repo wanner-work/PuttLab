@@ -76,11 +76,13 @@ function Index() {
       }}
     >
       {!internal && <AnimatedLogo />}
-      <AnimatedIcon
-        shouldExit={false}
-        delay={internal ? 0 : 3}
-        className="mt-2 -ml-[18px]"
-      />
+      <div className="mt-2 flex h-[48px] items-center">
+        <AnimatedIcon
+          shouldExit={false}
+          delay={internal ? 0 : 3}
+          className="-ml-[18px]"
+        />
+      </div>
 
       <CreateSession open={open} onOpenChange={setOpen} navigate={navigate} />
 
