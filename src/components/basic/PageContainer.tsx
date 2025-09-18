@@ -9,8 +9,7 @@ import {
   type PropsWithChildren,
   type ReactNode
 } from 'react'
-import Reveal from '../animations/Reveal'
-import AnimatedIcon from '../brand/AnimatedIcon'
+import Icon from '../brand/Icon'
 import { Button } from '../ui/button'
 
 interface Props
@@ -73,14 +72,9 @@ export default function PageContainer({
               search={{ internal: true }}
               className="-ml-3 flex items-center justify-center p-3"
             >
-              <Reveal
-                duration={0.4}
-                className="flex items-center justify-center"
-              >
-                <Button variant="link" className="!p-0">
-                  <ChevronLeft className="text-muted-foreground size-6" />
-                </Button>
-              </Reveal>
+              <Button variant="link" className="!p-0">
+                <ChevronLeft className="text-muted-foreground size-6" />
+              </Button>
             </Link>
           )}
           <Link
@@ -89,11 +83,7 @@ export default function PageContainer({
             search={{ internal: true }}
             className="inline-block"
           >
-            <AnimatedIcon
-              shouldExit={false}
-              duration={0.4}
-              className="-ml-[18px]"
-            />
+            <Icon className="-ml-[18px] h-8 w-auto" />
           </Link>
         </div>
         <div>{actions}</div>
