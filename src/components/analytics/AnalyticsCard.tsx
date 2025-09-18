@@ -6,12 +6,11 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import {
+  Bar,
+  BarChart,
   CartesianGrid,
-  LabelList,
   Line,
   LineChart,
-  Pie,
-  PieChart,
   PolarAngleAxis,
   RadialBar,
   RadialBarChart,
@@ -257,33 +256,45 @@ export default function AnalyticsCard() {
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 Bullseye
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={bullseyeAverage} suffix="%" />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-1 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={bullseyeAverage} suffix="%" />
+                </p>
+              </div>
             </div>
             <div className="mt-2">
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 C1X
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleOneAverage} suffix="%" />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-2 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={circleOneAverage} suffix="%" />
+                </p>
+              </div>
             </div>
             <div className="mt-2">
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 C2
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={circleTwoAverage} suffix="%" />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-3 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={circleTwoAverage} suffix="%" />
+                </p>
+              </div>
             </div>
             <div className="mt-2">
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 Outside
               </p>
-              <p className="font-mono text-xl font-bold">
-                <NumberFlow value={outsideAverage} suffix="%" />
-              </p>
+              <div className="flex items-center gap-2">
+                <div className="bg-chart-4 size-3 rounded" />
+                <p className="font-mono text-xl font-bold">
+                  <NumberFlow value={outsideAverage} suffix="%" />
+                </p>
+              </div>
             </div>
           </div>
           <ChartContainer config={chartConfig} className="size-[180px]">
@@ -318,20 +329,23 @@ export default function AnalyticsCard() {
             config={chartConfig}
             className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[200px] pb-4"
           >
-            <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <Pie data={attemptsData} dataKey="attempts" nameKey="position">
-                <LabelList
-                  dataKey="position"
-                  className="fill-background"
-                  stroke="none"
-                  fontSize={12}
-                  formatter={(value: keyof typeof chartConfig) =>
-                    chartConfig[value]?.label
-                  }
-                />
-              </Pie>
-            </PieChart>
+            <BarChart accessibilityLayer data={attemptsData}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="position"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value) =>
+                  chartConfig[value as keyof typeof chartConfig]?.label
+                }
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent nameKey="position" hideLabel />}
+              />
+              <Bar dataKey="attempts" strokeWidth={2} radius={8} />
+            </BarChart>
           </ChartContainer>
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -416,14 +430,7 @@ export default function AnalyticsCard() {
                 stroke="var(--chart-2)"
                 strokeWidth={2}
                 dot={false}
-              >
-                <LabelList
-                  position="top"
-                  offset={12}
-                  className="fill-muted-foreground"
-                  fontSize={12}
-                />
-              </Line>
+              />
             </LineChart>
           </ChartContainer>
         </CardContent>
