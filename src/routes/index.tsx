@@ -96,15 +96,15 @@ function Index() {
 
       <CreateSession open={open} onOpenChange={setOpen} navigate={navigate} />
 
-      <div className="mt-12 self-center">
-        <Reveal delay={internal ? 0 : 3.4}>
-          <h1 className="text-4xl">
+      <div className="flex h-full flex-col justify-between gap-12">
+        <Reveal delay={internal ? 0 : 3.4} className="flex h-full items-center">
+          <h1 className="pt-12 text-4xl">
             Step right <strong>back</strong>
             <br /> into <strong>the action</strong>
           </h1>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {actions.map((action, index) => (
             <motion.div
               key={action.title}
