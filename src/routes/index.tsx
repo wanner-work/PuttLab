@@ -111,10 +111,10 @@ function Index() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: (internal ? 0.1 : 3.6) + index * 0.1 }}
-              className="hover:opacity-90 active:scale-[0.98] active:opacity-50"
+              className="h-full hover:opacity-90 active:scale-[0.98] active:opacity-50"
               onClick={action.action}
             >
-              <Card>
+              <Card className="h-full">
                 <CardContent className="flex h-full flex-col justify-between gap-5">
                   <action.icon className="" />
                   <p className="text-lg font-semibold select-none">
