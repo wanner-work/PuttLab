@@ -5,6 +5,7 @@ const QUERY = {
     CACHE_KEYS: {
         SESSION: 'SESSION',
         ALL_SESSIONS: 'allSessions',
+        DEVICE: 'DEVICE',
     }
 }
 

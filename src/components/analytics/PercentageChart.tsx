@@ -1,4 +1,7 @@
+import QUERY from '@/constants/QUERY'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import { Device } from '@capacitor/device'
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { memo, useMemo } from 'react'
 import { Label, Pie, PieChart, Sector } from 'recharts'
@@ -25,6 +28,11 @@ function PercentageChart({
   index = 0,
   size = 'default'
 }: Readonly<Props>) {
+  const { data: device } = useQuery({
+    queryKey: [QUERY.CACHE_KEYS.DEVICE],
+    queryFn: async () => await Device.getInfo()
+  })
+
   const percentage = useMemo(() => {
     return calculatePercentage(attempts, hits)
   }, [hits, attempts])
@@ -93,7 +101,10 @@ function PercentageChart({
                     >
                       <tspan
                         x={viewBox.cx}
-                        y={viewBox.cy || 0}
+                        y={
+                          (viewBox.cy || 0) -
+                          (device?.operatingSystem === 'ios' ? -10 : 0)
+                        }
                         className="fill-foreground text-2xl font-bold"
                       >
                         {percentage}%
