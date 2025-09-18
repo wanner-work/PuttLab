@@ -36,8 +36,12 @@ function RecorderBatch({ batch, disabled }: Props) {
         count: Math.floor(Math.random() * (60 - 40 + 1)) + 40
       })
       await Haptics.impact({ style: ImpactStyle.Heavy })
-      await Haptics.impact({ style: ImpactStyle.Heavy })
-      await Haptics.impact({ style: ImpactStyle.Heavy })
+      setTimeout(async () => {
+        await Haptics.impact({ style: ImpactStyle.Heavy })
+      }, 80)
+      setTimeout(async () => {
+        await Haptics.impact({ style: ImpactStyle.Heavy })
+      }, 160)
     }
 
     await Haptics.impact({ style: ImpactStyle.Medium })
