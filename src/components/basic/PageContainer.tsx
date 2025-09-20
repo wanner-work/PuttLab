@@ -1,6 +1,7 @@
 import PageHeading from '@/components/basic/PageHeading.tsx'
+import { useSwipe } from '@/hooks/ui/useSwipe.ts'
 import { Capacitor } from '@capacitor/core'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { type ClassValue, clsx } from 'clsx'
 import { ChevronLeft } from 'lucide-react'
 import { motion } from 'motion/react'
@@ -39,6 +40,24 @@ export default function PageContainer({
   className,
   ...props
 }: PropsWithChildren<Props>) {
+  const navigate = useNavigate()
+
+  useSwipe(() => {
+    if (back) {
+      const search = {} as Record<string, string | boolean>
+
+      if (back === '/') {
+        search.internal = true
+      }
+
+      void navigate({
+        to: back,
+        search,
+        viewTransition: { types: ['slide-right'] }
+      })
+    }
+  })
+
   return (
     <motion.div
       className={clsx(

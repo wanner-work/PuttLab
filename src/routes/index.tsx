@@ -98,7 +98,7 @@ function Index() {
 
       <div className="flex h-full flex-col justify-between gap-12">
         <Reveal delay={internal ? 0 : 3.4} className="flex h-full items-center">
-          <h1 className="pt-12 text-4xl">
+          <h1 className="pt-16 text-4xl">
             Step right <strong>back</strong>
             <br /> into <strong>the action</strong>
           </h1>
