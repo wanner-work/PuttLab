@@ -24,7 +24,15 @@ function RouteComponent() {
   const { sessionId } = Route.useParams()
 
   const { mutate } = useMutation({
-    mutationFn: updateSession
+    mutationFn: updateSession,
+    onSuccess: () => {
+      QUERY.CLIENT.invalidateQueries({
+        queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+      })
+      QUERY.CLIENT.invalidateQueries({
+        queryKey: [QUERY.CACHE_KEYS.SESSION, sessionId]
+      })
+    }
   })
 
   const navigate = Route.useNavigate()

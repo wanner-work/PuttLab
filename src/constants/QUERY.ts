@@ -12,7 +12,7 @@ const QUERY = {
     }),
     CACHE_KEYS: {
         SESSION: 'SESSION',
-        ALL_SESSIONS: 'allSessions',
+        ALL_SESSIONS: 'ALL_SESSIONS',
         DEVICE: 'DEVICE',
     }
 }
