@@ -33,7 +33,11 @@ interface Props {
   onOpenChange?: (open: boolean) => void
 }
 
-export default function CreateSession({ open, onOpenChange, navigate }: Props) {
+export default function CreateSessionDrawer({
+  open,
+  onOpenChange,
+  navigate
+}: Props) {
   const { mutate, isPending } = useMutation({
     mutationFn: createSession,
     onSuccess: (session) => {

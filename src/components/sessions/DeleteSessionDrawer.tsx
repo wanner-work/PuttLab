@@ -22,7 +22,7 @@ interface Props {
   onOpenChange?: (open: boolean) => void
 }
 
-export default function DeleteSession({
+export default function DeleteSessionDrawer({
   open,
   onOpenChange,
   navigate,

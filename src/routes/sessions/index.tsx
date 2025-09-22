@@ -20,7 +20,7 @@ import dayjs from 'dayjs'
 import { ChevronRight, PlusIcon, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
-import CreateSession from '@/components/sessions/CreateSession'
+import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
 import { Card, CardContent } from '@/components/ui/card'
 import getSessions from '@/methods/data/get/getSessions'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -122,7 +122,7 @@ function Sessions() {
       subtitle="Manage your training sessions"
       back="/"
     >
-      <CreateSession
+      <CreateSessionDrawer
         open={createOpen}
         onOpenChange={setCreateOpen}
         navigate={navigate}

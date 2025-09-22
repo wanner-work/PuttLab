@@ -1,7 +1,7 @@
 import AverageCompare from '@/components/analytics/AverageCompare.tsx'
 import PercentageChart from '@/components/analytics/PercentageChart'
 import PageContainer from '@/components/basic/PageContainer.tsx'
-import DeleteSession from '@/components/sessions/DeleteSession'
+import DeleteSessionDrawer from '@/components/sessions/DeleteSessionDrawer'
 import Recorder from '@/components/sessions/recorder/Recorder'
 import { Button } from '@/components/ui/button'
 import QUERY from '@/constants/QUERY'
@@ -131,7 +131,7 @@ function RouteComponent() {
         </Button>
       }
     >
-      <DeleteSession
+      <DeleteSessionDrawer
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
         navigate={navigate}

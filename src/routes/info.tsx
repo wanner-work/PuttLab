@@ -1,4 +1,5 @@
 import PageContainer from '@/components/basic/PageContainer'
+import SeedDrawer from '@/components/seed/SeedDrawer'
 import {
   Card,
   CardContent,
@@ -7,6 +8,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 import pack from '../../package.json'
 
 export const Route = createFileRoute('/info')({
@@ -14,6 +16,12 @@ export const Route = createFileRoute('/info')({
 })
 
 function Info() {
+  const [clicks, setClicks] = useState(0)
+
+  const handleVersionClick = () => {
+    setClicks((prev) => prev + 1)
+  }
+
   return (
     <PageContainer
       title="Information"
@@ -21,6 +29,7 @@ function Info() {
       back="/"
       className="flex flex-col gap-4"
     >
+      <SeedDrawer open={clicks > 5} onOpenChange={() => setClicks(0)} />
       <Card className="gap-3">
         <CardHeader className="items-center pb-0">
           <CardTitle>Developer</CardTitle>
@@ -96,8 +105,8 @@ function Info() {
           </ul>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader className="items-center pb-0">
+      <Card onClick={handleVersionClick}>
+        <CardHeader className="items-center pb-0 select-none">
           <CardTitle>Version</CardTitle>
           <CardDescription>{pack.version}</CardDescription>
         </CardHeader>

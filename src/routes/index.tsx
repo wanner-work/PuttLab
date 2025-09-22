@@ -1,14 +1,16 @@
 import Reveal from '@/components/animations/Reveal'
 import AnimatedIcon from '@/components/brand/AnimatedIcon'
 import AnimatedLogo from '@/components/brand/AnimatedLogo'
-import CreateSession from '@/components/sessions/CreateSession'
+import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
 import { Card, CardContent } from '@/components/ui/card'
+import QUERY from '@/constants/QUERY'
+import getSessions from '@/methods/data/get/getSessions'
 import { Capacitor } from '@capacitor/core'
 import { createFileRoute } from '@tanstack/react-router'
 import { clsx } from 'clsx'
 import { AlertCircle, ChartPie, Layers, Play } from 'lucide-react'
 import { motion } from 'motion/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -63,6 +65,13 @@ function Index() {
     }
   ]
 
+  useEffect(() => {
+    QUERY.CLIENT.prefetchQuery({
+      queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, 'all'],
+      queryFn: () => getSessions()
+    })
+  }, [])
+
   return (
     <motion.div
       className={clsx(
@@ -94,7 +103,11 @@ function Index() {
         />
       </div>
 
-      <CreateSession open={open} onOpenChange={setOpen} navigate={navigate} />
+      <CreateSessionDrawer
+        open={open}
+        onOpenChange={setOpen}
+        navigate={navigate}
+      />
 
       <div className="flex h-full flex-col justify-between gap-12">
         <Reveal delay={internal ? 0 : 3.4} className="flex h-full items-center">
