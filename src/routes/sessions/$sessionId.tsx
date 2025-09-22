@@ -15,6 +15,7 @@ import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
 import { Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
+import { Not } from 'typeorm'
 
 export const Route = createFileRoute('/sessions/$sessionId')({
   component: RouteComponent
@@ -24,15 +25,7 @@ function RouteComponent() {
   const { sessionId } = Route.useParams()
 
   const { mutate } = useMutation({
-    mutationFn: updateSession,
-    onSuccess: () => {
-      QUERY.CLIENT.invalidateQueries({
-        queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
-      })
-      QUERY.CLIENT.invalidateQueries({
-        queryKey: [QUERY.CACHE_KEYS.SESSION, sessionId]
-      })
-    }
+    mutationFn: updateSession
   })
 
   const navigate = Route.useNavigate()
@@ -45,16 +38,32 @@ function RouteComponent() {
   })
 
   const { data: totalHits } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session?.distance],
+    queryKey: [
+      QUERY.CACHE_KEYS.ALL_SESSIONS,
+      QUERY.CACHE_KEYS.SESSIONS_SUM,
+      'hits',
+      session?.distance,
+      session?.id
+    ],
     queryFn: ({ queryKey }) =>
-      getSessionsSumsForDistance('hits', Number(queryKey[1])),
+      getSessionsSumsForDistance('hits', Number(queryKey[3]), {
+        id: Not(Number(queryKey[4]))
+      }),
     enabled: !!session
   })
 
   const { data: totalAttempts } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session?.distance],
+    queryKey: [
+      QUERY.CACHE_KEYS.ALL_SESSIONS,
+      QUERY.CACHE_KEYS.SESSIONS_SUM,
+      'attempts',
+      session?.distance,
+      session?.id
+    ],
     queryFn: ({ queryKey }) =>
-      getSessionsSumsForDistance('attempts', Number(queryKey[1])),
+      getSessionsSumsForDistance('attempts', Number(queryKey[3]), {
+        id: Not(Number(queryKey[4]))
+      }),
     enabled: !!session
   })
 
@@ -119,9 +128,21 @@ function RouteComponent() {
           debouncedAttempts === session.attempts &&
           debouncedHits === session.hits
         ) {
+          QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+          })
+          QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.SESSION, sessionId]
+          })
           resolve(false)
         } else {
           mutate(session)
+          QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+          })
+          QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.SESSION, sessionId]
+          })
           resolve(false)
         }
       })
@@ -182,12 +203,12 @@ function RouteComponent() {
           </div>
         </div>
         <div className="-mt-4 flex items-center justify-center gap-4">
-          {totalAttempts && totalAttempts > 0 && (
+          {totalAttempts && totalAttempts > 0 && totalHits && (
             <AverageCompare
               attempts={attempts}
               totalAttempts={totalAttempts}
               hits={hits}
-              totalHits={totalHits || 0}
+              totalHits={totalHits}
             />
           )}
           <PercentageChart hits={hits} attempts={attempts} />

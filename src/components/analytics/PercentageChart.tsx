@@ -1,38 +1,17 @@
-import QUERY from '@/constants/QUERY'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
-import { Device } from '@capacitor/device'
-import { useQuery } from '@tanstack/react-query'
-import clsx from 'clsx'
 import { memo, useMemo } from 'react'
 import { Label, Pie, PieChart, Sector } from 'recharts'
 import type { PieSectorDataItem } from 'recharts/types/polar/Pie'
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig
-} from '../ui/chart'
+import { ChartContainer, type ChartConfig } from '../ui/chart'
 
 interface Props {
   hits: number
   attempts: number
-  index?: number
-  size?: 'sm' | 'default'
 }
 
 export default memo(PercentageChart)
 
-function PercentageChart({
-  hits,
-  attempts,
-  size = 'default'
-}: Readonly<Props>) {
-  const { data: device } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.DEVICE],
-    queryFn: async () => await Device.getInfo(),
-    staleTime: Infinity
-  })
-
+function PercentageChart({ hits, attempts }: Readonly<Props>) {
   const percentage = useMemo(() => {
     return calculatePercentage(attempts, hits)
   }, [hits, attempts])
@@ -60,60 +39,44 @@ function PercentageChart({
   } satisfies ChartConfig
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className={clsx('grow-0', size === 'sm' ? 'size-[60px]' : 'size-[200px]')}
-    >
+    <ChartContainer config={chartConfig} className="size-[200px] grow-0">
       <PieChart>
-        {size !== 'sm' && (
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
-        )}
         <Pie
           data={chartData}
           dataKey="value"
           nameKey="name"
-          innerRadius={size === 'sm' ? 0 : 40}
-          outerRadius={size === 'sm' ? 20 : 75}
+          innerRadius={40}
+          outerRadius={75}
           strokeWidth={5}
           activeIndex={0}
-          animationDuration={size === 'sm' ? 0 : 180}
+          animationBegin={0}
+          animationDuration={180}
           activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
-            <Sector
-              {...props}
-              outerRadius={size === 'sm' ? outerRadius : outerRadius + 10}
-            />
+            <Sector {...props} outerRadius={outerRadius + 10} />
           )}
         >
-          {size !== 'sm' && (
-            <Label
-              content={({ viewBox }) => {
-                if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                  return (
-                    <text
+          <Label
+            content={({ viewBox }) => {
+              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                return (
+                  <text
+                    x={viewBox.cx}
+                    y={viewBox.cy}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                  >
+                    <tspan
                       x={viewBox.cx}
-                      y={viewBox.cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
+                      y={undefined}
+                      className="fill-foreground text-2xl font-bold"
                     >
-                      <tspan
-                        x={viewBox.cx}
-                        y={
-                          (viewBox.cy || 0) -
-                          (device?.operatingSystem === 'ios' ? -10 : 0)
-                        }
-                        className="fill-foreground text-2xl font-bold"
-                      >
-                        {percentage}%
-                      </tspan>
-                    </text>
-                  )
-                }
-              }}
-            />
-          )}
+                      {percentage}%
+                    </tspan>
+                  </text>
+                )
+              }
+            }}
+          />
         </Pie>
       </PieChart>
     </ChartContainer>

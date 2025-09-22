@@ -13,6 +13,7 @@ const QUERY = {
     CACHE_KEYS: {
         SESSION: 'SESSION',
         ALL_SESSIONS: 'ALL_SESSIONS',
+        SESSIONS_SUM: 'SESSIONS_SUM',
         DEVICE: 'DEVICE',
     }
 }
