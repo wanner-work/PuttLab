@@ -1,6 +1,7 @@
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import NumberFlow from '@number-flow/react'
 import { memo, useMemo } from 'react'
-import { Label, Pie, PieChart, Sector } from 'recharts'
+import { Pie, PieChart, Sector } from 'recharts'
 import type { PieSectorDataItem } from 'recharts/types/polar/Pie'
 import { ChartContainer, type ChartConfig } from '../ui/chart'
 
@@ -39,46 +40,28 @@ function PercentageChart({ hits, attempts }: Readonly<Props>) {
   } satisfies ChartConfig
 
   return (
-    <ChartContainer config={chartConfig} className="size-[200px] grow-0">
-      <PieChart>
-        <Pie
-          data={chartData}
-          dataKey="value"
-          nameKey="name"
-          innerRadius={40}
-          outerRadius={75}
-          strokeWidth={5}
-          activeIndex={0}
-          animationBegin={0}
-          animationDuration={180}
-          activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
-            <Sector {...props} outerRadius={outerRadius + 10} />
-          )}
-        >
-          <Label
-            content={({ viewBox }) => {
-              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                return (
-                  <text
-                    x={viewBox.cx}
-                    y={viewBox.cy}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                  >
-                    <tspan
-                      x={viewBox.cx}
-                      y={undefined}
-                      className="fill-foreground text-2xl font-bold"
-                    >
-                      {percentage}%
-                    </tspan>
-                  </text>
-                )
-              }
-            }}
+    <div className="relative">
+      <ChartContainer config={chartConfig} className="size-[200px] grow-0">
+        <PieChart>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            nameKey="name"
+            innerRadius={40}
+            outerRadius={75}
+            strokeWidth={5}
+            activeIndex={0}
+            animationBegin={0}
+            animationDuration={180}
+            activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
+              <Sector {...props} outerRadius={outerRadius + 10} />
+            )}
           />
-        </Pie>
-      </PieChart>
-    </ChartContainer>
+        </PieChart>
+      </ChartContainer>
+      <div className="absolute top-1/2 left-1/2 -translate-1/2 font-mono text-xl font-bold">
+        <NumberFlow value={percentage} suffix="%" />
+      </div>
+    </div>
   )
 }
