@@ -11,7 +11,7 @@ import getSession from '@/methods/data/get/getSession'
 import updateSession from '@/methods/data/update/updateSession'
 import NumberFlow from '@number-flow/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
 import { Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
@@ -112,6 +112,20 @@ function RouteComponent() {
     session.hits = debouncedHits
     mutate(session)
   }, [debouncedAttempts, debouncedHits, session, mutate])
+
+  useBlocker({
+    shouldBlockFn: () => {
+      if (!session) return false
+
+      return new Promise<boolean>((resolve) => {
+        session.attempts = attempts
+        session.hits = hits
+        mutate(session)
+
+        resolve(false)
+      })
+    }
+  })
 
   return (
     <PageContainer

@@ -2,7 +2,7 @@ import { createRootRoute, Outlet } from '@tanstack/react-router'
 
 function RootLayout() {
   return (
-    <div className="min-h-dvh font-sans">
+    <div className="min-h-dvh overflow-x-hidden font-sans">
       <Outlet />
     </div>
   )
