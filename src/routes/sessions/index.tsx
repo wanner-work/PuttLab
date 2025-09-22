@@ -1,12 +1,8 @@
-import PercentageChart from '@/components/analytics/PercentageChart'
 import PageContainer from '@/components/basic/PageContainer.tsx'
 import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
@@ -14,14 +10,14 @@ import QUERY from '@/constants/QUERY'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
 import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
-import clsx from 'clsx'
+import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
-import { ChevronRight, PlusIcon, X } from 'lucide-react'
+import { PlusIcon, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
-import { Card, CardContent } from '@/components/ui/card'
+import SessionListDistanceFilterOptions from '@/components/sessions/list/SessionListDistanceFilterOptions'
+import SessionListItem from '@/components/sessions/list/SessionListItem'
 import getSessions from '@/methods/data/get/getSessions'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -39,6 +35,7 @@ function Sessions() {
   const [distanceFilter, setDistanceFilter] = useState<string | undefined>(
     undefined
   )
+  const [distanceFilterOpen, setDistanceFilterOpen] = useState(false)
 
   const { data: allSessions } = useQuery({
     queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
@@ -46,47 +43,12 @@ function Sessions() {
   })
 
   const { data: sessions } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, distanceFilter ?? 'all'],
+    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, distanceFilter],
     queryFn: ({ queryKey }) => {
-      const distance = queryKey[1]
-      if (distance === 'all') {
-        return getSessions()
-      }
-      return getSessions(Number(distance))
-    }
+      return getSessions(Number(queryKey[1]))
+    },
+    enabled: !!distanceFilter
   })
-
-  const optionsBullseye = useMemo(() => {
-    return allSessions
-      ?.filter((s) => s.distance <= 3)
-      .map((s) => s.distance)
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .sort((a, b) => a - b)
-  }, [allSessions])
-
-  const optionsCircleOne = useMemo(() => {
-    return allSessions
-      ?.filter((s) => s.distance <= 10 && s.distance > 3)
-      .map((s) => s.distance)
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .sort((a, b) => a - b)
-  }, [allSessions])
-
-  const optionsCircleTwo = useMemo(() => {
-    return allSessions
-      ?.filter((s) => s.distance <= 20 && s.distance > 10)
-      .map((s) => s.distance)
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .sort((a, b) => a - b)
-  }, [allSessions])
-
-  const optionsOutsideCircle = useMemo(() => {
-    return allSessions
-      ?.filter((s) => s.distance > 20)
-      .map((s) => s.distance)
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .sort((a, b) => a - b)
-  }, [allSessions])
 
   const amount = useMemo(() => {
     if (allSessions === undefined) {
@@ -132,68 +94,16 @@ function Sessions() {
         <Select
           value={distanceFilter ?? ''}
           onValueChange={(value) => setDistanceFilter(value || undefined)}
+          onOpenChange={() => setDistanceFilterOpen(true)}
         >
           <SelectTrigger id="distance" className="w-full">
             <SelectValue placeholder="Filter for distance" />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Bullseye</SelectLabel>
-              {optionsBullseye && optionsBullseye.length > 0 ? (
-                optionsBullseye.map((distance) => (
-                  <SelectItem key={distance} value={String(distance)}>
-                    {distance} meters
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem value="undefined" disabled>
-                  No sessions with this distance yet
-                </SelectItem>
-              )}
-            </SelectGroup>
-            <SelectGroup>
-              <SelectLabel>Circle 1</SelectLabel>
-              {optionsCircleOne && optionsCircleOne.length > 0 ? (
-                optionsCircleOne.map((distance) => (
-                  <SelectItem key={distance} value={String(distance)}>
-                    {distance} meters
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem value="undefined" disabled>
-                  No sessions with this distance yet
-                </SelectItem>
-              )}
-            </SelectGroup>
-            <SelectGroup>
-              <SelectLabel>Circle 2</SelectLabel>
-              {optionsCircleTwo && optionsCircleTwo.length > 0 ? (
-                optionsCircleTwo.map((distance) => (
-                  <SelectItem key={distance} value={String(distance)}>
-                    {distance} meters
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem value="undefined" disabled>
-                  No sessions with this distance yet
-                </SelectItem>
-              )}
-            </SelectGroup>
-            <SelectGroup>
-              <SelectLabel>Outside Circle</SelectLabel>
-              {optionsOutsideCircle && optionsOutsideCircle.length > 0 ? (
-                optionsOutsideCircle.map((distance) => (
-                  <SelectItem key={distance} value={String(distance)}>
-                    {distance} meters
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem value="undefined" disabled>
-                  No sessions with this distance yet
-                </SelectItem>
-              )}
-            </SelectGroup>
+            {distanceFilterOpen && (
+              <SessionListDistanceFilterOptions sessions={allSessions || []} />
+            )}
           </SelectContent>
         </Select>
         {distanceFilter && (
@@ -212,57 +122,9 @@ function Sessions() {
         </p>
       </div>
       <div className="mb-20 flex flex-col gap-3">
-        {sessions
-          ?.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
-          ?.map((session, index) => (
-            <Link
-              to="/sessions/$sessionId"
-              viewTransition={{ types: ['slide-left'] }}
-              params={{ sessionId: String(session.id) }}
-              key={session.id}
-              className="active:scale-[0.98]"
-            >
-              <Card className="py-3">
-                <CardContent
-                  className={clsx(
-                    'gap-4 px-3',
-                    session.attempts > 0 ? 'grid' : 'pl-4'
-                  )}
-                  style={{
-                    gridTemplateColumns: 'minmax(0, auto) minmax(0, 1fr)'
-                  }}
-                >
-                  {session.attempts > 0 && (
-                    <div className="self-center">
-                      <PercentageChart
-                        index={index}
-                        hits={session.hits}
-                        attempts={session.attempts}
-                        size="sm"
-                      />
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-mono font-bold uppercase">
-                        {session.distance} meter
-                      </p>
-                      <p className="text-sm text-neutral-400">
-                        {dayjs().to(dayjs(session.date))}
-                      </p>
-                    </div>
-                    {session.attempts > 0 ? (
-                      <p className="text-muted-foreground pr-2 font-mono font-bold">
-                        {calculatePercentage(session.attempts, session.hits)}%
-                      </p>
-                    ) : (
-                      <ChevronRight className="text-muted-foreground" />
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+        {(sessions || allSessions)?.map((session, index) => (
+          <SessionListItem key={session.id} session={session} index={index} />
+        ))}
       </div>
       <Button
         className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full font-bold"

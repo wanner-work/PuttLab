@@ -25,12 +25,12 @@ export default memo(PercentageChart)
 function PercentageChart({
   hits,
   attempts,
-  index = 0,
   size = 'default'
 }: Readonly<Props>) {
   const { data: device } = useQuery({
     queryKey: [QUERY.CACHE_KEYS.DEVICE],
-    queryFn: async () => await Device.getInfo()
+    queryFn: async () => await Device.getInfo(),
+    staleTime: Infinity
   })
 
   const percentage = useMemo(() => {
@@ -79,8 +79,7 @@ function PercentageChart({
           outerRadius={size === 'sm' ? 20 : 75}
           strokeWidth={5}
           activeIndex={0}
-          animationBegin={index * 40}
-          animationDuration={180}
+          animationDuration={size === 'sm' ? 0 : 180}
           activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
             <Sector
               {...props}

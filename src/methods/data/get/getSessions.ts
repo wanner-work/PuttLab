@@ -7,5 +7,5 @@ export default function getSessions(distance: number | null = null) {
   if (distance === null) {
     return connection.manager.find(Session)
   }
-  return connection.manager.find(Session, { where: { distance } })
+  return connection.manager.find(Session, { where: { distance }, order: { date: 'DESC' } })
 }

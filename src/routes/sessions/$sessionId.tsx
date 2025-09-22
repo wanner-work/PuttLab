@@ -6,8 +6,8 @@ import Recorder from '@/components/sessions/recorder/Recorder'
 import { Button } from '@/components/ui/button'
 import QUERY from '@/constants/QUERY'
 import calculateCirclePosition from '@/methods/calculations/calculateCirclePosition'
-import getSameDistanceSessions from '@/methods/data/get/getSameDistanceSessions'
 import getSession from '@/methods/data/get/getSession'
+import getSessionsSumsForDistance from '@/methods/data/get/getSessionsSumsForDistance'
 import updateSession from '@/methods/data/update/updateSession'
 import NumberFlow from '@number-flow/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -36,33 +36,19 @@ function RouteComponent() {
     queryFn: ({ queryKey }) => getSession(queryKey[1])
   })
 
-  const { data: sameDistanceSessions } = useQuery({
+  const { data: totalHits } = useQuery({
     queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session?.distance],
-    queryFn: ({ queryKey }) => getSameDistanceSessions(Number(queryKey[1])),
+    queryFn: ({ queryKey }) =>
+      getSessionsSumsForDistance('hits', Number(queryKey[1])),
     enabled: !!session
   })
 
-  const totalAttempts = useMemo(() => {
-    if (!session) return 0
-    if (!sameDistanceSessions) return 0
-
-    return (
-      sameDistanceSessions
-        .filter((s) => s.id !== session.id)
-        .reduce((sum, session) => sum + session.attempts, 0) || 0
-    )
-  }, [sameDistanceSessions, session])
-
-  const totalHits = useMemo(() => {
-    if (!session) return 0
-    if (!sameDistanceSessions) return 0
-
-    return (
-      sameDistanceSessions
-        .filter((s) => s.id !== session.id)
-        .reduce((sum, session) => sum + session.hits, 0) || 0
-    )
-  }, [sameDistanceSessions, session])
+  const { data: totalAttempts } = useQuery({
+    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session?.distance],
+    queryFn: ({ queryKey }) =>
+      getSessionsSumsForDistance('attempts', Number(queryKey[1])),
+    enabled: !!session
+  })
 
   const disabled = useMemo(() => {
     if (!session) return true
@@ -120,9 +106,16 @@ function RouteComponent() {
       return new Promise<boolean>((resolve) => {
         session.attempts = attempts
         session.hits = hits
-        mutate(session)
 
-        resolve(false)
+        if (
+          debouncedAttempts === session.attempts &&
+          debouncedHits === session.hits
+        ) {
+          resolve(false)
+        } else {
+          mutate(session)
+          resolve(false)
+        }
       })
     }
   })
@@ -181,12 +174,12 @@ function RouteComponent() {
           </div>
         </div>
         <div className="-mt-4 flex items-center justify-center gap-4">
-          {totalAttempts > 0 && (
+          {totalAttempts && totalAttempts > 0 && (
             <AverageCompare
               attempts={attempts}
               totalAttempts={totalAttempts}
               hits={hits}
-              totalHits={totalHits}
+              totalHits={totalHits || 0}
             />
           )}
           <PercentageChart hits={hits} attempts={attempts} />

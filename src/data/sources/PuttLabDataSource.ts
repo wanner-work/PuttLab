@@ -9,7 +9,7 @@ const PuttLabDataSource = new DataSource({
   database: 'puttlab',
   entities: [Session],
   logging: ['error', 'query', 'schema'],
-  synchronize: true,
+  synchronize: false,
   migrationsRun: true
 })
 
