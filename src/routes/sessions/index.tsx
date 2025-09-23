@@ -13,7 +13,8 @@ import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import { PlusIcon, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
+import { List } from 'react-window'
 
 import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
 import SessionListDistanceFilterOptions from '@/components/sessions/list/SessionListDistanceFilterOptions'
@@ -24,7 +25,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 
 export const Route = createFileRoute('/sessions/')({
-  component: Sessions
+  component: memo(Sessions)
 })
 
 function Sessions() {
@@ -83,6 +84,11 @@ function Sessions() {
       title="Sessions"
       subtitle="Manage your training sessions"
       back="/"
+      style={{
+        gridTemplateRows:
+          'minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, 1fr)'
+      }}
+      className="grid h-dvh pb-0"
     >
       <CreateSessionDrawer
         open={createOpen}
@@ -121,10 +127,15 @@ function Sessions() {
           <NumberFlow value={selectedAverage} suffix="%" />
         </p>
       </div>
-      <div className="mb-20 flex flex-col gap-3">
-        {(sessions || allSessions)?.map((session, index) => (
-          <SessionListItem key={session.id} session={session} index={index} />
-        ))}
+      <div className="overflow-hidden">
+        <List
+          rowComponent={SessionListItem}
+          rowCount={(sessions || allSessions)?.length || 0}
+          rowHeight={(index) =>
+            index === ((sessions || allSessions)?.length || 0) - 1 ? 172 : 82
+          }
+          rowProps={{ sessions: sessions || allSessions || [] }}
+        />
       </div>
       <Button
         className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full font-bold"

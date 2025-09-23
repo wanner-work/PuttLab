@@ -14,11 +14,11 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
 import { Trash2 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { Not } from 'typeorm'
 
 export const Route = createFileRoute('/sessions/$sessionId')({
-  component: RouteComponent
+  component: memo(RouteComponent)
 })
 
 function RouteComponent() {

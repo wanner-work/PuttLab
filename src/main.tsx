@@ -17,8 +17,9 @@ import './styles/transitions.css'
 const router = createRouter({
   routeTree,
   defaultPreload: 'intent',
-  defaultStaleTime: 5000,
-  scrollRestoration: true
+  defaultStaleTime: Infinity,
+  scrollRestoration: true,
+  defaultPendingMinMs: 0
 })
 
 declare module '@tanstack/react-router' {

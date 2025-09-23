@@ -1,4 +1,5 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { memo } from 'react'
 
 function RootLayout() {
   return (
@@ -8,4 +9,4 @@ function RootLayout() {
   )
 }
 
-export const Route = createRootRoute({ component: RootLayout })
+export const Route = createRootRoute({ component: memo(RootLayout) })

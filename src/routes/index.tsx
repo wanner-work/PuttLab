@@ -11,10 +11,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import { clsx } from 'clsx'
 import { AlertCircle, ChartPie, Layers, Play } from 'lucide-react'
 import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/')({
-  component: Index,
+  component: memo(Index),
   validateSearch: (search: { internal: boolean }) => {
     return {
       internal: search.internal

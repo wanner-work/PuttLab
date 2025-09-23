@@ -7,9 +7,10 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { createFileRoute } from '@tanstack/react-router'
+import { memo } from 'react'
 
 export const Route = createFileRoute('/analytics')({
-  component: Analytics
+  component: memo(Analytics)
 })
 
 function Analytics() {

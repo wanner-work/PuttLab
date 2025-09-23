@@ -6,13 +6,19 @@ import clsx from 'clsx'
 import dayjs from 'dayjs'
 import { ChevronRight } from 'lucide-react'
 import { useMemo } from 'react'
+import type { RowComponentProps } from 'react-window'
 
 interface Props {
-  index: number
-  session: Session
+  sessions: Session[]
 }
 
-export default function SessionListItem({ session }: Props) {
+export default function SessionListItem({
+  sessions,
+  index,
+  style
+}: RowComponentProps<Props>) {
+  const session = sessions[index]
+
   const percentage = useMemo(() => {
     return calculatePercentage(session.attempts, session.hits)
   }, [session.attempts, session.hits])
@@ -28,6 +34,7 @@ export default function SessionListItem({ session }: Props) {
       params={{ sessionId: String(session.id) }}
       key={session.id}
       className="active:scale-[0.98]"
+      style={style}
     >
       <Card className="py-3">
         <CardContent

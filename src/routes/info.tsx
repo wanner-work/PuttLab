@@ -8,11 +8,11 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import pack from '../../package.json'
 
 export const Route = createFileRoute('/info')({
-  component: Info
+  component: memo(Info)
 })
 
 function Info() {
