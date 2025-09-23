@@ -45,14 +45,17 @@ export default function SessionListItem({
       <DeleteSessionDrawer
         open={isDeleted}
         onOpenChange={setIsDeleted}
-        onSuccess={() => {
-          QUERY.CLIENT.invalidateQueries({
+        onSuccess={async () => {
+          setIsDeleted(false)
+          await QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+          })
+          await QUERY.CLIENT.invalidateQueries({
             queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session.id]
           })
-          QUERY.CLIENT.invalidateQueries({
+          await QUERY.CLIENT.invalidateQueries({
             queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, session.distance]
           })
-          setIsDeleted(false)
         }}
         sessionId={session.id}
         attempts={session.attempts}

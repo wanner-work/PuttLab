@@ -1,4 +1,3 @@
-import QUERY from '@/constants/QUERY'
 import deleteSession from '@/methods/data/delete/deleteSession'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
@@ -30,12 +29,7 @@ export default function DeleteSessionDrawer({
 }: Props) {
   const { mutate: remove, isPending: isRemoving } = useMutation({
     mutationFn: deleteSession,
-    onSuccess: () => {
-      QUERY.CLIENT.invalidateQueries({
-        queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
-      })
-      onSuccess()
-    }
+    onSuccess
   })
 
   return (

@@ -170,7 +170,15 @@ function RouteComponent() {
       <DeleteSessionDrawer
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        navigate={navigate}
+        onSuccess={async () => {
+          await QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+          })
+          navigate({
+            to: '/sessions',
+            viewTransition: { types: ['slide-right'] }
+          })
+        }}
         sessionId={session ? session.id : 0}
         attempts={attempts}
       />
