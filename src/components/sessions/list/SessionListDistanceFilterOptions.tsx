@@ -1,5 +1,6 @@
 import { SelectGroup, SelectItem, SelectLabel } from '@/components/ui/select'
 import type { Session } from '@/data/entities/session'
+import useUnit from '@/hooks/units/useUnit'
 import { useMemo } from 'react'
 
 interface Props {
@@ -7,6 +8,8 @@ interface Props {
 }
 
 export default function SessionListDistanceFilterOptions({ sessions }: Props) {
+  const { getDistance, unit } = useUnit()
+
   const optionsBullseye = useMemo(() => {
     return sessions
       ?.filter((s) => s.distance <= 3)
@@ -46,7 +49,7 @@ export default function SessionListDistanceFilterOptions({ sessions }: Props) {
         {optionsBullseye && optionsBullseye.length > 0 ? (
           optionsBullseye.map((distance) => (
             <SelectItem key={distance} value={String(distance)}>
-              {distance} meters
+              {getDistance(distance)} {unit}
             </SelectItem>
           ))
         ) : (
@@ -60,7 +63,7 @@ export default function SessionListDistanceFilterOptions({ sessions }: Props) {
         {optionsCircleOne && optionsCircleOne.length > 0 ? (
           optionsCircleOne.map((distance) => (
             <SelectItem key={distance} value={String(distance)}>
-              {distance} meters
+              {getDistance(distance)} {unit}{' '}
             </SelectItem>
           ))
         ) : (
@@ -74,7 +77,7 @@ export default function SessionListDistanceFilterOptions({ sessions }: Props) {
         {optionsCircleTwo && optionsCircleTwo.length > 0 ? (
           optionsCircleTwo.map((distance) => (
             <SelectItem key={distance} value={String(distance)}>
-              {distance} meters
+              {getDistance(distance)} {unit}{' '}
             </SelectItem>
           ))
         ) : (
@@ -88,7 +91,7 @@ export default function SessionListDistanceFilterOptions({ sessions }: Props) {
         {optionsOutsideCircle && optionsOutsideCircle.length > 0 ? (
           optionsOutsideCircle.map((distance) => (
             <SelectItem key={distance} value={String(distance)}>
-              {distance} meters
+              {getDistance(distance)} {unit}{' '}
             </SelectItem>
           ))
         ) : (

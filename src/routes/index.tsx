@@ -2,13 +2,17 @@ import Reveal from '@/components/animations/Reveal'
 import AnimatedIcon from '@/components/brand/AnimatedIcon'
 import AnimatedLogo from '@/components/brand/AnimatedLogo'
 import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
+import SettingsDrawer from '@/components/settings/SettingsDrawer'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import QUERY from '@/constants/QUERY'
 import getSessions from '@/methods/data/get/getSessions'
+import getSettings from '@/methods/data/get/getSettings'
 import { Capacitor } from '@capacitor/core'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { clsx } from 'clsx'
-import { AlertCircle, ChartPie, Layers, Play } from 'lucide-react'
+import { AlertCircle, ChartPie, CogIcon, Layers, Play } from 'lucide-react'
 import { motion } from 'motion/react'
 import { memo, useEffect, useState } from 'react'
 
@@ -24,16 +28,22 @@ export const Route = createFileRoute('/')({
 function Index() {
   const { internal } = Route.useSearch()
 
+  const { data: settings } = useQuery({
+    queryKey: [QUERY.CACHE_KEYS.SETTINGS],
+    queryFn: getSettings
+  })
+
   const navigate = Route.useNavigate()
 
-  const [open, setOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [createOpen, setCreateOpen] = useState(false)
 
   const actions = [
     {
       title: 'Start new Session',
       icon: Play,
       action: () => {
-        setOpen(true)
+        setCreateOpen(true)
       }
     },
     {
@@ -95,19 +105,47 @@ function Index() {
       }}
     >
       {!internal && <AnimatedLogo />}
-      <div className="mt-2 flex h-[48px] items-center">
+      <div className="mt-2 flex h-[48px] items-center justify-between">
         <AnimatedIcon
           shouldExit={false}
           delay={internal ? 0 : 3}
           className="-ml-[18px]"
         />
+
+        <Reveal delay={internal ? 0 : 3.2}>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => setSettingsOpen(true)}
+          >
+            <CogIcon />
+          </Button>
+        </Reveal>
       </div>
 
       <CreateSessionDrawer
-        open={open}
-        onOpenChange={setOpen}
+        open={createOpen}
+        onOpenChange={setCreateOpen}
         navigate={navigate}
       />
+
+      {settings && (
+        <SettingsDrawer
+          initialSettings={settings}
+          open={settingsOpen}
+          onOpenChange={setSettingsOpen}
+          onSuccess={() => {
+            QUERY.CLIENT.invalidateQueries({
+              queryKey: [QUERY.CACHE_KEYS.SETTINGS]
+            })
+            QUERY.CLIENT.prefetchQuery({
+              queryKey: [QUERY.CACHE_KEYS.SETTINGS],
+              queryFn: getSettings
+            })
+            setSettingsOpen(false)
+          }}
+        />
+      )}
 
       <div className="flex h-full flex-col justify-between gap-12">
         <Reveal delay={internal ? 0 : 3.4} className="flex h-full items-center">

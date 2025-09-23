@@ -5,6 +5,7 @@ import DeleteSessionDrawer from '@/components/sessions/DeleteSessionDrawer'
 import Recorder from '@/components/sessions/recorder/Recorder'
 import { Button } from '@/components/ui/button'
 import QUERY from '@/constants/QUERY'
+import useUnit from '@/hooks/units/useUnit'
 import calculateCirclePosition from '@/methods/calculations/calculateCirclePosition'
 import getSession from '@/methods/data/get/getSession'
 import getSessionsSumsForDistance from '@/methods/data/get/getSessionsSumsForDistance'
@@ -149,6 +150,8 @@ function RouteComponent() {
     }
   })
 
+  const { getDistance, unit } = useUnit()
+
   return (
     <PageContainer
       className="grid h-dvh max-h-full"
@@ -188,7 +191,7 @@ function RouteComponent() {
             {position}
           </p>
           <p className="font-mono text-2xl font-bold uppercase">
-            <NumberFlow value={session?.distance || 0} /> meter
+            <NumberFlow value={getDistance(session?.distance || 0)} /> {unit}
           </p>
         </div>
         <div className="mx-auto mt-4 flex w-full max-w-96 items-center justify-around gap-3 px-4 text-center">

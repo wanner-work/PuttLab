@@ -3,6 +3,7 @@ import ANIMATION from '@/constants/ANIMATION'
 import QUERY from '@/constants/QUERY'
 import type { Session } from '@/data/entities/session'
 import useDragAction from '@/hooks/ui/useDragAction'
+import useUnit from '@/hooks/units/useUnit'
 import calculatePercentage from '@/methods/calculations/calculatePercentage'
 import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
@@ -39,6 +40,8 @@ export default function SessionListItem({
       setIsDeleted(true)
     }
   })
+
+  const { getDistance, unit } = useUnit()
 
   return (
     <Fragment key={session.id}>
@@ -137,7 +140,7 @@ export default function SessionListItem({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-mono font-bold uppercase">
-                      {session.distance} meter
+                      {getDistance(session.distance)} {unit}
                     </p>
                     <p className="text-sm text-neutral-400">{time}</p>
                   </div>

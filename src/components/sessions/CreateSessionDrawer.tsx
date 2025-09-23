@@ -1,4 +1,5 @@
 import QUERY from '@/constants/QUERY'
+import useUnit from '@/hooks/units/useUnit'
 import createSession from '@/methods/data/create/createSession'
 import NumberFlow from '@number-flow/react'
 import { useMutation } from '@tanstack/react-query'
@@ -62,6 +63,8 @@ export default function CreateSessionDrawer({
     mutate(distance)
   }
 
+  const { getDistance, unit, shortUnit } = useUnit()
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
@@ -79,21 +82,39 @@ export default function CreateSessionDrawer({
 
               <SelectGroup>
                 <SelectLabel>Bullseye</SelectLabel>
-                <SelectItem value="2">2 meters</SelectItem>
-                <SelectItem value="3">3 meters</SelectItem>
+                <SelectItem value="2">
+                  {getDistance(2)} {unit}
+                </SelectItem>
+                <SelectItem value="3">
+                  {getDistance(3)} {unit}
+                </SelectItem>
               </SelectGroup>
               <SelectGroup>
                 <SelectLabel>Circle 1</SelectLabel>
-                <SelectItem value="4">4 meters</SelectItem>
-                <SelectItem value="6">6 meters</SelectItem>
-                <SelectItem value="8">8 meters</SelectItem>
-                <SelectItem value="10">10 meters</SelectItem>
+                <SelectItem value="4">
+                  {getDistance(4)} {unit}
+                </SelectItem>
+                <SelectItem value="6">
+                  {getDistance(6)} {unit}
+                </SelectItem>
+                <SelectItem value="8">
+                  {getDistance(8)} {unit}
+                </SelectItem>
+                <SelectItem value="10">
+                  {getDistance(10)} {unit}
+                </SelectItem>
               </SelectGroup>
               <SelectGroup>
                 <SelectLabel>Circle 2</SelectLabel>
-                <SelectItem value="12">12 meters</SelectItem>
-                <SelectItem value="16">16 meters</SelectItem>
-                <SelectItem value="20">20 meters</SelectItem>
+                <SelectItem value="12">
+                  {getDistance(12)} {unit}
+                </SelectItem>
+                <SelectItem value="16">
+                  {getDistance(16)} {unit}
+                </SelectItem>
+                <SelectItem value="20">
+                  {getDistance(20)} {unit}
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -108,7 +129,8 @@ export default function CreateSessionDrawer({
                 onValueChange={(value) => setCustomDistance(value[0])}
               />
               <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
-                <NumberFlow value={customDistance} />m
+                <NumberFlow value={getDistance(customDistance)} />
+                {shortUnit}
               </Badge>
             </div>
           )}
