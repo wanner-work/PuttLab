@@ -1,16 +1,18 @@
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
+import { clsx } from 'clsx'
 import { memo } from 'react'
 import { Button } from '../../ui/button'
 
 interface Props {
   disabled?: boolean
+  latest?: 'hit' | 'miss'
   hit: () => void
   miss: () => void
 }
 
 export default memo(RecorderSingle)
 
-function RecorderSingle({ hit, miss, disabled }: Props) {
+function RecorderSingle({ hit, miss, latest, disabled }: Props) {
   const hitProxy = async () => {
     hit()
     await Haptics.impact({ style: ImpactStyle.Heavy })
@@ -24,8 +26,12 @@ function RecorderSingle({ hit, miss, disabled }: Props) {
   return (
     <>
       <Button
-        color="primary"
-        className="w-full font-bold"
+        variant="secondary"
+        className={clsx(
+          'w-full font-bold',
+          latest === 'hit' &&
+            'ring-offset-background ring-primary ring-2 ring-offset-2'
+        )}
         disabled={disabled}
         onClick={hitProxy}
       >
@@ -33,7 +39,11 @@ function RecorderSingle({ hit, miss, disabled }: Props) {
       </Button>
       <Button
         variant="secondary"
-        className="w-full font-bold"
+        className={clsx(
+          'w-full font-bold',
+          latest === 'miss' &&
+            'ring-offset-background ring-primary ring-2 ring-offset-2'
+        )}
         disabled={disabled}
         onClick={missProxy}
       >

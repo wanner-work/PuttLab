@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/drawer.tsx'
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import NumberFlow from '@number-flow/react'
+import { clsx } from 'clsx'
 import { AlertCircleIcon } from 'lucide-react'
 import party, { Color } from 'party-js'
 import { memo, useState } from 'react'
@@ -19,12 +20,13 @@ import { Slider } from '../../ui/slider'
 
 interface Props {
   disabled?: boolean
+  latest?: number
   batch: (attempts: number, hits: number) => void
 }
 
 export default memo(RecorderBatch)
 
-function RecorderBatch({ batch, disabled }: Props) {
+function RecorderBatch({ batch, latest, disabled }: Props) {
   const [batchAmount, setBatchAmount] = useState<number>(8)
 
   const batchProxy = async (hits: number) => {
@@ -97,7 +99,11 @@ function RecorderBatch({ batch, disabled }: Props) {
           <Button
             key={index}
             variant="secondary"
-            className="w-full p-3 font-mono text-lg font-bold"
+            className={clsx(
+              'w-full p-3 font-mono text-lg font-bold',
+              latest === index &&
+                'ring-offset-background ring-primary ring-2 ring-offset-2'
+            )}
             onClick={() => batchProxy(index)}
             disabled={disabled}
           >

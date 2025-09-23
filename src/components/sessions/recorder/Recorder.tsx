@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button.tsx'
 import { Undo } from 'lucide-react'
-import { motion } from 'motion/react'
 import { memo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs'
 import RecorderBatch from './RecorderBatch'
@@ -12,12 +11,14 @@ interface Props {
   miss: () => void
   batch: (attempts: number, hits: number) => void
   disabledUndo?: boolean
+  latest?: 'hit' | 'miss' | number
   undo: () => void
 }
 
 export default memo(Recorder)
 
 function Recorder({
+  latest,
   hit,
   miss,
   batch,
@@ -26,7 +27,7 @@ function Recorder({
   disabledUndo
 }: Readonly<Props>) {
   return (
-    <div className="overflow-hidden">
+    <div className="">
       <Tabs defaultValue="byPutt">
         <div className="flex gap-2">
           <TabsList className="relative h-auto w-full">
@@ -52,22 +53,25 @@ function Recorder({
               disabled={disabledUndo}
               onClick={() => undo()}
             >
-              <motion.span
-                animate={{
-                  rotate: 100
-                }}
-              >
-                <Undo />
-              </motion.span>
+              <Undo />
             </Button>
           </div>
         </div>
 
         <TabsContent value="byPutt" className="flex flex-col gap-2">
-          <RecorderSingle hit={hit} miss={miss} disabled={disabled} />
+          <RecorderSingle
+            hit={hit}
+            miss={miss}
+            disabled={disabled}
+            latest={typeof latest === 'string' ? latest : undefined}
+          />
         </TabsContent>
         <TabsContent value="byBatch" className="flex flex-col gap-3">
-          <RecorderBatch batch={batch} disabled={disabled} />
+          <RecorderBatch
+            batch={batch}
+            disabled={disabled}
+            latest={typeof latest === 'number' ? latest : undefined}
+          />
         </TabsContent>
       </Tabs>
     </div>

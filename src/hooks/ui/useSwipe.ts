@@ -1,3 +1,4 @@
+import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import { type RefObject, useEffect, useState } from 'react'
 
 export function useSwipe(
@@ -5,6 +6,7 @@ export function useSwipe(
   callback?: (distance: number) => void,
   threshold: number = 50
 ): number {
+  const [playedHaptic, setPlayedHaptic] = useState(false)
   const [swipeDistance, setSwipeDistance] = useState(0)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
@@ -14,7 +16,10 @@ export function useSwipe(
     if (!ref?.current) return
 
     const handleTouchStart = (e: TouchEvent) => {
-      if (e.target && (e.target as HTMLElement).getAttribute('role') === 'slider') {
+      if (
+        e.target &&
+        (e.target as HTMLElement).getAttribute('role') === 'slider'
+      ) {
         // don't interfere with sliders
         return
       }
@@ -25,7 +30,7 @@ export function useSwipe(
       setTouchStartY(e.targetTouches[0].clientY)
     }
 
-    const handleTouchMove = (e: TouchEvent) => {
+    const handleTouchMove = async (e: TouchEvent) => {
       if (touchStart === null || touchStartY === null) return
 
       const currentX = e.targetTouches[0].clientX
@@ -38,6 +43,15 @@ export function useSwipe(
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         setTouchEnd(currentX)
         setSwipeDistance(deltaX)
+      }
+
+      if (deltaX >= threshold) {
+        if (!playedHaptic) {
+          setPlayedHaptic(true)
+          await Haptics.impact({ style: ImpactStyle.Medium })
+        }
+      } else if (deltaX < threshold) {
+        setPlayedHaptic(false)
       }
     }
 
@@ -64,7 +78,15 @@ export function useSwipe(
       node.removeEventListener('touchmove', handleTouchMove)
       node.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [ref, touchStart, touchEnd, touchStartY, callback, threshold])
+  }, [
+    ref,
+    touchStart,
+    touchEnd,
+    touchStartY,
+    playedHaptic,
+    callback,
+    threshold
+  ])
 
   return swipeDistance
 }

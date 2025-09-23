@@ -18,6 +18,7 @@ import { useDebounce } from '@uidotdev/usehooks'
 import { Trash2 } from 'lucide-react'
 import { memo, useEffect, useMemo, useState } from 'react'
 import { Not } from 'typeorm'
+import { Haptics, ImpactStyle } from '@capacitor/haptics'
 
 export const Route = createFileRoute('/sessions/$sessionId')({
   component: memo(RouteComponent)
@@ -88,6 +89,7 @@ function RouteComponent() {
     addHistoryEntry,
     getLastHistoryEntry,
     removeLastHistoryEntry,
+    latest,
     history
   } = useHistory()
 
@@ -112,6 +114,8 @@ function RouteComponent() {
   }
 
   const onUndo = () => {
+    Haptics.impact({ style: ImpactStyle.Medium }).then()
+
     const lastEntry = getLastHistoryEntry()
 
     setHits((h) => h - (lastEntry?.hits || 0))
@@ -251,6 +255,7 @@ function RouteComponent() {
       <Recorder
         disabled={disabled}
         disabledUndo={history.length === 0}
+        latest={latest}
         hit={onHit}
         miss={onMiss}
         batch={onBatch}
