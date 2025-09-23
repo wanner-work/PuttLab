@@ -184,7 +184,7 @@ export default function AnalyticsCard() {
 
     if (data.length === 0) {
       data.push({
-        position: 'no data',
+        position: 'no',
         attempts: 1,
         fill: 'var(--muted)'
       })
@@ -219,6 +219,9 @@ export default function AnalyticsCard() {
 
   const chartConfig = useMemo(() => {
     return {
+      no: {
+        label: 'No Data'
+      },
       position: {
         label: 'Position'
       },

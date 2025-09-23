@@ -67,6 +67,7 @@ function Index() {
   ]
 
   useEffect(() => {
+    if (internal) return
     QUERY.CLIENT.prefetchQuery({
       queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
       queryFn: () => getSessions()
@@ -76,7 +77,7 @@ function Index() {
       queryKey: [QUERY.CACHE_KEYS.DEVICE],
       queryFn: async () => await Device.getInfo()
     })
-  }, [])
+  }, [internal])
 
   return (
     <motion.div

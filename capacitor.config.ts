@@ -6,31 +6,34 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   plugins: {
     CapacitorSQLite: {
-      iosDatabaseLocation: 'Library/CapacitorDatabase',
+      iosDatabaseLocation: 'Library/PuttLabDatabase',
       iosIsEncryption: true,
       iosKeychainPrefix: 'puttlab',
       iosBiometric: {
         biometricAuth: false,
         biometricTitle: 'Biometric login for capacitor sqlite'
-      }, 
+      },
       androidIsEncryption: true,
       androidBiometric: {
         biometricAuth: false,
         biometricTitle: 'Biometric login for capacitor sqlite',
         biometricSubTitle: 'Log in using your biometric'
-      }
+      },
+      electronWindowsLocation: 'C:\\ProgramData\\CapacitorDatabases',
+      electronMacLocation: 'Volumes/Macintosh\\ HD/home',
+      electronLinuxLocation: 'Databases'
     },
     SplashScreen: {
       launchAutoHide: false,
-      backgroundColor: "#000000",
-      androidSplashResourceName: "splash",
-      androidScaleType: "CENTER_CROP",
+      backgroundColor: '#000000',
+      androidSplashResourceName: 'splash',
+      androidScaleType: 'CENTER_CROP',
       showSpinner: false,
       splashFullScreen: true,
       splashImmersive: true,
-      layoutName: "launch_screen",
-      useDialog: true,
-    },
+      layoutName: 'launch_screen',
+      useDialog: true
+    }
   }
 }
 
