@@ -1,7 +1,6 @@
 import QUERY from '@/constants/QUERY'
 import deleteSession from '@/methods/data/delete/deleteSession'
 import { useMutation } from '@tanstack/react-query'
-import type { UseNavigateResult } from '@tanstack/react-router'
 import { Loader2Icon } from 'lucide-react'
 import { Button } from '../ui/button'
 import {
@@ -17,7 +16,7 @@ import {
 interface Props {
   sessionId: number
   attempts: number
-  navigate: UseNavigateResult<string>
+  onSuccess: () => void
   open?: boolean
   onOpenChange?: (open: boolean) => void
 }
@@ -25,7 +24,7 @@ interface Props {
 export default function DeleteSessionDrawer({
   open,
   onOpenChange,
-  navigate,
+  onSuccess,
   sessionId,
   attempts
 }: Props) {
@@ -35,16 +34,13 @@ export default function DeleteSessionDrawer({
       QUERY.CLIENT.invalidateQueries({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
       })
-      void navigate({
-        to: '/sessions',
-        viewTransition: { types: ['slide-right'] }
-      })
+      onSuccess()
     }
   })
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent>
+      <DrawerContent className="">
         <DrawerHeader>
           <DrawerTitle>Delete this session?</DrawerTitle>
           <DrawerDescription>
