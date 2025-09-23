@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import QUERY from '@/constants/QUERY'
 import getSessions from '@/methods/data/get/getSessions'
 import { Capacitor } from '@capacitor/core'
-import { Device } from '@capacitor/device'
 import { createFileRoute } from '@tanstack/react-router'
 import { clsx } from 'clsx'
 import { AlertCircle, ChartPie, Layers, Play } from 'lucide-react'
@@ -70,11 +69,6 @@ function Index() {
     QUERY.CLIENT.prefetchQuery({
       queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
       queryFn: () => getSessions()
-    })
-
-    QUERY.CLIENT.prefetchQuery({
-      queryKey: [QUERY.CACHE_KEYS.DEVICE],
-      queryFn: async () => await Device.getInfo()
     })
   }, [])
 
