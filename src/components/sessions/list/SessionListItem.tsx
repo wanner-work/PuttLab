@@ -127,7 +127,7 @@ export default function SessionListItem({
                 {session.attempts > 0 && (
                   <div className="self-center">
                     <div
-                      className="size-10 rotate-90 rounded-full bg-red-50"
+                      className="size-10 rotate-90 rounded-[20px] bg-red-50"
                       style={{
                         backgroundImage: `conic-gradient(${percentage < 50 && session.attempts >= 20 ? '#3a2336' : '#17134c'} ${100 - percentage}%, #332d90 ${100 - percentage}%)`
                       }}
