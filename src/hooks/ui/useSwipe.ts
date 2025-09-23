@@ -14,6 +14,11 @@ export function useSwipe(
     if (!ref?.current) return
 
     const handleTouchStart = (e: TouchEvent) => {
+      if (e.target && (e.target as HTMLElement).getAttribute('role') === 'slider') {
+        // don't interfere with sliders
+        return
+      }
+
       setTouchEnd(null)
       setSwipeDistance(0)
       setTouchStart(e.targetTouches[0].clientX)
