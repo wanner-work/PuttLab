@@ -5,6 +5,7 @@ import DeleteSessionDrawer from '@/components/sessions/DeleteSessionDrawer'
 import Recorder from '@/components/sessions/recorder/Recorder'
 import { Button } from '@/components/ui/button'
 import QUERY from '@/constants/QUERY'
+import useHistory from '@/hooks/sessions/useHistory.ts'
 import useUnit from '@/hooks/units/useUnit'
 import calculateCirclePosition from '@/methods/calculations/calculateCirclePosition'
 import getSession from '@/methods/data/get/getSession'
@@ -83,18 +84,40 @@ function RouteComponent() {
   const [hits, setHits] = useState(0)
   const [attempts, setAttempts] = useState(0)
 
+  const {
+    addHistoryEntry,
+    getLastHistoryEntry,
+    removeLastHistoryEntry,
+    history
+  } = useHistory()
+
   const onHit = () => {
     setHits((h) => h + 1)
     setAttempts((a) => a + 1)
+
+    addHistoryEntry(1, 1)
   }
 
   const onMiss = () => {
     setAttempts((a) => a + 1)
+
+    addHistoryEntry(1, 0)
   }
 
   const onBatch = (attempts: number, hits: number) => {
     setHits((h) => h + hits)
     setAttempts((a) => a + attempts)
+
+    addHistoryEntry(attempts, hits)
+  }
+
+  const onUndo = () => {
+    const lastEntry = getLastHistoryEntry()
+
+    setHits((h) => h - (lastEntry?.hits || 0))
+    setAttempts((a) => a - (lastEntry?.attempts || 0))
+
+    removeLastHistoryEntry()
   }
 
   useEffect(() => {
@@ -225,7 +248,14 @@ function RouteComponent() {
           <PercentageChart hits={hits} attempts={attempts} />
         </div>
       </div>
-      <Recorder disabled={disabled} hit={onHit} miss={onMiss} batch={onBatch} />
+      <Recorder
+        disabled={disabled}
+        disabledUndo={history.length === 0}
+        hit={onHit}
+        miss={onMiss}
+        batch={onBatch}
+        undo={onUndo}
+      />
     </PageContainer>
   )
 }

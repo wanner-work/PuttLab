@@ -1,3 +1,6 @@
+import { Button } from '@/components/ui/button.tsx'
+import { Undo } from 'lucide-react'
+import { motion } from 'motion/react'
 import { memo } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs'
 import RecorderBatch from './RecorderBatch'
@@ -8,11 +11,20 @@ interface Props {
   hit: () => void
   miss: () => void
   batch: (attempts: number, hits: number) => void
+  disabledUndo?: boolean
+  undo: () => void
 }
 
 export default memo(Recorder)
 
-function Recorder({ hit, miss, batch, disabled }: Readonly<Props>) {
+function Recorder({
+  hit,
+  miss,
+  batch,
+  disabled,
+  undo,
+  disabledUndo
+}: Readonly<Props>) {
   return (
     <div className="overflow-hidden">
       <Tabs defaultValue="byPutt">
@@ -33,21 +45,22 @@ function Recorder({ hit, miss, batch, disabled }: Readonly<Props>) {
               By Batch
             </TabsTrigger>
           </TabsList>
-          {/**<div className="bg-muted rounded-lg p-[3px]">
+          <div className="bg-card/30 text-card-foreground relative flex h-auto items-center justify-center rounded-lg border p-[3px] shadow-sm">
             <Button
               variant="outline"
-              className="h-[42px] rounded-md border border-transparent !px-2"
-              onClick={() => setShow(!show)}
+              className="!bg-background size-[42px] rounded-md border border-transparent !px-2 disabled:!bg-transparent"
+              disabled={disabledUndo}
+              onClick={() => undo()}
             >
               <motion.span
                 animate={{
-                  rotate: show ? 0 : 180
+                  rotate: 100
                 }}
               >
-                <ChevronDown />
+                <Undo />
               </motion.span>
             </Button>
-          </div> */}
+          </div>
         </div>
 
         <TabsContent value="byPutt" className="flex flex-col gap-2">
