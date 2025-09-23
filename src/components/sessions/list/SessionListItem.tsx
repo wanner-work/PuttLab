@@ -33,7 +33,7 @@ export default function SessionListItem({
       viewTransition={{ types: ['slide-left'] }}
       params={{ sessionId: String(session.id) }}
       key={session.id}
-      className="active:scale-[0.98]"
+      className="select-none"
       style={style}
     >
       <Card className="py-3">
