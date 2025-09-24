@@ -57,13 +57,13 @@ export default function CreateSessionDrawer({
   }, [unit, getDistance])
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange} dismissible={false}>
+    <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create a new training session</DrawerTitle>
           <DrawerDescription>Define the distance.</DrawerDescription>
         </DrawerHeader>
-        <div className="mx-4 my-4 px-4">
+        <div className="mx-4 my-4 px-4" data-vaul-no-drag>
           <WheelPickerWrapper>
             <WheelPicker
               optionItemHeight={40}
