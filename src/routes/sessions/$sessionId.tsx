@@ -1,97 +1,51 @@
-import AverageCompare from '@/components/analytics/AverageCompare.tsx'
-import PercentageChart from '@/components/analytics/PercentageChart'
 import PageContainer from '@/components/basic/PageContainer.tsx'
 import DeleteSessionDrawer from '@/components/sessions/DeleteSessionDrawer'
-import Recorder from '@/components/sessions/recorder/Recorder'
+import RecorderControl from '@/components/sessions/recorder/control/RecorderControl.tsx'
+import RecorderHeader from '@/components/sessions/recorder/header/RecorderHeader.tsx'
+import RecorderStats from '@/components/sessions/recorder/Stats/RecorderStats.tsx'
 import { Button } from '@/components/ui/button'
 import QUERY from '@/constants/QUERY'
 import useHistory from '@/hooks/sessions/useHistory.ts'
-import useUnit from '@/hooks/units/useUnit'
-import calculateCirclePosition from '@/methods/calculations/calculateCirclePosition'
 import getSession from '@/methods/data/get/getSession'
-import getSessionsSumsForDistance from '@/methods/data/get/getSessionsSumsForDistance'
 import updateSession from '@/methods/data/update/updateSession'
-import NumberFlow from '@number-flow/react'
+import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
 import { Trash2 } from 'lucide-react'
-import { memo, useEffect, useMemo, useState } from 'react'
-import { Not } from 'typeorm'
-import { Haptics, ImpactStyle } from '@capacitor/haptics'
+import { memo, useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/sessions/$sessionId')({
-  component: memo(RouteComponent)
+  component: memo(RecorderRoute)
 })
 
-function RouteComponent() {
+function RecorderRoute() {
   const { sessionId } = Route.useParams()
-
-  const { mutate } = useMutation({
-    mutationFn: updateSession
-  })
-
   const navigate = Route.useNavigate()
 
   const [deleteOpen, setDeleteOpen] = useState(false)
+
+  const [hits, setHits] = useState(0)
+  const [attempts, setAttempts] = useState(0)
+
+  const debouncedAttempts = useDebounce(attempts, 400)
+  const debouncedHits = useDebounce(hits, 400)
+
+  const {
+    addHistoryEntry,
+    getLastHistoryEntry,
+    removeLastHistoryEntry,
+    history
+  } = useHistory()
 
   const { data: session } = useQuery({
     queryKey: [QUERY.CACHE_KEYS.SESSION, sessionId],
     queryFn: ({ queryKey }) => getSession(queryKey[1])
   })
 
-  const { data: totalHits } = useQuery({
-    queryKey: [
-      QUERY.CACHE_KEYS.ALL_SESSIONS,
-      QUERY.CACHE_KEYS.SESSIONS_SUM,
-      'hits',
-      session?.distance,
-      session?.id
-    ],
-    queryFn: ({ queryKey }) =>
-      getSessionsSumsForDistance('hits', Number(queryKey[3]), {
-        id: Not(Number(queryKey[4]))
-      }),
-    enabled: !!session
+  const { mutate } = useMutation({
+    mutationFn: updateSession
   })
-
-  const { data: totalAttempts } = useQuery({
-    queryKey: [
-      QUERY.CACHE_KEYS.ALL_SESSIONS,
-      QUERY.CACHE_KEYS.SESSIONS_SUM,
-      'attempts',
-      session?.distance,
-      session?.id
-    ],
-    queryFn: ({ queryKey }) =>
-      getSessionsSumsForDistance('attempts', Number(queryKey[3]), {
-        id: Not(Number(queryKey[4]))
-      }),
-    enabled: !!session
-  })
-
-  const disabled = useMemo(() => {
-    if (!session) return true
-    if (session.maxAttempts) {
-      return session.attempts >= session.maxAttempts
-    }
-  }, [session])
-
-  const position = useMemo(() => {
-    if (!session) return '...'
-    return calculateCirclePosition(session.distance)
-  }, [session])
-
-  const [hits, setHits] = useState(0)
-  const [attempts, setAttempts] = useState(0)
-
-  const {
-    addHistoryEntry,
-    getLastHistoryEntry,
-    removeLastHistoryEntry,
-    latest,
-    history
-  } = useHistory()
 
   const onHit = () => {
     setHits((h) => h + 1)
@@ -131,9 +85,9 @@ function RouteComponent() {
     }
   }, [session])
 
-  const debouncedAttempts = useDebounce(attempts, 400)
-  const debouncedHits = useDebounce(hits, 400)
-
+  /**
+   * Auto-save session progress after debounce
+   */
   useEffect(() => {
     if (!session) return
     if (debouncedAttempts === 0 && debouncedHits === 0) return
@@ -144,6 +98,11 @@ function RouteComponent() {
     mutate(session)
   }, [debouncedAttempts, debouncedHits, session, mutate])
 
+  /**
+   * Because the recorder saves progress with debounce,
+   * we need to block the navigation and save the progress first.
+   * Once the progress is saved, we can allow the navigation.
+   */
   useBlocker({
     shouldBlockFn: () => {
       if (!session) return false
@@ -176,8 +135,6 @@ function RouteComponent() {
       })
     }
   })
-
-  const { getDistance, unit } = useUnit()
 
   return (
     <PageContainer
@@ -213,49 +170,12 @@ function RouteComponent() {
         attempts={attempts}
       />
       <div className="flex flex-col justify-evenly overflow-auto pt-6">
-        <div className="text-center">
-          <p className="text-xs font-bold text-neutral-400 uppercase">
-            {position}
-          </p>
-          <p className="font-mono text-2xl font-bold uppercase">
-            <NumberFlow value={getDistance(session?.distance || 0)} /> {unit}
-          </p>
-        </div>
-        <div className="mx-auto mt-4 flex w-full max-w-96 items-center justify-around gap-3 px-4 text-center">
-          <div className="w-32">
-            <p className="-mb-2 text-xs font-bold text-neutral-400 uppercase">
-              Hits
-            </p>
-            <p className="font-mono text-6xl font-bold">
-              <NumberFlow value={hits} />
-            </p>
-          </div>
-
-          <div className="w-32">
-            <p className="-mb-2 text-xs font-bold text-neutral-400 uppercase">
-              Misses
-            </p>
-            <p className="font-mono text-4xl font-bold">
-              <NumberFlow value={attempts - hits} />
-            </p>
-          </div>
-        </div>
-        <div className="-mt-4 flex items-center justify-center gap-4">
-          {totalAttempts && totalAttempts > 0 && totalHits && (
-            <AverageCompare
-              attempts={attempts}
-              totalAttempts={totalAttempts}
-              hits={hits}
-              totalHits={totalHits}
-            />
-          )}
-          <PercentageChart hits={hits} attempts={attempts} />
-        </div>
+        <RecorderHeader session={session} />
+        <RecorderStats hits={hits} attempts={attempts} session={session} />
       </div>
-      <Recorder
-        disabled={disabled}
-        disabledUndo={history.length === 0}
-        latest={latest}
+      <RecorderControl
+        session={session}
+        history={history}
         hit={onHit}
         miss={onMiss}
         batch={onBatch}

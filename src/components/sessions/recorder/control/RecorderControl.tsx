@@ -1,33 +1,47 @@
 import { Button } from '@/components/ui/button.tsx'
+import type { Session } from '@/data/entities/session.ts'
+import useHistory from '@/hooks/sessions/useHistory.ts'
+import type HistoryEntry from '@/interfaces/data/HistoryEntry.ts'
 import { Undo } from 'lucide-react'
-import { memo } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs'
-import RecorderBatch from './RecorderBatch'
-import RecorderSingle from './RecorderSingle'
+import { memo, useMemo } from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../ui/tabs.tsx'
+import RecorderBatch from './RecorderControlBatch.tsx'
+import RecorderSingle from './RecorderControlSingle.tsx'
 
 interface Props {
-  disabled?: boolean
+  session: Session | null | undefined
+  history: HistoryEntry[]
   hit: () => void
   miss: () => void
   batch: (attempts: number, hits: number) => void
-  disabledUndo?: boolean
-  latest?: 'hit' | 'miss' | number
   undo: () => void
 }
 
-export default memo(Recorder)
+export default memo(RecorderControl)
 
-function Recorder({
-  latest,
+function RecorderControl({
+  session,
+  history,
   hit,
   miss,
   batch,
-  disabled,
-  undo,
-  disabledUndo
+  undo
 }: Readonly<Props>) {
+  const disabled = useMemo(() => {
+    if (!session) return true
+    if (session.maxAttempts) {
+      return session.attempts >= session.maxAttempts
+    }
+  }, [session])
+
+  const { getLatest } = useHistory()
+
+  const latest = useMemo(() => {
+    return getLatest(history)
+  }, [history, getLatest])
+
   return (
-    <div className="">
+    <div>
       <Tabs defaultValue="byPutt">
         <div className="flex gap-2">
           <TabsList className="relative h-auto w-full">
@@ -50,7 +64,7 @@ function Recorder({
             <Button
               variant="outline"
               className="!bg-background size-[42px] rounded-md border border-transparent !px-2 disabled:!bg-transparent"
-              disabled={disabledUndo}
+              disabled={history?.length === 0}
               onClick={() => undo()}
             >
               <Undo />

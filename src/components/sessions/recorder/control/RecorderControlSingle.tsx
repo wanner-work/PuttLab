@@ -1,7 +1,7 @@
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
 import { clsx } from 'clsx'
 import { memo } from 'react'
-import { Button } from '../../ui/button'
+import { Button } from '../../../ui/button.tsx'
 
 interface Props {
   disabled?: boolean
@@ -10,9 +10,9 @@ interface Props {
   miss: () => void
 }
 
-export default memo(RecorderSingle)
+export default memo(RecorderControlSingle)
 
-function RecorderSingle({ hit, miss, latest, disabled }: Props) {
+function RecorderControlSingle({ hit, miss, latest, disabled }: Props) {
   const hitProxy = async () => {
     hit()
     await Haptics.impact({ style: ImpactStyle.Heavy })

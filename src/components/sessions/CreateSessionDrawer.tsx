@@ -1,12 +1,11 @@
+import { WheelPicker, WheelPickerWrapper } from '@/components/wheel-picker.tsx'
 import QUERY from '@/constants/QUERY'
 import useUnit from '@/hooks/units/useUnit'
 import createSession from '@/methods/data/create/createSession'
-import NumberFlow from '@number-flow/react'
 import { useMutation } from '@tanstack/react-query'
 import type { UseNavigateResult } from '@tanstack/react-router'
 import { Loader2Icon } from 'lucide-react'
-import { useState } from 'react'
-import { Badge } from '../ui/badge'
+import { useMemo, useState } from 'react'
 import { Button } from '../ui/button'
 import {
   Drawer,
@@ -17,16 +16,6 @@ import {
   DrawerHeader,
   DrawerTitle
 } from '../ui/drawer'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '../ui/select'
-import { Slider } from '../ui/slider'
 
 interface Props {
   navigate: UseNavigateResult<string>
@@ -53,87 +42,50 @@ export default function CreateSessionDrawer({
     }
   })
 
-  const [selectedDistance, setSelectedDistance] = useState<string>('8')
-  const [customDistance, setCustomDistance] = useState<number>(10)
+  const [distance, setDistance] = useState<string>('8')
 
   const create = () => {
-    const distance =
-      selectedDistance === 'custom' ? customDistance : Number(selectedDistance)
-
-    mutate(distance)
+    mutate(Number(distance))
   }
 
-  const { getDistance, unit, shortUnit } = useUnit()
+  const { getDistance, unit } = useUnit()
+
+  const options = useMemo(() => {
+    const opts = []
+    for (let i = 1; i <= 50; i++) {
+      opts.push({ label: `${getDistance(i)} ${unit}`, value: String(i) })
+    }
+    return opts
+  }, [unit, getDistance])
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent>
+      <DrawerContent
+        onTouchStart={(e) => {
+          console.log('drag start', e, (e.target as HTMLElement).dataset)
+          if (
+            (e.target as HTMLElement).dataset.rwpOption ||
+            (e.target as HTMLElement).dataset.rwpHighlightItem
+          ) {
+            console.log('stop!')
+            e.stopPropagation()
+          }
+        }}
+      >
         <DrawerHeader>
           <DrawerTitle>Create a new training session</DrawerTitle>
           <DrawerDescription>Define the distance.</DrawerDescription>
         </DrawerHeader>
         <div className="mx-4 my-4 px-4">
-          <Select onValueChange={setSelectedDistance} value={selectedDistance}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Distance" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="custom">Custom</SelectItem>
-
-              <SelectGroup>
-                <SelectLabel>Bullseye</SelectLabel>
-                <SelectItem value="2">
-                  {getDistance(2)} {unit}
-                </SelectItem>
-                <SelectItem value="3">
-                  {getDistance(3)} {unit}
-                </SelectItem>
-              </SelectGroup>
-              <SelectGroup>
-                <SelectLabel>Circle 1</SelectLabel>
-                <SelectItem value="4">
-                  {getDistance(4)} {unit}
-                </SelectItem>
-                <SelectItem value="6">
-                  {getDistance(6)} {unit}
-                </SelectItem>
-                <SelectItem value="8">
-                  {getDistance(8)} {unit}
-                </SelectItem>
-                <SelectItem value="10">
-                  {getDistance(10)} {unit}
-                </SelectItem>
-              </SelectGroup>
-              <SelectGroup>
-                <SelectLabel>Circle 2</SelectLabel>
-                <SelectItem value="12">
-                  {getDistance(12)} {unit}
-                </SelectItem>
-                <SelectItem value="16">
-                  {getDistance(16)} {unit}
-                </SelectItem>
-                <SelectItem value="20">
-                  {getDistance(20)} {unit}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          {selectedDistance === 'custom' && (
-            <div className="mt-5 flex gap-2">
-              <Slider
-                defaultValue={[10]}
-                min={1}
-                max={35}
-                step={1}
-                value={[customDistance]}
-                onValueChange={(value) => setCustomDistance(value[0])}
-              />
-              <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums">
-                <NumberFlow value={getDistance(customDistance)} />
-                {shortUnit}
-              </Badge>
-            </div>
-          )}
+          <WheelPickerWrapper>
+            <WheelPicker
+              optionItemHeight={40}
+              visibleCount={12}
+              options={options}
+              value={distance}
+              onValueChange={setDistance}
+            />
+          </WheelPickerWrapper>
         </div>
         <DrawerFooter className="mx-4">
           <Button onClick={create} disabled={isPending}>

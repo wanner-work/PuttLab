@@ -14,9 +14,9 @@ import { clsx } from 'clsx'
 import { AlertCircleIcon } from 'lucide-react'
 import party, { Color } from 'party-js'
 import { memo, useState } from 'react'
-import { Badge } from '../../ui/badge'
-import { Button } from '../../ui/button'
-import { Slider } from '../../ui/slider'
+import { Badge } from '../../../ui/badge.tsx'
+import { Button } from '../../../ui/button.tsx'
+import { Slider } from '../../../ui/slider.tsx'
 
 interface Props {
   disabled?: boolean
@@ -24,9 +24,9 @@ interface Props {
   batch: (attempts: number, hits: number) => void
 }
 
-export default memo(RecorderBatch)
+export default memo(RecorderControlBatch)
 
-function RecorderBatch({ batch, latest, disabled }: Props) {
+function RecorderControlBatch({ batch, latest, disabled }: Props) {
   const [batchAmount, setBatchAmount] = useState<number>(8)
 
   const batchProxy = async (hits: number) => {
