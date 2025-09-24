@@ -75,13 +75,15 @@ export default function RecorderControlBatchDrawer({
             {isPending && <Loader2Icon className="animate-spin" />}
             Save
           </Button>
-          <Button
-            onClick={() => onOpenChange?.(false)}
-            variant="outline"
-            className="w-full"
-          >
-            Cancel
-          </Button>
+          {dismissible && (
+            <Button
+              onClick={() => onOpenChange?.(false)}
+              variant="outline"
+              className="w-full"
+            >
+              Cancel
+            </Button>
+          )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
