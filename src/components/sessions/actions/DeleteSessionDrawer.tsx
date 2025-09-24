@@ -1,7 +1,7 @@
-import deleteSession from '@/methods/data/delete/deleteSession'
+import deleteSession from '@/methods/data/delete/deleteSession.ts'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button.tsx'
 import {
   Drawer,
   DrawerClose,
@@ -10,7 +10,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle
-} from '../ui/drawer'
+} from '../../ui/drawer.tsx'
 
 interface Props {
   sessionId: number

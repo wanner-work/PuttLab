@@ -1,7 +1,7 @@
 import Reveal from '@/components/animations/Reveal'
 import AnimatedIcon from '@/components/brand/AnimatedIcon'
 import AnimatedLogo from '@/components/brand/AnimatedLogo'
-import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
+import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDrawer.tsx'
 import SettingsDrawer from '@/components/settings/SettingsDrawer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -126,7 +126,13 @@ function Index() {
       <CreateSessionDrawer
         open={createOpen}
         onOpenChange={setCreateOpen}
-        navigate={navigate}
+        onSuccess={(newSession) => {
+          void navigate({
+            to: '/sessions/$sessionId',
+            params: { sessionId: String(newSession.id) },
+            viewTransition: { types: ['slide-left'] }
+          })
+        }}
       />
 
       {settings && (

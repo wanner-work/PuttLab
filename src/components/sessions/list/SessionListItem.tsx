@@ -12,7 +12,7 @@ import { ChevronRight, TrashIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 import { Fragment, useMemo, useState } from 'react'
 import type { RowComponentProps } from 'react-window'
-import DeleteSessionDrawer from '../DeleteSessionDrawer'
+import DeleteSessionDrawer from '../actions/DeleteSessionDrawer.tsx'
 
 interface Props {
   sessions: Session[]

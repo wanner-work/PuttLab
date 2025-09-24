@@ -16,7 +16,7 @@ import { PlusIcon, X } from 'lucide-react'
 import { memo, useMemo, useState } from 'react'
 import { List } from 'react-window'
 
-import CreateSessionDrawer from '@/components/sessions/CreateSessionDrawer'
+import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDrawer.tsx'
 import SessionListDistanceFilterOptions from '@/components/sessions/list/SessionListDistanceFilterOptions'
 import SessionListItem from '@/components/sessions/list/SessionListItem'
 import getSessions from '@/methods/data/get/getSessions'
@@ -93,7 +93,13 @@ function Sessions() {
       <CreateSessionDrawer
         open={createOpen}
         onOpenChange={setCreateOpen}
-        navigate={navigate}
+        onSuccess={(newSession) => {
+          void navigate({
+            to: '/sessions/$sessionId',
+            params: { sessionId: String(newSession.id) },
+            viewTransition: { types: ['slide-left'] }
+          })
+        }}
       />
 
       <div className="flex gap-3">

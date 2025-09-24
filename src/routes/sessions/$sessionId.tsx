@@ -1,5 +1,5 @@
 import PageContainer from '@/components/basic/PageContainer.tsx'
-import DeleteSessionDrawer from '@/components/sessions/DeleteSessionDrawer'
+import DeleteSessionDrawer from '@/components/sessions/actions/DeleteSessionDrawer.tsx'
 import RecorderControl from '@/components/sessions/recorder/control/RecorderControl.tsx'
 import RecorderHeader from '@/components/sessions/recorder/header/RecorderHeader.tsx'
 import RecorderStats from '@/components/sessions/recorder/Stats/RecorderStats.tsx'

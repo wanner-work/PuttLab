@@ -1,12 +1,12 @@
 import { WheelPicker, WheelPickerWrapper } from '@/components/wheel-picker.tsx'
-import QUERY from '@/constants/QUERY'
-import useUnit from '@/hooks/units/useUnit'
-import createSession from '@/methods/data/create/createSession'
+import QUERY from '@/constants/QUERY.ts'
+import type { Session } from '@/data/entities/session.ts'
+import useUnit from '@/hooks/units/useUnit.ts'
+import createSession from '@/methods/data/create/createSession.ts'
 import { useMutation } from '@tanstack/react-query'
-import type { UseNavigateResult } from '@tanstack/react-router'
 import { Loader2Icon } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button.tsx'
 import {
   Drawer,
   DrawerClose,
@@ -15,18 +15,18 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle
-} from '../ui/drawer'
+} from '../../ui/drawer.tsx'
 
 interface Props {
-  navigate: UseNavigateResult<string>
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  onSuccess?: (session: Session) => void
 }
 
 export default function CreateSessionDrawer({
   open,
   onOpenChange,
-  navigate
+  onSuccess
 }: Props) {
   const { mutate, isPending } = useMutation({
     mutationFn: createSession,
@@ -34,11 +34,7 @@ export default function CreateSessionDrawer({
       QUERY.CLIENT.invalidateQueries({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
       })
-      void navigate({
-        to: '/sessions/$sessionId',
-        params: { sessionId: String(session.id) },
-        viewTransition: { types: ['slide-left'] }
-      })
+      onSuccess?.(session)
     }
   })
 
