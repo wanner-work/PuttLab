@@ -8,15 +8,15 @@ import {
   DrawerTitle,
   DrawerTrigger
 } from '@/components/ui/drawer.tsx'
+import QUERY from '@/constants/QUERY.ts'
+import useSettings from '@/hooks/data/settings/useSettings.ts'
 import { Haptics, ImpactStyle } from '@capacitor/haptics'
-import NumberFlow from '@number-flow/react'
 import { clsx } from 'clsx'
-import { AlertCircleIcon } from 'lucide-react'
+import { AlertCircleIcon, Diff } from 'lucide-react'
 import party, { Color } from 'party-js'
-import { memo, useState } from 'react'
-import { Badge } from '../../../ui/badge.tsx'
+import { memo, useMemo, useState } from 'react'
 import { Button } from '../../../ui/button.tsx'
-import { Slider } from '../../../ui/slider.tsx'
+import RecorderControlBatchDrawer from './RecorderControlBatchDrawer.tsx'
 
 interface Props {
   disabled?: boolean
@@ -27,12 +27,32 @@ interface Props {
 export default memo(RecorderControlBatch)
 
 function RecorderControlBatch({ batch, latest, disabled }: Props) {
-  const [batchAmount, setBatchAmount] = useState<number>(8)
+  const { settings } = useSettings()
+
+  const [openSelectBatchAmount, setOpenSelectBatchAmount] = useState(false)
+
+  const putters = useMemo(() => {
+    if (settings?.putters && settings.putters > 0) {
+      return settings.putters
+    }
+    return 0
+  }, [settings])
+
+  const isDismissible = useMemo(() => {
+    return !(settings?.putters !== undefined && settings.putters === 0)
+  }, [settings])
+
+  const isOpen = useMemo(() => {
+    return (
+      openSelectBatchAmount ||
+      (settings?.putters !== undefined && settings.putters === 0)
+    )
+  }, [openSelectBatchAmount, settings])
 
   const batchProxy = async (hits: number) => {
-    batch(batchAmount, hits)
+    batch(putters, hits)
 
-    if (batchAmount > 3 && hits === batchAmount) {
+    if (putters > 3 && hits === putters) {
       party.sparkles(document.body, {
         color: Color.fromHex('#332d90'),
         count: Math.floor(Math.random() * (60 - 40 + 1)) + 40
@@ -51,25 +71,21 @@ function RecorderControlBatch({ batch, latest, disabled }: Props) {
 
   return (
     <>
-      <div className="flex gap-2">
-        <Slider
-          defaultValue={[10]}
-          min={1}
-          max={25}
-          step={1}
-          value={[batchAmount]}
-          onValueChange={(value) => setBatchAmount(value[0])}
-          disabled={disabled}
-        />
-        <Badge
-          variant="secondary"
-          className="rounded-full font-mono tabular-nums"
-        >
-          <NumberFlow value={batchAmount} /> throws
-        </Badge>
+      <RecorderControlBatchDrawer
+        dismissible={isDismissible}
+        open={isOpen}
+        onOpenChange={setOpenSelectBatchAmount}
+        onSuccess={() => {
+          QUERY.CLIENT.invalidateQueries({
+            queryKey: [QUERY.CACHE_KEYS.SETTINGS]
+          })
+        }}
+      />
+      <div className="mt-1 flex gap-2">
         <Drawer>
           <DrawerTrigger>
-            <Button className="!p-1.5" variant="secondary">
+            <Button className="!p-2 !pl-2.5 text-xs" variant="secondary">
+              How this works
               <AlertCircleIcon />
             </Button>
           </DrawerTrigger>
@@ -88,29 +104,39 @@ function RecorderControlBatch({ batch, latest, disabled }: Props) {
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
+        <Button
+          onClick={() => setOpenSelectBatchAmount(true)}
+          className="!p-2 !pl-2.5 text-xs"
+          variant="secondary"
+        >
+          Define Amount
+          <Diff />
+        </Button>
       </div>
-      <div
-        className="grid max-w-full gap-2"
-        style={{
-          gridTemplateColumns: `repeat(auto-fit, minmax(3rem, 1fr))`
-        }}
-      >
-        {Array.from({ length: batchAmount + 1 }).map((_, index) => (
-          <Button
-            key={index}
-            variant="secondary"
-            className={clsx(
-              'w-full p-3 font-mono text-lg font-bold',
-              latest === index &&
-                'ring-offset-background ring-primary ring-2 ring-offset-2'
-            )}
-            onClick={() => batchProxy(index)}
-            disabled={disabled}
-          >
-            {index}
-          </Button>
-        ))}
-      </div>
+      {settings?.putters && settings.putters > 0 && (
+        <div
+          className="grid max-w-full gap-2"
+          style={{
+            gridTemplateColumns: `repeat(auto-fit, minmax(3rem, 1fr))`
+          }}
+        >
+          {Array.from({ length: settings.putters + 1 }).map((_, index) => (
+            <Button
+              key={index}
+              variant="secondary"
+              className={clsx(
+                'w-full p-3 font-mono text-lg font-bold',
+                latest === index &&
+                  'ring-offset-background ring-primary ring-2 ring-offset-2'
+              )}
+              onClick={() => batchProxy(index)}
+              disabled={disabled}
+            >
+              {index}
+            </Button>
+          ))}
+        </div>
+      )}
     </>
   )
 }

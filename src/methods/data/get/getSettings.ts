@@ -10,14 +10,16 @@ export default async function getSettings() {
       key: SETTINGS.keys[key as keyof SettingsData]
     })
 
-    if (!value) {
+    if (value === null) {
       settings[key as keyof SettingsData] = SETTINGS.defaults[
         key as keyof SettingsData
       ] as SettingsData[keyof SettingsData]
     } else if (value === 'true' || value === 'false') {
       settings[key as keyof SettingsData] = value === 'true'
+    } else if (!isNaN(Number(value))) {
+      settings[key as keyof SettingsData] = Number(value)
     } else {
-      // settings[key as keyof SettingsData] = value;
+      settings[key as keyof SettingsData] = value;
     }
   }
 
