@@ -1,4 +1,7 @@
-import { WheelPicker, WheelPickerWrapper } from '@/components/wheel-picker.tsx'
+import {
+  WheelPicker,
+  WheelPickerWrapper
+} from '@/components/ui/wheel-picker.tsx'
 import QUERY from '@/constants/QUERY.ts'
 import type { Session } from '@/data/entities/session.ts'
 import useUnit from '@/hooks/units/useUnit.ts'
@@ -9,7 +12,6 @@ import { useMemo, useState } from 'react'
 import { Button } from '../../ui/button.tsx'
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -27,7 +29,11 @@ export default function CreateSessionDrawer({
   open,
   onOpenChange,
   onSuccess
-}: Props) {
+}: Readonly<Props>) {
+  const [distance, setDistance] = useState<string>('8')
+
+  const { getDistance, unit } = useUnit()
+
   const { mutate, isPending } = useMutation({
     mutationFn: createSession,
     onSuccess: (session) => {
@@ -38,13 +44,9 @@ export default function CreateSessionDrawer({
     }
   })
 
-  const [distance, setDistance] = useState<string>('8')
-
   const create = () => {
     mutate(Number(distance))
   }
-
-  const { getDistance, unit } = useUnit()
 
   const options = useMemo(() => {
     const opts = []
@@ -55,19 +57,8 @@ export default function CreateSessionDrawer({
   }, [unit, getDistance])
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent
-        onTouchStart={(e) => {
-          console.log('drag start', e, (e.target as HTMLElement).dataset)
-          if (
-            (e.target as HTMLElement).dataset.rwpOption ||
-            (e.target as HTMLElement).dataset.rwpHighlightItem
-          ) {
-            console.log('stop!')
-            e.stopPropagation()
-          }
-        }}
-      >
+    <Drawer open={open} onOpenChange={onOpenChange} dismissible={false}>
+      <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create a new training session</DrawerTitle>
           <DrawerDescription>Define the distance.</DrawerDescription>
@@ -88,11 +79,13 @@ export default function CreateSessionDrawer({
             {isPending && <Loader2Icon className="animate-spin" />}
             Create
           </Button>
-          <DrawerClose asChild>
-            <Button variant="outline" className="w-full">
-              Cancel
-            </Button>
-          </DrawerClose>
+          <Button
+            onClick={() => onOpenChange?.(false)}
+            variant="outline"
+            className="w-full"
+          >
+            Cancel
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

@@ -61,6 +61,7 @@ export function useSwipe(
       const distance = touchEnd - touchStart
 
       if (distance > threshold) {
+        Haptics.impact({ style: ImpactStyle.Heavy }).then()
         callback?.(distance)
       } else {
         // only reset if swipe was below threshold
