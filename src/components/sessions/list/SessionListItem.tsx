@@ -138,14 +138,14 @@ export default function SessionListItem({
                   </div>
                 )}
                 <div className="flex items-center justify-between">
-                  <div>
+                  <div className="shrink-0">
                     <p className="font-mono font-bold uppercase">
                       {getDistance(session.distance)} {unit}
                     </p>
                     <p className="text-sm text-neutral-400">{time}</p>
                   </div>
                   {session.attempts > 0 ? (
-                    <p className="text-muted-foreground pr-2 font-mono font-bold">
+                    <p className="text-muted-foreground pr-2 text-right font-mono leading-5 font-bold">
                       {session.attempts} ATT / {percentage}%
                     </p>
                   ) : (
