@@ -145,7 +145,7 @@ export default function SessionListItem({
                     <p className="text-sm text-neutral-400">{time}</p>
                   </div>
                   {session.attempts > 0 ? (
-                    <p className="text-muted-foreground pr-2 text-right font-mono leading-5 font-bold">
+                    <p className="text-muted-foreground pr-2 text-right font-mono text-sm leading-5 font-bold">
                       {session.attempts} ATT / {percentage}%
                     </p>
                   ) : (
