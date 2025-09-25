@@ -39,7 +39,7 @@ export default function RecorderControlBatchDrawer({
 
   const options = useMemo(() => {
     const opts = []
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1; i <= 30; i++) {
       opts.push({ label: `${i} Putter`, value: String(i) })
     }
     return opts
