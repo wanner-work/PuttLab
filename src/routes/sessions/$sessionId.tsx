@@ -8,7 +8,8 @@ import QUERY from '@/constants/QUERY'
 import useHistory from '@/hooks/sessions/useHistory.ts'
 import getSession from '@/methods/data/get/getSession'
 import updateSession from '@/methods/data/update/updateSession'
-import { Haptics, ImpactStyle } from '@capacitor/haptics'
+import vibrate from '@/methods/effects/vibrate'
+import { ImpactStyle } from '@capacitor/haptics'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
@@ -68,12 +69,24 @@ function RecorderRoute() {
   }
 
   const onUndo = () => {
-    Haptics.impact({ style: ImpactStyle.Medium }).then()
+    vibrate(ImpactStyle.Medium)
 
     const lastEntry = getLastHistoryEntry()
 
-    setHits((h) => h - (lastEntry?.hits || 0))
-    setAttempts((a) => a - (lastEntry?.attempts || 0))
+    const newHits = hits - (lastEntry?.hits || 0)
+    const newAttempts = attempts - (lastEntry?.attempts || 0)
+
+    setHits(newHits)
+    setAttempts(newAttempts)
+
+    if (session && (newAttempts === 0 || newHits === 0)) {
+      session.hits = newHits
+      session.attempts = newAttempts
+
+      // mutate session here because the auto-save useEffect won't be triggered
+      // when both hits and attempts are 0
+      mutate(session)
+    }
 
     removeLastHistoryEntry()
   }
@@ -95,6 +108,7 @@ function RecorderRoute() {
 
     session.attempts = debouncedAttempts
     session.hits = debouncedHits
+
     mutate(session)
   }, [debouncedAttempts, debouncedHits, session, mutate])
 
