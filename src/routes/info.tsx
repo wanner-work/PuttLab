@@ -1,5 +1,6 @@
 import PageContainer from '@/components/basic/PageContainer'
 import SeedDrawer from '@/components/seed/SeedDrawer'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -8,6 +9,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { createFileRoute } from '@tanstack/react-router'
+import { Coffee } from 'lucide-react'
 import { memo, useState } from 'react'
 import pack from '../../package.json'
 
@@ -48,7 +50,7 @@ function Info() {
             , Jonas Wanner in Switzerland.
           </p>
           <p className="text-foreground mt-2 text-sm">
-            The app is open-source and available on{' '}
+            The app is free, open-source and available on{' '}
             <a
               href="https://github.com/wanner-work/puttlab"
               target="_blank"
@@ -59,6 +61,17 @@ function Info() {
             </a>{' '}
             under the MIT license.
           </p>
+          <a
+            href="https://www.buymeacoffee.com/wanner.work"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 block"
+          >
+            <Button size="sm" className="w-full font-bold">
+              <Coffee strokeWidth={3} />
+              Buy me a coffee :)
+            </Button>
+          </a>
         </CardContent>
       </Card>
       <Card className="gap-3">
