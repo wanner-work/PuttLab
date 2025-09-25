@@ -28,7 +28,7 @@ function RecorderRoute() {
   const { sessionId } = Route.useParams()
   const navigate = Route.useNavigate()
 
-  const highlightRef = useRef<HTMLElement>(null)
+  const highlightRef = useRef<HTMLParagraphElement>(null)
 
   const [deleteOpen, setDeleteOpen] = useState(false)
 
