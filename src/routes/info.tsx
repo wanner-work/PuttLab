@@ -59,7 +59,7 @@ function Info() {
             >
               GitHub
             </a>{' '}
-            under the MIT license.
+            under the AGPL-3.0 license.
           </p>
           <a
             href="https://www.buymeacoffee.com/wanner.work"
