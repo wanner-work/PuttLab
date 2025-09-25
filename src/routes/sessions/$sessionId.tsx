@@ -108,7 +108,7 @@ function RecorderRoute() {
 
     const doHighlight = (big: boolean = false) => {
       setHighlight(true)
-      setTimeout(() => setHighlight(false), 200)
+      setTimeout(() => setHighlight(false), 300)
 
       party.sparkles(highlightRef.current!, {
         color: Color.fromHex('#332d90'),
@@ -210,7 +210,7 @@ function RecorderRoute() {
               ref={highlightRef}
               className="font-mono text-lg font-bold"
               animate={{
-                scale: highlight ? 1.6 : 1
+                scale: highlight ? 2 : 1
               }}
             >
               <NumberFlow value={attempts} />
