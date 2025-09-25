@@ -5,16 +5,20 @@ import RecorderHeader from '@/components/sessions/recorder/header/RecorderHeader
 import RecorderStats from '@/components/sessions/recorder/Stats/RecorderStats.tsx'
 import { Button } from '@/components/ui/button'
 import QUERY from '@/constants/QUERY'
+import useSettings from '@/hooks/data/settings/useSettings'
 import useHistory from '@/hooks/sessions/useHistory.ts'
 import getSession from '@/methods/data/get/getSession'
 import updateSession from '@/methods/data/update/updateSession'
 import vibrate from '@/methods/effects/vibrate'
 import { ImpactStyle } from '@capacitor/haptics'
+import NumberFlow from '@number-flow/react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute, useBlocker } from '@tanstack/react-router'
 import { useDebounce } from '@uidotdev/usehooks'
 import { Trash2 } from 'lucide-react'
-import { memo, useEffect, useState } from 'react'
+import { motion } from 'motion/react'
+import party, { Color } from 'party-js'
+import { memo, useEffect, useRef, useState } from 'react'
 
 export const Route = createFileRoute('/sessions/$sessionId')({
   component: memo(RecorderRoute)
@@ -24,7 +28,11 @@ function RecorderRoute() {
   const { sessionId } = Route.useParams()
   const navigate = Route.useNavigate()
 
+  const highlightRef = useRef<HTMLElement>(null)
+
   const [deleteOpen, setDeleteOpen] = useState(false)
+
+  const [highlight, setHighlight] = useState(false)
 
   const [hits, setHits] = useState(0)
   const [attempts, setAttempts] = useState(0)
@@ -38,6 +46,8 @@ function RecorderRoute() {
     removeLastHistoryEntry,
     history
   } = useHistory()
+
+  const { settings } = useSettings()
 
   const { data: session } = useQuery({
     queryKey: [QUERY.CACHE_KEYS.SESSION, sessionId],
@@ -90,6 +100,36 @@ function RecorderRoute() {
 
     removeLastHistoryEntry()
   }
+
+  useEffect(() => {
+    if (highlightRef.current === null) {
+      return
+    }
+
+    const doHighlight = () => {
+      setHighlight(true)
+      setTimeout(() => setHighlight(false), 200)
+
+      party.sparkles(highlightRef.current!, {
+        color: Color.fromHex('#332d90'),
+        count: 6
+      })
+    }
+
+    if (settings?.putters) {
+      const amount = settings.putters
+
+      if (attempts % (amount * 5) === 0 && attempts !== 0) {
+        doHighlight()
+      } else if (attempts % 50 === 0 && attempts !== 0) {
+        doHighlight()
+      }
+    } else {
+      if (attempts % 25 === 0 && attempts !== 0) {
+        doHighlight()
+      }
+    }
+  }, [settings, attempts, highlightRef])
 
   useEffect(() => {
     if (session) {
@@ -158,14 +198,31 @@ function RecorderRoute() {
       }}
       back="/sessions"
       actions={
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() => setDeleteOpen(true)}
-        >
-          <Trash2 />
-          Delete
-        </Button>
+        <>
+          <div className="text-center">
+            <p className="mt-1.5 text-xs font-bold text-neutral-400 uppercase">
+              attempts
+            </p>
+            <motion.p
+              ref={highlightRef}
+              className="font-mono text-lg font-bold"
+              animate={{
+                scale: highlight ? 1.6 : 1
+              }}
+            >
+              <NumberFlow value={attempts} />
+            </motion.p>
+          </div>
+
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => setDeleteOpen(true)}
+          >
+            <Trash2 />
+            Delete
+          </Button>
+        </>
       }
     >
       <DeleteSessionDrawer

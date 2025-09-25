@@ -137,7 +137,7 @@ export default function PageContainer({
                 <Icon className="-ml-[18px] h-8 w-auto" />
               </Link>
             </div>
-            <div>{actions}</div>
+            {actions}
           </div>
 
           {title && <PageHeading title={title} subtitle={subtitle} />}
