@@ -19,6 +19,7 @@ import { List } from 'react-window'
 import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDrawer.tsx'
 import SessionListDistanceFilterOptions from '@/components/sessions/list/SessionListDistanceFilterOptions'
 import SessionListItem from '@/components/sessions/list/SessionListItem'
+import useUnit from '@/hooks/units/useUnit'
 import getSessions from '@/methods/data/get/getSessions'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -29,10 +30,11 @@ export const Route = createFileRoute('/sessions/')({
 })
 
 function Sessions() {
-  const [createOpen, setCreateOpen] = useState(false)
-
   const navigate = Route.useNavigate()
 
+  const { getDistance, unit } = useUnit()
+
+  const [createOpen, setCreateOpen] = useState(false)
   const [distanceFilter, setDistanceFilter] = useState<string | undefined>(
     undefined
   )
@@ -62,9 +64,9 @@ function Sessions() {
       }
       return `${allSessions.length > 1 ? allSessions.length : 'one'} ${allSessions.length === 1 ? 'session' : 'sessions'}`
     } else if (sessions !== undefined) {
-      return `${sessions.length > 1 ? sessions.length : 'one'} ${sessions.length === 1 ? 'session' : 'sessions'} for ${distanceFilter} meter`
+      return `${sessions.length > 1 ? sessions.length : 'one'} ${sessions.length === 1 ? 'session' : 'sessions'} for ${getDistance(Number(distanceFilter))} ${unit}`
     }
-  }, [sessions, allSessions, distanceFilter])
+  }, [sessions, allSessions, distanceFilter, unit, getDistance])
 
   const selectedAverage = useMemo(() => {
     if (sessions === undefined || sessions.length === 0) {
