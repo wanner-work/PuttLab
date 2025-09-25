@@ -1,24 +1,27 @@
-import defaultConnection from "@/data/connections/defaultConnection"
-import { Session } from "@/data/entities/session"
-import PuttLabDataSource from "@/data/sources/PuttLabDataSource"
-import { Capacitor } from "@capacitor/core"
+import defaultConnection from '@/data/connections/defaultConnection'
+import { Session } from '@/data/entities/session'
+import PuttLabDataSource from '@/data/sources/PuttLabDataSource'
+import { Capacitor } from '@capacitor/core'
 
-export default async function createSession(distance: number, maxAttempts?: number) {
-    const session = new Session()
-    session.date = new Date().toISOString()
-    session.attempts = 0
-    session.hits = 0
-    session.distance = distance
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    session.maxAttempts = maxAttempts ?? null
+export default async function createSession(
+  distance: number,
+  maxAttempts?: number
+) {
+  const session = new Session()
+  session.date = new Date().toISOString()
+  session.attempts = 0
+  session.hits = 0
+  session.distance = distance
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  session.maxAttempts = maxAttempts ?? null
 
-    await PuttLabDataSource.getRepository(Session).save(session)
+  await PuttLabDataSource.getRepository(Session).save(session)
 
-    const database = PuttLabDataSource.options.database
-    if (Capacitor.getPlatform() === 'web' && typeof database === 'string') {
-      await defaultConnection.saveToStore(database)
-    }
+  const database = PuttLabDataSource.options.database
+  if (Capacitor.getPlatform() === 'web' && typeof database === 'string') {
+    await defaultConnection.saveToStore(database)
+  }
 
-    return session
+  return session
 }

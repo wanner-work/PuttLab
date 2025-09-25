@@ -3,5 +3,5 @@ import PuttLabDataSource from '@/data/sources/PuttLabDataSource'
 
 export default function getSession(sessionId: string) {
   const connection = PuttLabDataSource
-  return connection.manager.findOneBy( Session, { id: Number(sessionId) } )
+  return connection.manager.findOneBy(Session, { id: Number(sessionId) })
 }

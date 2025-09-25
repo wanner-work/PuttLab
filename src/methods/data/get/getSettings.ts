@@ -19,7 +19,7 @@ export default async function getSettings() {
     } else if (!isNaN(Number(value))) {
       settings[key as keyof SettingsData] = Number(value)
     } else {
-      settings[key as keyof SettingsData] = value;
+      settings[key as keyof SettingsData] = value
     }
   }
 

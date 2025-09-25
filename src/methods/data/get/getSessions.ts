@@ -9,8 +9,13 @@ export default async function getSessions(distance: number | null = null) {
   if (distance === null) {
     sessions = await connection.manager.find(Session)
   } else {
-    sessions = await connection.manager.find(Session, { where: { distance }, order: { date: 'DESC' } })
+    sessions = await connection.manager.find(Session, {
+      where: { distance },
+      order: { date: 'DESC' }
+    })
   }
 
-  return sessions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  return sessions.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
 }
