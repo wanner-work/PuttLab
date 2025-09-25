@@ -210,7 +210,7 @@ function RecorderRoute() {
               ref={highlightRef}
               className="font-mono text-lg font-bold"
               animate={{
-                scale: highlight ? 2 : 1
+                scale: highlight ? 1.6 : 1
               }}
             >
               <NumberFlow value={attempts} />
