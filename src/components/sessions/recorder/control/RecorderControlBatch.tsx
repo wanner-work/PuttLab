@@ -10,7 +10,9 @@ import {
 } from '@/components/ui/drawer.tsx'
 import QUERY from '@/constants/QUERY.ts'
 import useSettings from '@/hooks/data/settings/useSettings.ts'
-import { Haptics, ImpactStyle } from '@capacitor/haptics'
+import vibrate from '@/methods/effects/vibrate.ts'
+import vibratePattern from '@/methods/effects/vibratePattern.ts'
+import { ImpactStyle } from '@capacitor/haptics'
 import { clsx } from 'clsx'
 import { AlertCircleIcon, Diff } from 'lucide-react'
 import party, { Color } from 'party-js'
@@ -57,16 +59,15 @@ function RecorderControlBatch({ batch, latest, disabled }: Props) {
         color: Color.fromHex('#332d90'),
         count: Math.floor(Math.random() * (60 - 40 + 1)) + 40
       })
-      await Haptics.impact({ style: ImpactStyle.Heavy })
-      setTimeout(async () => {
-        await Haptics.impact({ style: ImpactStyle.Heavy })
-      }, 80)
-      setTimeout(async () => {
-        await Haptics.impact({ style: ImpactStyle.Heavy })
-      }, 160)
-    }
 
-    await Haptics.impact({ style: ImpactStyle.Medium })
+      await vibratePattern(3)
+    } else {
+      if (putters > 3 && hits < 3) {
+        await vibrate(ImpactStyle.Light)
+      } else {
+        await vibrate(ImpactStyle.Medium)
+      }
+    }
   }
 
   return (

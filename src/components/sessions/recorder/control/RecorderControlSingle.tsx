@@ -1,4 +1,5 @@
-import { Haptics, ImpactStyle } from '@capacitor/haptics'
+import vibrate from '@/methods/effects/vibrate.ts'
+import { ImpactStyle } from '@capacitor/haptics'
 import { clsx } from 'clsx'
 import { memo } from 'react'
 import { Button } from '../../../ui/button.tsx'
@@ -15,12 +16,12 @@ export default memo(RecorderControlSingle)
 function RecorderControlSingle({ hit, miss, latest, disabled }: Props) {
   const hitProxy = async () => {
     hit()
-    await Haptics.impact({ style: ImpactStyle.Heavy })
+    await vibrate()
   }
 
   const missProxy = async () => {
     miss()
-    await Haptics.impact({ style: ImpactStyle.Light })
+    await vibrate(ImpactStyle.Light)
   }
 
   return (

@@ -1,4 +1,5 @@
-import { Haptics, ImpactStyle } from '@capacitor/haptics'
+import vibrate from '@/methods/effects/vibrate'
+import { ImpactStyle } from '@capacitor/haptics'
 import { type RefObject, useEffect, useState } from 'react'
 
 export function useSwipe(
@@ -48,7 +49,7 @@ export function useSwipe(
       if (deltaX >= threshold) {
         if (!playedHaptic) {
           setPlayedHaptic(true)
-          await Haptics.impact({ style: ImpactStyle.Medium })
+          await vibrate(ImpactStyle.Medium)
         }
       } else if (deltaX < threshold) {
         setPlayedHaptic(false)
@@ -61,7 +62,7 @@ export function useSwipe(
       const distance = touchEnd - touchStart
 
       if (distance > threshold) {
-        Haptics.impact({ style: ImpactStyle.Heavy }).then()
+        vibrate(ImpactStyle.Heavy)
         callback?.(distance)
       } else {
         // only reset if swipe was below threshold
