@@ -82,37 +82,44 @@ function RecorderControlBatch({ batch, latest, disabled }: Props) {
           })
         }}
       />
-      <div className="mt-1 flex gap-2">
-        <Drawer>
-          <DrawerTrigger>
-            <Button className="!p-2 !pl-2.5 text-xs" variant="secondary">
-              How this works
-              <AlertCircleIcon />
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Throw and record your putts</DrawerTitle>
-              <DrawerDescription>
-                Throw your set amount of putts and then record how many you made
-                by clicking the correct button below.
-              </DrawerDescription>
-            </DrawerHeader>
-            <DrawerFooter className="mx-4">
-              <DrawerClose>
-                <Button className="w-full">Understood</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-        <Button
-          onClick={() => setOpenSelectBatchAmount(true)}
-          className="!p-2 !pl-2.5 text-xs"
-          variant="secondary"
-        >
-          Define Amount
-          <Diff />
-        </Button>
+      <div className="mt-1 flex justify-between gap-2">
+        <div className="flex gap-1">
+          <Button className="!p-2 !px-2.5 text-xs" variant="secondary">
+            Batch Mode
+          </Button>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button className="!p-2 text-xs" variant="secondary">
+                <AlertCircleIcon />
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Throw and record your putts</DrawerTitle>
+                <DrawerDescription>
+                  Throw your set amount of putts and then record how many you
+                  made by clicking the correct button below.
+                </DrawerDescription>
+              </DrawerHeader>
+              <DrawerFooter className="mx-4">
+                <DrawerClose>
+                  <Button className="w-full">Understood</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setOpenSelectBatchAmount(true)}
+            className="!p-2 !pl-2.5 text-xs"
+            variant="secondary"
+          >
+            Define Amount
+            <Diff />
+          </Button>
+        </div>
       </div>
       {settings?.putters && settings.putters > 0 && (
         <div
