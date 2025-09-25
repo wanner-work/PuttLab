@@ -146,7 +146,7 @@ export default function SessionListItem({
                   </div>
                   {session.attempts > 0 ? (
                     <p className="text-muted-foreground pr-2 font-mono font-bold">
-                      {percentage}%
+                      {session.attempts} ATT / {percentage}%
                     </p>
                   ) : (
                     <ChevronRight className="text-muted-foreground" />
