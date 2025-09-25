@@ -106,17 +106,20 @@ function RecorderRoute() {
       return
     }
 
-    const doHighlight = () => {
+    const doHighlight = (big: boolean = false) => {
       setHighlight(true)
       setTimeout(() => setHighlight(false), 200)
 
       party.sparkles(highlightRef.current!, {
         color: Color.fromHex('#332d90'),
-        count: 6
+        count: big ? 15 : 6,
+        size: big ? 1.5 : 1
       })
     }
 
-    if (settings?.putters) {
+    if (attempts % 100 === 0 && attempts !== 0) {
+      doHighlight(true)
+    } else if (settings?.putters) {
       const amount = settings.putters
 
       if (attempts % (amount * 5) === 0 && attempts !== 0) {
