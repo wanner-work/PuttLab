@@ -11,14 +11,18 @@ export default async function getSettings() {
     })
 
     if (value === null) {
+      // @ts-expect-error i know
       settings[key as keyof SettingsData] = SETTINGS.defaults[
         key as keyof SettingsData
       ] as SettingsData[keyof SettingsData]
     } else if (value === 'true' || value === 'false') {
+      // @ts-expect-error i know
       settings[key as keyof SettingsData] = value === 'true'
     } else if (!isNaN(Number(value))) {
+      // @ts-expect-error i know
       settings[key as keyof SettingsData] = Number(value)
     } else {
+      // @ts-expect-error i know
       settings[key as keyof SettingsData] = value
     }
   }
