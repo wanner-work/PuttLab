@@ -62,7 +62,6 @@ export function useSwipe(
       const distance = touchEnd - touchStart
 
       if (distance > threshold) {
-        vibrate(ImpactStyle.Heavy)
         callback?.(distance)
       } else {
         // only reset if swipe was below threshold
