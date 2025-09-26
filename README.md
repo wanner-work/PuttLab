@@ -2,6 +2,26 @@
 
 # PuttLab
 
-Putting is one of the most important aspects of disc golf. You can hit a 200m drive on a 220m hole but if you miss your putt, you still only have a par.
+This application is designed to help disc golf players improve their putting skills through structured practice and detailed performance analysis. Putting is a critical part of disc golf, and consistent improvement requires focused, measurable training. this apps goal is to provide exactly that.
 
-PuttLab is a tool, to practice putting and find your weak spots with ease.
+## Functionality
+
+- The app is fully functional offline.
+- It does not require an internet connection and makes no network requests.
+- All data is stored locally on the device using a SQLITE Database
+- It is built using React in combination with Capacitor to use native functionality
+
+## Development
+
+The application can be developed inside the browser, thanks to the great work at Capacitor. Run the following commands to get you started:
+
+1. `pnpm i`
+2. `pnpm run dev`
+
+To test on android or ios, run:
+
+1. `pnpm run build`
+2. `pnpm cap sync`
+3. `pnpm cap run ios` / `pnpm cap run android`
+
+(android studio and xcode are required to be running to be able to run them on android or ios.)
