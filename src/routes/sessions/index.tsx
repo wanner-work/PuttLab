@@ -69,17 +69,22 @@ function Sessions() {
   }, [sessions, allSessions, distanceFilter, unit, getDistance])
 
   const selectedAverage = useMemo(() => {
-    if (sessions === undefined || sessions.length === 0) {
+    const sessionsToUse = sessions ?? allSessions
+
+    if (sessionsToUse === undefined || sessionsToUse.length === 0) {
       return 0
     }
-    const totalAttempts = sessions.reduce(
+    const totalAttempts = sessionsToUse.reduce(
       (sum, session) => sum + session.attempts,
       0
     )
-    const totalHits = sessions.reduce((sum, session) => sum + session.hits, 0)
+    const totalHits = sessionsToUse.reduce(
+      (sum, session) => sum + session.hits,
+      0
+    )
 
     return calculatePercentage(totalAttempts, totalHits)
-  }, [sessions])
+  }, [sessions, allSessions])
 
   return (
     <PageContainer
