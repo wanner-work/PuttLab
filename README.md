@@ -6,7 +6,7 @@ This application is designed to help disc golf players improve their putting ski
 
 ## Functionality
 
-- The app is fully functional offline.
+- The app works offline.
 - It does not require an internet connection and makes no network requests.
 - All data is stored locally on the device using a SQLITE Database
 - It is built using React in combination with Capacitor to use native functionality
