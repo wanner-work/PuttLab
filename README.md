@@ -1,5 +1,11 @@
 ![lead](docs/lead.svg)
 
+<a href="https://apps.apple.com/us/app/puttlab/id6752844572?itscg=30200&itsct=apps_box_badge&mttnsubad=6752844572" style="display: inline-block;">
+<img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1759104000" alt="Download on the App Store" style="width: 140px; height: auto; vertical-align: middle; object-fit: contain;" />
+</a>
+
+<br />
+
 # PuttLab
 
 This application is designed to help disc golf players improve their putting skills through structured practice and detailed performance analysis. Putting is a critical part of disc golf, and consistent improvement requires focused, measurable training. this apps goal is to provide exactly that.
