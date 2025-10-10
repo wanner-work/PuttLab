@@ -1,9 +1,8 @@
 ![lead](docs/lead.svg)
 
-<a href="https://apps.apple.com/us/app/puttlab/id6752844572?itscg=30200&itsct=apps_box_badge&mttnsubad=6752844572" style="display: inline-block;">
+| <a href="https://apps.apple.com/us/app/puttlab/id6752844572?itscg=30200&itsct=apps_box_badge&mttnsubad=6752844572" style="display: inline-block;">
 <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1759104000" alt="Download on the App Store" style="height: 50px; width: auto; vertical-align: middle; object-fit: contain;" />
-</a>
-<img style="height: 50px; width: auto; vertical-align: middle; object-fit: contain;" src="./docs/playstore.png" />
+</a> | <img style="height: 50px; width: auto; vertical-align: middle; object-fit: contain;" src="./docs/playstore.png" /> |
 
 <br />
 
