@@ -14,6 +14,7 @@ import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
+import { Route as ModeModeIdRouteImport } from './routes/mode/$modeId'
 
 const InfoRoute = InfoRouteImport.update({
   id: '/info',
@@ -40,11 +41,17 @@ const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   path: '/sessions/$sessionId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModeModeIdRoute = ModeModeIdRouteImport.update({
+  id: '/mode/$modeId',
+  path: '/mode/$modeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
+  '/mode/$modeId': typeof ModeModeIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions': typeof SessionsIndexRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
+  '/mode/$modeId': typeof ModeModeIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions': typeof SessionsIndexRoute
 }
@@ -60,19 +68,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
+  '/mode/$modeId': typeof ModeModeIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
   '/sessions/': typeof SessionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/info' | '/sessions/$sessionId' | '/sessions'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/info'
+    | '/mode/$modeId'
+    | '/sessions/$sessionId'
+    | '/sessions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/info' | '/sessions/$sessionId' | '/sessions'
+  to:
+    | '/'
+    | '/analytics'
+    | '/info'
+    | '/mode/$modeId'
+    | '/sessions/$sessionId'
+    | '/sessions'
   id:
     | '__root__'
     | '/'
     | '/analytics'
     | '/info'
+    | '/mode/$modeId'
     | '/sessions/$sessionId'
     | '/sessions/'
   fileRoutesById: FileRoutesById
@@ -81,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   InfoRoute: typeof InfoRoute
+  ModeModeIdRoute: typeof ModeModeIdRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
 }
@@ -122,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsSessionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mode/$modeId': {
+      id: '/mode/$modeId'
+      path: '/mode/$modeId'
+      fullPath: '/mode/$modeId'
+      preLoaderRoute: typeof ModeModeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -129,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   InfoRoute: InfoRoute,
+  ModeModeIdRoute: ModeModeIdRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
   SessionsIndexRoute: SessionsIndexRoute,
 }

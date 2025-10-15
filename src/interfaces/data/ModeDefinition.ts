@@ -1,0 +1,71 @@
+import type ModeStep from '@/interfaces/data/ModeStep.ts'
+import type { FunctionComponent } from 'react'
+
+export default interface ModeDefinition {
+  /**
+   * The name of the mode. It will be displayed to the user.
+   */
+  name: string
+
+  /**
+   * A React component that renders the icon of the mode.
+   */
+  icon: FunctionComponent<{ className?: string }>
+
+  /**
+   * The unique identifier of the mode. It should be a lowercase string without spaces.
+   * It will be used in the URL and as a key in the database but will not be displayed to the user.
+   */
+  id: string
+
+  /**
+   * The requirements you need to meet to use this specific mode.
+   */
+  requirements: {
+    /**
+     * The minimum distance the user must have available to be able to play this mode, in meters.
+     */
+    availableDistance: number
+
+    /**
+     * The minimum time the user must have available to use this mode, in seconds.
+     */
+    availableTime: number
+
+    /**
+     * The minimum number of putters the user must have to use this mode.
+     */
+    availablePutters: number
+  }
+
+  /**
+   * Settings specific to this mode.
+   */
+  settings: {
+    /**
+     * Whether the mode must be completed in a countdown fashion (true) or can be completed with infinite time (false).
+     * If true, the `requirements.availableTime` will be used as the countdown time.
+     */
+    countdown: boolean
+    /**
+     * Whether the mode can be played infinitely (true) or not (false).
+     * If true, the mode will loop through the steps indefinitely until the user decides to stop or the countdown ends.
+     */
+    infinite: boolean
+  }
+
+  /**
+   * Introduction Component
+   */
+  introduction: FunctionComponent<{ mode: ModeDefinition }>
+
+  /**
+   * Result Component
+   */
+  result: FunctionComponent<{ mode: ModeDefinition }>
+
+  /**
+   * All the steps that make up this mode.
+   */
+  steps: ModeStep[]
+}
