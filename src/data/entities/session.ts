@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { ModeRun } from '@/data/entities/moderun.ts'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('session')
 export class Session {
@@ -19,4 +20,7 @@ export class Session {
 
   @Column({ nullable: true, type: 'integer' })
   maxAttempts!: number
+
+  @ManyToOne(() => ModeRun, (moderun) => moderun.sessions)
+  moderun!: ModeRun
 }

@@ -1,22 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Session } from '@/data/entities/session.ts'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('session')
-export class Session {
+@Entity('moderun')
+export class ModeRun {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column('integer')
-  mode!: number
+  @Column({ type: 'text' })
+  mode!: string
 
   @Column('text')
   date!: string
 
-  @Column('integer')
-  hits!: number
-
-  @Column('integer')
+  @Column('float')
   score!: number
 
-  @Column({ nullable: true, type: 'integer' })
-  maxAttempts!: number
+  @OneToMany(() => Session, (session) => session.moderun)
+  sessions!: Session[]
 }

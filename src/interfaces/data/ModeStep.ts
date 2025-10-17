@@ -10,11 +10,6 @@ export default interface ModeStep {
   distance: number
 
   /**
-   * The optional time allocated for this step, in seconds. If the mode is not a countdown mode, this value will be ignored.
-   */
-  time?: number
-
-  /**
    * The number of repetitions for this step. The user will have to complete this step the specified number of times before moving on to the next step.
    */
   repetitions: number

@@ -1,7 +1,15 @@
+import type { ModeRun } from '@/data/entities/moderun.ts'
+import type { Session } from '@/data/entities/session.ts'
 import type ModeStep from '@/interfaces/data/ModeStep.ts'
 import type { FunctionComponent } from 'react'
 
 export default interface ModeDefinition {
+  /**
+   * The unique identifier of the mode. It should be a lowercase, kebab-case string without spaces.
+   * It will be used in the URL and as a key in the database but will not be displayed to the user.
+   */
+  id: string
+
   /**
    * The name of the mode. It will be displayed to the user.
    */
@@ -13,12 +21,6 @@ export default interface ModeDefinition {
   icon: FunctionComponent<{ className?: string }>
 
   /**
-   * The unique identifier of the mode. It should be a lowercase string without spaces.
-   * It will be used in the URL and as a key in the database but will not be displayed to the user.
-   */
-  id: string
-
-  /**
    * The requirements you need to meet to use this specific mode.
    */
   requirements: {
@@ -28,7 +30,7 @@ export default interface ModeDefinition {
     availableDistance: number
 
     /**
-     * The minimum time the user must have available to use this mode, in seconds.
+     * The minimum time the user must have available to use this mode, in milliseconds.
      */
     availableTime: number
 
@@ -63,6 +65,19 @@ export default interface ModeDefinition {
    * Result Component
    */
   result: FunctionComponent<{ mode: ModeDefinition }>
+
+  /**
+   * Calculation function to determine the score of a session.
+   *
+   * It receives all the sessions of the mode, the ModeRun object as well as the elapsed time in ms and the entire mode definition.
+   * It should return a number representing the score of the session.
+   */
+  calculateScore: (
+    sessions: Session[],
+    elapsedTime: number,
+    run: ModeRun,
+    definition: ModeDefinition
+  ) => number
 
   /**
    * All the steps that make up this mode.
