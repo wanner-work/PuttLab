@@ -60,10 +60,10 @@ function RecorderControl({
               By Batch
             </TabsTrigger>
           </TabsList>
-          <div className="bg-card/30 text-card-foreground relative flex h-auto items-center justify-center rounded-lg border p-[3px] shadow-sm">
+          <div className="bg-card/30 text-card-foreground relative flex h-auto items-center justify-center rounded-2xl border p-[3px] shadow-sm">
             <Button
               variant="outline"
-              className="!bg-background size-[42px] rounded-md border border-transparent !px-2 disabled:!bg-transparent"
+              className="!bg-background size-[42px] border border-transparent !px-2 disabled:!bg-transparent"
               disabled={history?.length === 0}
               onClick={() => undo()}
             >
