@@ -1,7 +1,8 @@
-import type ModeDefinition from '@/interfaces/data/ModeDefinition.ts'
+import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
+import circleOneChampionDefinition from '@/modes/circleOneChampion/circleOneChampionDefinition.ts'
 
 const MODES = {
-  DEFINITIONS: []
+  DEFINITIONS: [circleOneChampionDefinition]
 } satisfies {
   DEFINITIONS: ModeDefinition[]
 }

@@ -1,6 +1,5 @@
-import type { ModeRun } from '@/data/entities/moderun.ts'
-import type { Session } from '@/data/entities/session.ts'
-import type ModeStep from '@/interfaces/data/ModeStep.ts'
+import type ModeCalculationParams from '@/interfaces/data/mode/ModeCalculationParams.ts'
+import type ModeStep from '@/interfaces/data/mode/ModeStep.ts'
 import type { FunctionComponent } from 'react'
 
 export default interface ModeDefinition {
@@ -14,6 +13,11 @@ export default interface ModeDefinition {
    * The name of the mode. It will be displayed to the user.
    */
   name: string
+
+  /**
+   * A very brief description of the mode.
+   */
+  description: string
 
   /**
    * A React component that renders the icon of the mode.
@@ -72,12 +76,7 @@ export default interface ModeDefinition {
    * It receives all the sessions of the mode, the ModeRun object as well as the elapsed time in ms and the entire mode definition.
    * It should return a number representing the score of the session.
    */
-  calculateScore: (
-    sessions: Session[],
-    elapsedTime: number,
-    run: ModeRun,
-    definition: ModeDefinition
-  ) => number
+  calculateScore: (params: ModeCalculationParams) => number
 
   /**
    * All the steps that make up this mode.

@@ -14,7 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { clsx } from 'clsx'
 import { AlertCircle, ChartPie, CogIcon, Layers, Play } from 'lucide-react'
 import { motion } from 'motion/react'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 
 export const Route = createFileRoute('/')({
   component: memo(Index),
@@ -76,17 +76,27 @@ function Index() {
   ]
 
   useEffect(() => {
-    QUERY.CLIENT.prefetchQuery({
+    void QUERY.CLIENT.prefetchQuery({
       queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
       queryFn: () => getSessions()
     })
   }, [])
 
+  const displayIntro = useMemo(() => {
+    if (settings) {
+      return !internal && settings?.intro !== false
+    } else {
+      return false
+    }
+  }, [internal, settings])
+
   return (
     <motion.div
       className={clsx(
         'grid h-dvh bg-no-repeat p-6 [view-transition-name:main-content]',
-        Capacitor.getPlatform() === 'ios' && 'pt-20'
+        Capacitor.getPlatform() === 'ios' && 'pt-20',
+        Capacitor.getPlatform() === 'web' &&
+          'mx-auto max-w-[440px] rounded-[38px]'
       )}
       style={{
         gridTemplateRows: 'minmax(0, auto) minmax(0, 1fr)'
@@ -104,15 +114,15 @@ function Index() {
         ease: 'easeInOut'
       }}
     >
-      {!internal && <AnimatedLogo />}
+      {displayIntro && <AnimatedLogo />}
       <div className="mt-2 flex h-[48px] items-center justify-between">
         <AnimatedIcon
           shouldExit={false}
-          delay={internal ? 0 : 3}
+          delay={displayIntro ? 3 : 0}
           className="-ml-[18px]"
         />
 
-        <Reveal delay={internal ? 0 : 3.2}>
+        <Reveal delay={displayIntro ? 3.2 : 0}>
           <Button
             size="icon"
             variant="outline"
@@ -154,7 +164,10 @@ function Index() {
       )}
 
       <div className="flex h-full flex-col justify-between gap-12">
-        <Reveal delay={internal ? 0 : 3.4} className="flex h-full items-center">
+        <Reveal
+          delay={displayIntro ? 3.4 : 0}
+          className="flex h-full items-center"
+        >
           <h1 className="pt-16 text-4xl">
             Step right <strong>back</strong>
             <br /> into <strong>the action</strong>
@@ -167,7 +180,7 @@ function Index() {
               key={action.title}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: (internal ? 0.1 : 3.6) + index * 0.1 }}
+              transition={{ delay: (displayIntro ? 3.6 : 0.1) + index * 0.1 }}
               className="h-full hover:opacity-90 active:scale-[0.98] active:opacity-50"
               onClick={action.action}
             >

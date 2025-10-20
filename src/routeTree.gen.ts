@@ -13,8 +13,9 @@ import { Route as InfoRouteImport } from './routes/info'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
+import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
-import { Route as ModeModeIdRouteImport } from './routes/mode/$modeId'
+import { Route as ModesModeIdRouteImport } from './routes/modes/$modeId'
 
 const InfoRoute = InfoRouteImport.update({
   id: '/info',
@@ -36,14 +37,19 @@ const SessionsIndexRoute = SessionsIndexRouteImport.update({
   path: '/sessions/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModesIndexRoute = ModesIndexRouteImport.update({
+  id: '/modes/',
+  path: '/modes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   id: '/sessions/$sessionId',
   path: '/sessions/$sessionId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ModeModeIdRoute = ModeModeIdRouteImport.update({
-  id: '/mode/$modeId',
-  path: '/mode/$modeId',
+const ModesModeIdRoute = ModesModeIdRouteImport.update({
+  id: '/modes/$modeId',
+  path: '/modes/$modeId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -51,16 +57,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
-  '/mode/$modeId': typeof ModeModeIdRoute
+  '/modes/$modeId': typeof ModesModeIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
-  '/mode/$modeId': typeof ModeModeIdRoute
+  '/modes/$modeId': typeof ModesModeIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
 }
 export interface FileRoutesById {
@@ -68,8 +76,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
-  '/mode/$modeId': typeof ModeModeIdRoute
+  '/modes/$modeId': typeof ModesModeIdRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -78,24 +87,27 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/info'
-    | '/mode/$modeId'
+    | '/modes/$modeId'
     | '/sessions/$sessionId'
+    | '/modes'
     | '/sessions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/analytics'
     | '/info'
-    | '/mode/$modeId'
+    | '/modes/$modeId'
     | '/sessions/$sessionId'
+    | '/modes'
     | '/sessions'
   id:
     | '__root__'
     | '/'
     | '/analytics'
     | '/info'
-    | '/mode/$modeId'
+    | '/modes/$modeId'
     | '/sessions/$sessionId'
+    | '/modes/'
     | '/sessions/'
   fileRoutesById: FileRoutesById
 }
@@ -103,8 +115,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   InfoRoute: typeof InfoRoute
-  ModeModeIdRoute: typeof ModeModeIdRoute
+  ModesModeIdRoute: typeof ModesModeIdRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
+  ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
 }
 
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/modes/': {
+      id: '/modes/'
+      path: '/modes'
+      fullPath: '/modes'
+      preLoaderRoute: typeof ModesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sessions/$sessionId': {
       id: '/sessions/$sessionId'
       path: '/sessions/$sessionId'
@@ -145,11 +165,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsSessionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/mode/$modeId': {
-      id: '/mode/$modeId'
-      path: '/mode/$modeId'
-      fullPath: '/mode/$modeId'
-      preLoaderRoute: typeof ModeModeIdRouteImport
+    '/modes/$modeId': {
+      id: '/modes/$modeId'
+      path: '/modes/$modeId'
+      fullPath: '/modes/$modeId'
+      preLoaderRoute: typeof ModesModeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -159,8 +179,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   InfoRoute: InfoRoute,
-  ModeModeIdRoute: ModeModeIdRoute,
+  ModesModeIdRoute: ModesModeIdRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
+  ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
 }
 export const routeTree = rootRouteImport

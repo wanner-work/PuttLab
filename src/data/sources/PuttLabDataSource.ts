@@ -1,3 +1,4 @@
+import { ModeRun } from '@/data/entities/moderun.ts'
 import { DataSource } from 'typeorm'
 import connection from '../connections/defaultConnection'
 import { Session } from '../entities/session'
@@ -7,7 +8,7 @@ export default new DataSource({
   type: 'capacitor',
   driver: connection,
   database: 'puttlab',
-  entities: [Session],
+  entities: [Session, ModeRun],
   logging: false,
   synchronize: true,
   migrationsRun: false,

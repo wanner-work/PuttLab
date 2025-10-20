@@ -9,6 +9,7 @@ import { routeTree } from './routeTree.gen'
 
 import 'reflect-metadata'
 
+import getSettings from '@/methods/data/get/getSettings.ts'
 import '@fontsource-variable/inter'
 import '@fontsource/erica-one'
 import './styles/style.css'
@@ -28,8 +29,12 @@ declare module '@tanstack/react-router' {
   }
 }
 
+const settings = await getSettings()
+
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
+  QUERY.CLIENT.setQueryData([QUERY.CACHE_KEYS.SETTINGS], settings)
+
   const root = createRoot(rootElement)
   root.render(
     <StrictMode>

@@ -1,11 +1,13 @@
-import type ModeDefinition from '@/interfaces/data/ModeDefinition.ts'
+import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
+import calculation from '@/modes/circleOneChampion/calculation.ts'
 import Introduction from '@/modes/circleOneChampion/Introduction.tsx'
 import Result from '@/modes/circleOneChampion/Result.tsx'
 import { ApertureIcon } from 'lucide-react'
 
 const definition: ModeDefinition = {
-  id: 'circle-one',
-  name: 'Circle One',
+  id: 'circle-one-champion',
+  name: 'Circle One Champion',
+  description: 'The ultimate circle one putting challenge.',
   icon: ApertureIcon,
   requirements: {
     availableDistance: 9,
@@ -18,6 +20,7 @@ const definition: ModeDefinition = {
   },
   introduction: Introduction,
   result: Result,
+  calculateScore: calculation,
   steps: [
     {
       label: 'Short Warm Up',
@@ -86,3 +89,5 @@ const definition: ModeDefinition = {
     }
   ]
 }
+
+export default definition

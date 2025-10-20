@@ -3,11 +3,13 @@ import type SettingsData from '@/interfaces/data/SettingsData'
 const SETTINGS = {
   keys: {
     metric: 'settings.metric',
-    putters: 'settings.putters'
+    putters: 'settings.putters',
+    intro: 'settings.intro'
   },
   defaults: {
     metric: true,
-    putters: 0
+    putters: 0,
+    intro: true
   }
 } satisfies {
   keys: Record<keyof SettingsData, string>

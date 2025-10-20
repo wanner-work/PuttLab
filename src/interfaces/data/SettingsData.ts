@@ -8,4 +8,5 @@
 export default interface SettingsData {
   metric: boolean
   putters: number
+  intro: boolean
 }

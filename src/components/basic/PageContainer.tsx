@@ -98,6 +98,8 @@ export default function PageContainer({
           className={clsx(
             'min-h-dvh p-6',
             Capacitor.getPlatform() === 'ios' && 'pt-14',
+            Capacitor.getPlatform() === 'web' &&
+              'mx-auto max-w-[440px] rounded-[38px]',
             className
           )}
           initial={{
@@ -142,7 +144,6 @@ export default function PageContainer({
 
           {title && <PageHeading title={title} subtitle={subtitle} />}
           {children}
-          <div className="fixed bottom-0"></div>
         </motion.div>
       </motion.div>
     </div>
