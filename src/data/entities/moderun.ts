@@ -15,6 +15,8 @@ export class ModeRun {
   @Column('float')
   score!: number
 
-  @OneToMany(() => Session, (session) => session.moderun)
+  @OneToMany(() => Session, (session) => session.moderun, {
+    cascade: true
+  })
   sessions!: Session[]
 }
