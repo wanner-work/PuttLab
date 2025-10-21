@@ -34,6 +34,8 @@ const settings = await getSettings()
 
 document.body.classList.add(Capacitor.getPlatform())
 
+await initSqlite()
+
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
   QUERY.CLIENT.setQueryData([QUERY.CACHE_KEYS.SETTINGS], settings)
@@ -49,5 +51,3 @@ if (!rootElement.innerHTML) {
 }
 
 await SplashScreen.hide()
-
-await initSqlite()

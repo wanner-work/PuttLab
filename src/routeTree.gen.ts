@@ -14,6 +14,7 @@ import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as ModesIndexRouteImport } from './routes/modes/index'
+import { Route as ImprovedIndexRouteImport } from './routes/improved/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
 import { Route as ModesModeIdModeRunIdRouteImport } from './routes/modes/$modeId/$modeRunId'
@@ -43,6 +44,11 @@ const ModesIndexRoute = ModesIndexRouteImport.update({
   path: '/modes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImprovedIndexRoute = ImprovedIndexRouteImport.update({
+  id: '/improved/',
+  path: '/improved/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   id: '/sessions/$sessionId',
   path: '/sessions/$sessionId',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/improved': typeof ImprovedIndexRoute
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/improved': typeof ImprovedIndexRoute
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/improved/': typeof ImprovedIndexRoute
   '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/info'
     | '/sessions/$sessionId'
+    | '/improved'
     | '/modes'
     | '/sessions'
     | '/modes/$modeId/$modeRunId'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/info'
     | '/sessions/$sessionId'
+    | '/improved'
     | '/modes'
     | '/sessions'
     | '/modes/$modeId/$modeRunId'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/info'
     | '/sessions/$sessionId'
+    | '/improved/'
     | '/modes/'
     | '/sessions/'
     | '/modes/$modeId/$modeRunId'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   InfoRoute: typeof InfoRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
+  ImprovedIndexRoute: typeof ImprovedIndexRoute
   ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
   ModesModeIdModeRunIdRoute: typeof ModesModeIdModeRunIdRoute
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/improved/': {
+      id: '/improved/'
+      path: '/improved'
+      fullPath: '/improved'
+      preLoaderRoute: typeof ImprovedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sessions/$sessionId': {
       id: '/sessions/$sessionId'
       path: '/sessions/$sessionId'
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   InfoRoute: InfoRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
+  ImprovedIndexRoute: ImprovedIndexRoute,
   ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
   ModesModeIdModeRunIdRoute: ModesModeIdModeRunIdRoute,

@@ -67,7 +67,7 @@ function Index() {
       title: 'View all sessions',
       icon: Layers,
       action: () => {
-        navigate({ to: '/sessions', viewTransition: { types: ['slide-left'] } })
+        navigate({ to: '/improved', viewTransition: { types: ['slide-left'] } })
       }
     },
     {
@@ -131,7 +131,7 @@ function Index() {
 
         <div className="flex items-center gap-2">
           <Reveal delay={displayIntro ? 3.2 : 0}>
-            <Link to="/info">
+            <Link to="/info" viewTransition={{ types: ['slide-left'] }}>
               <Button size="icon" variant="outline">
                 <AlertCircle />
               </Button>
