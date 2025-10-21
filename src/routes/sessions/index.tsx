@@ -12,7 +12,7 @@ import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
-import { PlusIcon, X } from 'lucide-react'
+import { PlusIcon, Stars, X } from 'lucide-react'
 import { memo, useMemo, useState } from 'react'
 import { List } from 'react-window'
 
@@ -55,7 +55,7 @@ function Sessions() {
 
   const amount = useMemo(() => {
     if (allSessions === undefined) {
-      return ''
+      return 'No sessions'
     }
 
     if (distanceFilter === undefined) {
@@ -141,6 +141,16 @@ function Sessions() {
         </p>
       </div>
       <div className="overflow-hidden">
+        {(!sessions && !allSessions) ||
+          (allSessions && allSessions.length === 0 && (
+            <div className="text-muted-foreground flex h-full flex-col items-center justify-center p-4">
+              <Stars strokeWidth={1.5} className="mb-4 inline-block size-8" />
+              <p className="max-w-32 text-center">
+                No sessions yet. Create one!
+              </p>
+            </div>
+          ))}
+
         <List
           rowComponent={SessionListItem}
           rowCount={(sessions || allSessions)?.length || 0}
