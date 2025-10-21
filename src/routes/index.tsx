@@ -10,9 +10,16 @@ import getSessions from '@/methods/data/get/getSessions'
 import getSettings from '@/methods/data/get/getSettings'
 import { Capacitor } from '@capacitor/core'
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { clsx } from 'clsx'
-import { AlertCircle, ChartPie, CogIcon, Layers, Play } from 'lucide-react'
+import {
+  AlertCircle,
+  ChartPie,
+  CogIcon,
+  Gamepad2,
+  Layers,
+  Play
+} from 'lucide-react'
 import { motion } from 'motion/react'
 import { memo, useEffect, useMemo, useState } from 'react'
 
@@ -47,28 +54,28 @@ function Index() {
       }
     },
     {
-      title: 'View sessions',
+      title: 'Play a <br /> mode',
+      icon: Gamepad2,
+      action: () => {
+        navigate({
+          to: '/modes',
+          viewTransition: { types: ['slide-left'] }
+        })
+      }
+    },
+    {
+      title: 'View all sessions',
       icon: Layers,
       action: () => {
         navigate({ to: '/sessions', viewTransition: { types: ['slide-left'] } })
       }
     },
     {
-      title: 'Show analytics',
+      title: 'Show your stats',
       icon: ChartPie,
       action: () => {
         navigate({
           to: '/analytics',
-          viewTransition: { types: ['slide-left'] }
-        })
-      }
-    },
-    {
-      title: 'Information & Help',
-      icon: AlertCircle,
-      action: () => {
-        navigate({
-          to: '/info',
           viewTransition: { types: ['slide-left'] }
         })
       }
@@ -122,15 +129,24 @@ function Index() {
           className="-ml-[18px]"
         />
 
-        <Reveal delay={displayIntro ? 3.2 : 0}>
-          <Button
-            size="icon"
-            variant="outline"
-            onClick={() => setSettingsOpen(true)}
-          >
-            <CogIcon />
-          </Button>
-        </Reveal>
+        <div className="flex items-center gap-2">
+          <Reveal delay={displayIntro ? 3.2 : 0}>
+            <Link to="/info">
+              <Button size="icon" variant="outline">
+                <AlertCircle />
+              </Button>
+            </Link>
+          </Reveal>
+          <Reveal delay={displayIntro ? 3.6 : 0.4}>
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <CogIcon />
+            </Button>
+          </Reveal>
+        </div>
       </div>
 
       <CreateSessionDrawer
@@ -186,10 +202,11 @@ function Index() {
             >
               <Card className="h-full">
                 <CardContent className="flex h-full flex-col justify-between gap-5">
-                  <action.icon className="" />
-                  <p className="text-lg font-semibold select-none">
-                    {action.title}
-                  </p>
+                  <action.icon />
+                  <p
+                    className="text-lg font-semibold select-none"
+                    dangerouslySetInnerHTML={{ __html: action.title }}
+                  ></p>
                 </CardContent>
               </Card>
             </motion.div>

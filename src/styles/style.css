@@ -121,3 +121,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.web [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="bottom"] {
+  max-width: 440px;
+  margin: 0 auto;
+}
