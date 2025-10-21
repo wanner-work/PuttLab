@@ -21,8 +21,6 @@ export class Session {
   @Column({ nullable: true, type: 'integer' })
   maxAttempts!: number
 
-  @ManyToOne(() => ModeRun, (moderun) => moderun.sessions, {
-    cascade: true
-  })
+  @ManyToOne(() => ModeRun, (moderun) => moderun.sessions)
   moderun!: ModeRun
 }
