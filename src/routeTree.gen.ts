@@ -17,6 +17,8 @@ import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as ImprovedIndexRouteImport } from './routes/improved/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
+import { Route as ImprovedSettingsIndexRouteImport } from './routes/improved/settings/index'
+import { Route as ImprovedSessionsIndexRouteImport } from './routes/improved/sessions/index'
 import { Route as ModesModeIdModeRunIdRouteImport } from './routes/modes/$modeId/$modeRunId'
 
 const InfoRoute = InfoRouteImport.update({
@@ -59,6 +61,16 @@ const ModesModeIdIndexRoute = ModesModeIdIndexRouteImport.update({
   path: '/modes/$modeId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImprovedSettingsIndexRoute = ImprovedSettingsIndexRouteImport.update({
+  id: '/improved/settings/',
+  path: '/improved/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImprovedSessionsIndexRoute = ImprovedSessionsIndexRouteImport.update({
+  id: '/improved/sessions/',
+  path: '/improved/sessions/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModesModeIdModeRunIdRoute = ModesModeIdModeRunIdRouteImport.update({
   id: '/modes/$modeId/$modeRunId',
   path: '/modes/$modeId/$modeRunId',
@@ -74,6 +86,8 @@ export interface FileRoutesByFullPath {
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
+  '/improved/sessions': typeof ImprovedSessionsIndexRoute
+  '/improved/settings': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +99,8 @@ export interface FileRoutesByTo {
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
+  '/improved/sessions': typeof ImprovedSessionsIndexRoute
+  '/improved/settings': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
 }
 export interface FileRoutesById {
@@ -97,6 +113,8 @@ export interface FileRoutesById {
   '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
+  '/improved/sessions/': typeof ImprovedSessionsIndexRoute
+  '/improved/settings/': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +128,8 @@ export interface FileRouteTypes {
     | '/modes'
     | '/sessions'
     | '/modes/$modeId/$modeRunId'
+    | '/improved/sessions'
+    | '/improved/settings'
     | '/modes/$modeId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +141,8 @@ export interface FileRouteTypes {
     | '/modes'
     | '/sessions'
     | '/modes/$modeId/$modeRunId'
+    | '/improved/sessions'
+    | '/improved/settings'
     | '/modes/$modeId'
   id:
     | '__root__'
@@ -132,6 +154,8 @@ export interface FileRouteTypes {
     | '/modes/'
     | '/sessions/'
     | '/modes/$modeId/$modeRunId'
+    | '/improved/sessions/'
+    | '/improved/settings/'
     | '/modes/$modeId/'
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +168,8 @@ export interface RootRouteChildren {
   ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
   ModesModeIdModeRunIdRoute: typeof ModesModeIdModeRunIdRoute
+  ImprovedSessionsIndexRoute: typeof ImprovedSessionsIndexRoute
+  ImprovedSettingsIndexRoute: typeof ImprovedSettingsIndexRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
 }
 
@@ -205,6 +231,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesModeIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/improved/settings/': {
+      id: '/improved/settings/'
+      path: '/improved/settings'
+      fullPath: '/improved/settings'
+      preLoaderRoute: typeof ImprovedSettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/improved/sessions/': {
+      id: '/improved/sessions/'
+      path: '/improved/sessions'
+      fullPath: '/improved/sessions'
+      preLoaderRoute: typeof ImprovedSessionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/modes/$modeId/$modeRunId': {
       id: '/modes/$modeId/$modeRunId'
       path: '/modes/$modeId/$modeRunId'
@@ -224,6 +264,8 @@ const rootRouteChildren: RootRouteChildren = {
   ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
   ModesModeIdModeRunIdRoute: ModesModeIdModeRunIdRoute,
+  ImprovedSessionsIndexRoute: ImprovedSessionsIndexRoute,
+  ImprovedSettingsIndexRoute: ImprovedSettingsIndexRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
 }
 export const routeTree = rootRouteImport

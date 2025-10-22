@@ -4,7 +4,6 @@ const QUERY = {
   CLIENT: new QueryClient({
     defaultOptions: {
       queries: {
-        experimental_prefetchInRender: true,
         staleTime: 1000 * 60 * 10,
         networkMode: 'always',
         refetchOnWindowFocus: false

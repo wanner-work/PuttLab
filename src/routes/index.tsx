@@ -126,6 +126,7 @@ function Index() {
         <AnimatedIcon
           shouldExit={false}
           delay={displayIntro ? 3 : 0}
+          duration={internal ? 0 : 1}
           className="-ml-[18px]"
         />
 

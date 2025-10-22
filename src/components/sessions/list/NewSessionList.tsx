@@ -1,13 +1,19 @@
 import type { Session } from '@/data/entities/session'
-import type { UseQueryResult } from '@tanstack/react-query'
-import { use } from 'react'
+import { motion } from 'motion/react'
 
-export default function NewSessionList({
-  query
-}: {
-  query: UseQueryResult<Session[]>
-}) {
-  const sessions = use(query.promise)
+interface Props {
+  sessions: Session[]
+}
 
-  return <div>{sessions.length} sessions loaded in NewSessionList</div>
+export default function NewSessionList({ sessions }: Props) {
+  return (
+    <motion.div
+      key="new-session-list"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      {sessions.length} sessions loaded in NewSessionList
+    </motion.div>
+  )
 }
