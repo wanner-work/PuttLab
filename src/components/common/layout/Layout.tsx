@@ -1,9 +1,18 @@
 import usePlatform from '@/hooks/capacitor/usePlatform'
 import clsx from 'clsx'
 import { motion } from 'motion/react'
-import { useMemo, type PropsWithChildren } from 'react'
+import { useMemo, type HTMLAttributes, type PropsWithChildren } from 'react'
 
-interface Props {
+interface Props
+  extends Omit<
+    HTMLAttributes<HTMLDivElement>,
+    | 'title'
+    | 'onDrag'
+    | 'onDragStart'
+    | 'onDragEnd'
+    | 'onAnimationStart'
+    | 'onAnimationEnd'
+  > {
   /**
    * Defines the row structure of the content area.
    * If there are multiple rows present, pass an array defining each row's height.
@@ -11,7 +20,12 @@ interface Props {
   rows?: string[]
 }
 
-export default function Layout({ rows, children }: PropsWithChildren<Props>) {
+export default function Layout({
+  rows,
+  children,
+  className,
+  ...props
+}: PropsWithChildren<Props>) {
   const platform = usePlatform()
 
   const containerClassName = useMemo(() => {
@@ -37,7 +51,8 @@ export default function Layout({ rows, children }: PropsWithChildren<Props>) {
 
   return (
     <motion.div
-      className={containerClassName}
+      className={clsx(containerClassName, className)}
+      {...props}
       initial={{
         background:
           'linear-gradient(-30deg, #36309400 0%, #1D177500 0%, #00000000 0%)'

@@ -6,6 +6,7 @@ import Editor from '@/components/pages/settings/Editor'
 import Version from '@/components/pages/settings/Version'
 import useSettings from '@/hooks/data/settings/useSettings'
 import { createFileRoute } from '@tanstack/react-router'
+import { AnimatePresence } from 'motion/react'
 
 export const Route = createFileRoute('/improved/settings/')({
   component: RouteComponent
@@ -19,11 +20,13 @@ function RouteComponent() {
       <Header backTo="/improved" />
       <Headline title="Settings" subtitle="Fine-tune your experience" />
 
-      {isLoading || !settings ? (
-        <LoadingDisplay />
-      ) : (
-        <Editor settings={settings} />
-      )}
+      <AnimatePresence mode="wait">
+        {isLoading || !settings ? (
+          <LoadingDisplay />
+        ) : (
+          <Editor settings={settings} />
+        )}
+      </AnimatePresence>
 
       <Version />
     </Layout>
