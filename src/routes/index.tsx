@@ -67,7 +67,7 @@ function Index() {
       title: 'View all sessions',
       icon: Layers,
       action: () => {
-        navigate({ to: '/improved', viewTransition: { types: ['slide-left'] } })
+        navigate({ to: '/sessions', viewTransition: { types: ['slide-left'] } })
       }
     },
     {

@@ -28,7 +28,10 @@ export default function Header({
             search={{ internal: true }}
             className="-ml-3 flex items-center justify-center p-3"
           >
-            <Button variant="link" className="!p-0">
+            <Button
+              variant="link"
+              className="!p-0 [view-transition-name:back-button]"
+            >
               <ChevronLeft className="text-muted-foreground size-6" />
             </Button>
           </Link>

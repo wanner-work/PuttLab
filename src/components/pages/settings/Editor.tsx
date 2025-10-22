@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import QUERY from '@/constants/QUERY'
-import useSettingsMutate from '@/hooks/data/settings/useSettingsMutate'
+import useSettingsMutation from '@/hooks/data/settings/useSettingsMutation'
 import type SettingsData from '@/interfaces/data/SettingsData'
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function Editor({ settings }: Props) {
-  const { mutate } = useSettingsMutate()
+  const { mutate } = useSettingsMutation()
 
   const onChange = (setting: Partial<SettingsData>) => {
     mutate({ ...settings, ...setting }, {})

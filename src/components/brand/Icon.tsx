@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 interface Props {
   className?: string
 }
@@ -5,15 +7,12 @@ interface Props {
 export default function Icon({ className }: Props) {
   return (
     <svg
-      className={className}
+      className={clsx(className, '[view-transition-name:app-icon]')}
       width="391"
       height="190"
       viewBox="0 0 391 190"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{
-        viewTransitionName: 'app-icon'
-      }}
     >
       <path
         d="M182.522 189.091H131.188V139.899L182.522 138.275V189.091ZM212.807 0C226.841 0 239.121 2.76979 249.646 8.30957C260.172 13.8493 268.359 21.6358 274.206 31.6689C280.054 41.7021 282.978 53.4281 282.978 66.8467C282.978 70.1912 282.792 73.4248 282.424 76.5479L222.449 85.3398C223.79 83.9846 224.947 82.4679 225.918 80.7881C228.257 76.8488 229.426 72.2016 229.426 66.8467C229.426 61.4301 228.257 56.8133 225.918 52.9971C223.641 49.1192 220.347 46.165 216.038 44.1338C211.791 42.041 206.651 40.9941 200.619 40.9941H182.522V91.1934L131.188 98.7188V0H212.807Z"

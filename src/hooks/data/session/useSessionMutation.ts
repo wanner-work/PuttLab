@@ -1,10 +1,10 @@
 import QUERY from '@/constants/QUERY'
-import updateSettings from '@/methods/data/update/updateSettings'
+import updateSession from '@/methods/data/update/updateSession'
 import { useMutation } from '@tanstack/react-query'
 
-export default function useSettingsMutate(onSuccess?: () => void) {
+export default function useSessionMutation(onSuccess?: () => void) {
   return useMutation({
-    mutationFn: updateSettings,
+    mutationFn: updateSession,
     onSuccess: () => {
       QUERY.CLIENT.invalidateQueries({ queryKey: [QUERY.CACHE_KEYS.SETTINGS] })
       onSuccess?.()
