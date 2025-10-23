@@ -38,7 +38,12 @@ export default function Step({
   const debouncedHits = useDebounce(hits, 400)
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => createSession(step.distance, step.repetitions, modeRun),
+    mutationFn: () =>
+      createSession({
+        distance: step.distance,
+        maxAttempts: step.repetitions,
+        modeRun: modeRun
+      }),
     onSuccess: (newSession) => {
       setSession(newSession)
       QUERY.CLIENT.invalidateQueries({

@@ -4,11 +4,17 @@ import { Session } from '@/data/entities/session'
 import PuttLabDataSource from '@/data/sources/PuttLabDataSource'
 import { Capacitor } from '@capacitor/core'
 
-export default async function createSession(
-  distance: number,
-  maxAttempts?: number,
+interface Params {
+  distance: number
+  maxAttempts?: number
   modeRun?: ModeRun
-) {
+}
+
+export default async function createSession({
+  distance,
+  maxAttempts,
+  modeRun
+}: Params) {
   const session = new Session()
   session.date = new Date().toISOString()
   session.attempts = 0

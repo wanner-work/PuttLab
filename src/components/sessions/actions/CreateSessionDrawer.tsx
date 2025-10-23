@@ -25,6 +25,7 @@ export default function CreateSessionDrawer({
   onOpenChange,
   onSuccess
 }: Readonly<DrawerProps<Session>>) {
+  const [attempts, setAttempts] = useState<string>('unlimited')
   const [distance, setDistance] = useState<string>('8')
 
   const { getDistance, unit } = useUnit()
@@ -40,10 +41,19 @@ export default function CreateSessionDrawer({
   })
 
   const create = () => {
-    mutate(Number(distance))
+    if (attempts === 'unlimited') {
+      mutate({
+        distance: Number(distance)
+      })
+    } else {
+      mutate({
+        distance: Number(distance),
+        maxAttempts: Number(attempts)
+      })
+    }
   }
 
-  const options = useMemo(() => {
+  const distanceOptions = useMemo(() => {
     const opts = []
     for (let i = 1; i <= 50; i++) {
       opts.push({ label: `${getDistance(i)} ${unit}`, value: String(i) })
@@ -51,21 +61,42 @@ export default function CreateSessionDrawer({
     return opts
   }, [unit, getDistance])
 
+  const attemptsOptions = useMemo(() => {
+    const opts = []
+    opts.push({ label: 'Unlimited', value: 'unlimited' })
+    for (const amount of [25, 50, 80, 100, 150, 200, 500]) {
+      opts.push({ label: `${amount} attempts`, value: String(amount) })
+    }
+    return opts
+  }, [])
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create a new training session</DrawerTitle>
-          <DrawerDescription>Define the distance.</DrawerDescription>
+          <DrawerDescription>
+            Define the distance and the <br />
+            amount of attempts.
+          </DrawerDescription>
         </DrawerHeader>
-        <div className="mx-4 my-4 px-4" data-vaul-no-drag>
+        <div className="mx-4 my-4 flex gap-3 px-4" data-vaul-no-drag>
           <WheelPickerWrapper>
             <WheelPicker
               optionItemHeight={40}
               visibleCount={12}
-              options={options}
+              options={distanceOptions}
               value={distance}
               onValueChange={setDistance}
+            />
+          </WheelPickerWrapper>
+          <WheelPickerWrapper>
+            <WheelPicker
+              optionItemHeight={40}
+              visibleCount={12}
+              options={attemptsOptions}
+              value={attempts}
+              onValueChange={setAttempts}
             />
           </WheelPickerWrapper>
         </div>
