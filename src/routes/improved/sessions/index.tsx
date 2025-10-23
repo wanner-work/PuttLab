@@ -34,13 +34,16 @@ function Sessions() {
     setCreateDrawerOpen(false)
 
     if (session) {
-      navigate({
-        to: '/improved/sessions/$sessionId',
-        params: {
-          sessionId: String(session.id)
-        },
-        viewTransition: { types: ['slide-left'] }
-      })
+      // waiting for the drawer to close
+      setTimeout(() => {
+        navigate({
+          to: '/improved/sessions/$sessionId',
+          params: {
+            sessionId: String(session.id)
+          },
+          viewTransition: { types: ['slide-left'] }
+        })
+      }, 200)
     }
   }
 
