@@ -5,6 +5,7 @@ import {
 import QUERY from '@/constants/QUERY.ts'
 import type { Session } from '@/data/entities/session.ts'
 import useUnit from '@/hooks/units/useUnit.ts'
+import type DrawerProps from '@/interfaces/ui/DrawerProps.ts'
 import createSession from '@/methods/data/create/createSession.ts'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
@@ -19,17 +20,11 @@ import {
   DrawerTitle
 } from '../../ui/drawer.tsx'
 
-interface Props {
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-  onSuccess?: (session: Session) => void
-}
-
 export default function CreateSessionDrawer({
   open,
   onOpenChange,
   onSuccess
-}: Readonly<Props>) {
+}: Readonly<DrawerProps<Session>>) {
   const [distance, setDistance] = useState<string>('8')
 
   const { getDistance, unit } = useUnit()

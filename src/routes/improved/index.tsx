@@ -1,14 +1,16 @@
 import Header from '@/components/common/layout/Header'
 import Layout from '@/components/common/layout/Layout'
 import Intro from '@/components/pages/home/Intro'
+import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDrawer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import type { Session } from '@/data/entities/session'
 import useSettings from '@/hooks/data/settings/useSettings'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { ChartBar, Layers, MenuIcon, Play, Plus } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 dayjs.extend(relativeTime)
 
@@ -23,7 +25,25 @@ export const Route = createFileRoute('/improved/')({
 
 function Home() {
   const { internal } = Route.useSearch()
+  const navigate = Route.useNavigate()
+
   const { settings } = useSettings()
+
+  const [createDrawerOpen, setCreateDrawerOpen] = useState(false)
+
+  const onCreateSuccess = (session: Session | undefined) => {
+    setCreateDrawerOpen(false)
+
+    if (session) {
+      navigate({
+        to: '/improved/sessions/$sessionId',
+        params: {
+          sessionId: String(session.id)
+        },
+        viewTransition: { types: ['slide-left'] }
+      })
+    }
+  }
 
   return (
     <Layout rows={['auto', '1fr', 'auto']}>
@@ -38,22 +58,23 @@ function Home() {
         </Link>
       </Header>
 
+      <CreateSessionDrawer
+        open={createDrawerOpen}
+        onOpenChange={setCreateDrawerOpen}
+        onSuccess={onCreateSuccess}
+      />
+
       <Intro animate={!internal && settings?.intro} />
 
       <div className="grid grid-cols-2 gap-3">
-        <Link
-          to="/improved/sessions"
-          viewTransition={{ types: ['slide-left'] }}
-        >
-          <Card>
-            <CardContent>
-              <Plus />
-              <p className="mt-5 text-lg font-medium select-none">
-                Create a <br /> session
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
+        <Card onClick={() => setCreateDrawerOpen(true)}>
+          <CardContent>
+            <Plus />
+            <p className="mt-5 text-lg font-medium select-none">
+              Create a <br /> session
+            </p>
+          </CardContent>
+        </Card>
         <Link
           to="/improved/sessions"
           viewTransition={{ types: ['slide-left'] }}

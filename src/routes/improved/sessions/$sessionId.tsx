@@ -35,14 +35,11 @@ function RouteComponent() {
       queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
     })
 
-    // Slight delay to allow drawer to close before navigating
-    setTimeout(() => {
-      navigate({
-        to: '/improved/sessions',
-        viewTransition: { types: ['slide-right'] },
-        replace: true
-      })
-    }, 200)
+    navigate({
+      to: '/improved/sessions',
+      viewTransition: { types: ['slide-right'] },
+      replace: true
+    })
   }
 
   return (
