@@ -10,8 +10,7 @@ import useSession from '@/hooks/data/session/useSession'
 import useSessionRecording from '@/hooks/sessions/useSessionRecording'
 import NumberFlow from '@number-flow/react'
 import { createFileRoute } from '@tanstack/react-router'
-import { Trash2 } from 'lucide-react'
-import { motion } from 'motion/react'
+import { Slash, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/improved/sessions/$sessionId')({
@@ -49,9 +48,19 @@ function RouteComponent() {
           <p className="mt-1.5 text-xs font-bold text-neutral-400 uppercase">
             attempts
           </p>
-          <motion.p className="font-mono text-lg font-bold">
-            <NumberFlow value={attempts} />
-          </motion.p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="font-mono text-lg font-bold">
+              <NumberFlow value={attempts} />
+            </p>
+            {session?.maxAttempts && (
+              <>
+                <Slash className="size-2 text-neutral-500" />
+                <p className="font-medium text-neutral-500">
+                  <NumberFlow value={session.maxAttempts} />
+                </p>
+              </>
+            )}
+          </div>
         </div>
 
         <Button
@@ -80,6 +89,7 @@ function RouteComponent() {
       </div>
       <RecorderControl
         session={session}
+        attempts={attempts}
         history={history}
         hit={onHit}
         miss={onMiss}

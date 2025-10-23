@@ -10,6 +10,7 @@ import RecorderSingle from './RecorderControlSingle.tsx'
 
 interface Props {
   session: Session | null | undefined
+  attempts: number
   history: HistoryEntry[]
   disabled?: boolean
   hit: () => void
@@ -22,6 +23,7 @@ export default memo(RecorderControl)
 
 function RecorderControl({
   session,
+  attempts,
   history,
   disabled,
   hit,
@@ -33,9 +35,9 @@ function RecorderControl({
     if (!session) return true
     if (disabled) return true
     if (session.maxAttempts) {
-      return session.attempts >= session.maxAttempts
+      return attempts >= session.maxAttempts
     }
-  }, [session, disabled])
+  }, [session, attempts, disabled])
 
   const { getLatest } = useHistory()
 
@@ -86,6 +88,8 @@ function RecorderControl({
         <TabsContent value="byBatch" className="flex flex-col gap-3">
           <RecorderBatch
             batch={batch}
+            attempts={attempts}
+            session={session}
             disabled={isDisabled}
             latest={typeof latest === 'number' ? latest : undefined}
           />

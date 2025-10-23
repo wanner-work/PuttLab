@@ -9,6 +9,7 @@ import {
   DrawerTrigger
 } from '@/components/ui/drawer.tsx'
 import QUERY from '@/constants/QUERY.ts'
+import type { Session } from '@/data/entities/session.ts'
 import useSettings from '@/hooks/data/settings/useSettings.ts'
 import vibrate from '@/methods/effects/vibrate.ts'
 import vibratePattern from '@/methods/effects/vibratePattern.ts'
@@ -21,6 +22,8 @@ import { Button } from '../../../ui/button.tsx'
 import RecorderControlBatchDrawer from './RecorderControlBatchDrawer.tsx'
 
 interface Props {
+  session: Session | null | undefined
+  attempts: number
   disabled?: boolean
   latest?: number
   batch: (attempts: number, hits: number) => void
@@ -28,17 +31,34 @@ interface Props {
 
 export default memo(RecorderControlBatch)
 
-function RecorderControlBatch({ batch, latest, disabled }: Props) {
+function RecorderControlBatch({
+  batch,
+  latest,
+  disabled,
+  session,
+  attempts
+}: Props) {
   const { settings } = useSettings()
 
   const [openSelectBatchAmount, setOpenSelectBatchAmount] = useState(false)
 
   const putters = useMemo(() => {
     if (settings?.putters && settings.putters > 0) {
-      return settings.putters
+      const p = settings.putters
+
+      if (session?.maxAttempts) {
+        const remaining = session.maxAttempts - attempts
+
+        if (remaining < p) {
+          return remaining
+        }
+      }
+
+      return p
     }
+
     return 0
-  }, [settings])
+  }, [settings, session, attempts])
 
   const isDismissible = useMemo(() => {
     return !(settings?.putters !== undefined && settings.putters === 0)
@@ -121,14 +141,14 @@ function RecorderControlBatch({ batch, latest, disabled }: Props) {
           </Button>
         </div>
       </div>
-      {settings?.putters && settings.putters > 0 && (
+      {putters !== undefined && putters > 0 && (
         <div
           className="grid max-w-full gap-2"
           style={{
             gridTemplateColumns: `repeat(auto-fit, minmax(3rem, 1fr))`
           }}
         >
-          {Array.from({ length: settings.putters + 1 }).map((_, index) => (
+          {Array.from({ length: putters + 1 }).map((_, index) => (
             <Button
               key={index}
               variant="secondary"

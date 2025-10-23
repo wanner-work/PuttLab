@@ -43,7 +43,7 @@ function Sessions() {
           },
           viewTransition: { types: ['slide-left'] }
         })
-      }, 200)
+      }, 300)
     }
   }
 
