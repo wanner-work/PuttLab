@@ -44,7 +44,7 @@ function Home() {
           },
           viewTransition: { types: ['slide-left'] }
         })
-      }, 200)
+      }, 300)
     }
   }
 
