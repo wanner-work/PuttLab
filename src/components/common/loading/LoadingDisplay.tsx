@@ -1,12 +1,21 @@
 import { Loader2 } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useEffect } from 'react'
+
+interface Props {
+  onMount?: () => void
+}
 
 /**
  * A loading display component that shows a loading animation.
  * This component is best placed inside a AnimatePresence mode wait component.
  * @returns A motion.div element with a loading message.
  */
-export default function LoadingDisplay() {
+export default function LoadingDisplay({ onMount }: Props) {
+  useEffect(() => {
+    if (onMount) onMount()
+  }, [onMount])
+
   return (
     <motion.div
       key="loading-display"

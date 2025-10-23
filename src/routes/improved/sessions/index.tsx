@@ -1,7 +1,7 @@
 import Header from '@/components/common/layout/Header'
 import Headline from '@/components/common/layout/Headline'
 import Layout from '@/components/common/layout/Layout'
-import LoadingDisplay from '@/components/common/loading/LoadingDisplay'
+import AnimateLoading from '@/components/common/loading/AnimateLoading'
 import SessionList from '@/components/pages/sessions/list/SessionList'
 import SessionListFilter from '@/components/pages/sessions/list/SessionListFilter'
 import useSessions from '@/hooks/data/sessions/useSessions'
@@ -9,7 +9,6 @@ import useSessionsFilter from '@/hooks/data/sessions/useSessionsFilter'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { AnimatePresence } from 'motion/react'
 import { memo, useState } from 'react'
 
 dayjs.extend(relativeTime)
@@ -30,13 +29,16 @@ function Sessions() {
 
       <SessionListFilter sessions={sessions || []} onFilter={setFilter} />
 
-      <AnimatePresence mode="wait">
-        {isLoading || !filteredSessions ? (
-          <LoadingDisplay />
-        ) : (
-          <SessionList key={filter} sessions={filteredSessions} />
+      <AnimateLoading
+        isLoading={isLoading || !filteredSessions}
+        render={({ wasLoading }) => (
+          <SessionList
+            key={filter}
+            wasLoaded={wasLoading}
+            sessions={filteredSessions}
+          />
         )}
-      </AnimatePresence>
+      />
     </Layout>
   )
 }

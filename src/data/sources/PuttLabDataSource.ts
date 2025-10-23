@@ -9,7 +9,7 @@ export default new DataSource({
   driver: connection,
   database: 'puttlab',
   entities: [Session, ModeRun],
-  logging: true,
+  logging: false,
   synchronize: true,
   migrationsRun: false,
   migrations: []

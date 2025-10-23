@@ -10,8 +10,8 @@ export default function Intro({ animate = true }: Props) {
   const delay = useCallback((delay: number) => (animate ? delay : 0), [animate])
 
   return (
-    <motion.div>
-      <h1 className="pt-18 text-[38px] leading-[50px] select-none">
+    <motion.div className="self-center">
+      <h1 className="text-[38px] leading-[50px] select-none">
         <motion.span
           className="mr-2 inline-block"
           initial={{ opacity: 0, scale: 0.8, x: -20 }}

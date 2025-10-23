@@ -1,15 +1,18 @@
 import Header from '@/components/common/layout/Header'
 import Layout from '@/components/common/layout/Layout'
+import DeleteSessionDrawer from '@/components/sessions/actions/DeleteSessionDrawer'
 import RecorderControl from '@/components/sessions/recorder/control/RecorderControl'
 import RecorderHeader from '@/components/sessions/recorder/header/RecorderHeader'
 import RecorderStats from '@/components/sessions/recorder/Stats/RecorderStats'
 import { Button } from '@/components/ui/button'
+import QUERY from '@/constants/QUERY'
 import useSession from '@/hooks/data/session/useSession'
 import useSessionRecording from '@/hooks/sessions/useSessionRecording'
 import NumberFlow from '@number-flow/react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Trash2 } from 'lucide-react'
 import { motion } from 'motion/react'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/improved/sessions/$sessionId')({
   component: RouteComponent
@@ -17,10 +20,30 @@ export const Route = createFileRoute('/improved/sessions/$sessionId')({
 
 function RouteComponent() {
   const { sessionId } = Route.useParams()
-  const { session } = useSession(sessionId)
 
+  const [deleteDrawerOpen, setDeleteDrawerOpen] = useState(false)
+
+  const navigate = Route.useNavigate()
+  const { session } = useSession(sessionId)
   const { attempts, hits, history, onHit, onMiss, onBatch, onUndo } =
     useSessionRecording(session)
+
+  const onDeleteSuccess = async () => {
+    setDeleteDrawerOpen(false)
+
+    await QUERY.CLIENT.invalidateQueries({
+      queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
+    })
+
+    // Slight delay to allow drawer to close before navigating
+    setTimeout(() => {
+      navigate({
+        to: '/improved/sessions',
+        viewTransition: { types: ['slide-right'] },
+        replace: true
+      })
+    }, 200)
+  }
 
   return (
     <Layout rows={['auto', '1fr', 'auto']}>
@@ -34,11 +57,25 @@ function RouteComponent() {
           </motion.p>
         </div>
 
-        <Button variant="destructive" size="sm">
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={() => setDeleteDrawerOpen(true)}
+        >
           <Trash2 />
           Delete
         </Button>
       </Header>
+
+      {session && (
+        <DeleteSessionDrawer
+          open={deleteDrawerOpen}
+          sessionId={session.id}
+          attempts={attempts}
+          onOpenChange={setDeleteDrawerOpen}
+          onSuccess={onDeleteSuccess}
+        />
+      )}
 
       <div className="flex flex-col justify-evenly overflow-auto pt-6">
         <RecorderHeader session={session} />

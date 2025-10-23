@@ -8,7 +8,7 @@ export default function useSessionsFilter(
   return useMemo(() => {
     return sessions.filter((session) => {
       if (!distanceFilter) return true
-      return session.distance <= distanceFilter
+      return session.distance === distanceFilter
     })
   }, [sessions, distanceFilter])
 }
