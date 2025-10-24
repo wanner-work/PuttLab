@@ -34,7 +34,7 @@ export default interface ModeDefinition {
     availableDistance: number
 
     /**
-     * The minimum time the user must have available to use this mode, in milliseconds.
+     * The minimum time the user must have available to use this mode, in minutes.
      */
     availableTime: number
 

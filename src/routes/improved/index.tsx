@@ -78,10 +78,7 @@ function Home() {
             </p>
           </CardContent>
         </Card>
-        <Link
-          to="/improved/sessions"
-          viewTransition={{ types: ['slide-left'] }}
-        >
+        <Link to="/improved/modes" viewTransition={{ types: ['slide-left'] }}>
           <Card>
             <CardContent>
               <Play />
