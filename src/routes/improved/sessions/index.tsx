@@ -1,3 +1,4 @@
+import EmptyDisplay from '@/components/common/empty/EmptyDisplay'
 import Header from '@/components/common/layout/Header'
 import Headline from '@/components/common/layout/Headline'
 import Layout from '@/components/common/layout/Layout'
@@ -66,6 +67,13 @@ function Sessions() {
 
       <AnimateLoading
         isLoading={isLoading || !filteredSessions}
+        isEmpty={filteredSessions.length === 0}
+        renderEmpty={() => (
+          <EmptyDisplay
+            className="pb-20"
+            message="No sessions found. Create one!"
+          />
+        )}
         render={({ wasLoading }) => (
           <SessionList
             key={filter}

@@ -20,7 +20,7 @@ export default function SessionList({ sessions, wasLoaded }: Props) {
       <List
         rowComponent={SessionListItem}
         rowCount={sessions.length || 0}
-        rowHeight={(index) => (index === sessions.length - 1 ? 94 : 82)}
+        rowHeight={(index) => (index === sessions.length - 1 ? 178 : 82)}
         rowProps={{ sessions }}
         overscanCount={5}
       />
