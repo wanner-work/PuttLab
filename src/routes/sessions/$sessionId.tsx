@@ -250,6 +250,7 @@ function RecorderRoute() {
       <RecorderControl
         session={session}
         history={history}
+        attempts={attempts}
         hit={onHit}
         miss={onMiss}
         batch={onBatch}

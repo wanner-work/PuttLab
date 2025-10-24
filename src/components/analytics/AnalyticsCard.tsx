@@ -89,12 +89,7 @@ export default function AnalyticsCard() {
     }
   }, [sessions])
 
-  const {
-    bullseyeAverage,
-    circleOneAverage,
-    circleTwoAverage,
-    outsideAverage
-  } = useMemo(() => {
+  const { circleOneAverage, circleTwoAverage, outsideAverage } = useMemo(() => {
     const bullseyeAverage = calculatePercentage(bullseyeAttempts, bullseyeHits)
 
     const circleOneAverage = calculatePercentage(

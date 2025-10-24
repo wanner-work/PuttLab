@@ -103,7 +103,7 @@ function Sessions() {
         onSuccess={(newSession) => {
           void navigate({
             to: '/sessions/$sessionId',
-            params: { sessionId: String(newSession.id) },
+            params: { sessionId: String(newSession?.id) },
             viewTransition: { types: ['slide-left'] }
           })
         }}

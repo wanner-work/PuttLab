@@ -50,7 +50,11 @@ function Index() {
       title: 'Start new Session',
       icon: Play,
       action: () => {
-        setCreateOpen(true)
+        navigate({
+          to: '/improved',
+          search: { internal: internal || false },
+          viewTransition: { types: ['slide-left'] }
+        })
       }
     },
     {
@@ -156,7 +160,7 @@ function Index() {
         onSuccess={(newSession) => {
           void navigate({
             to: '/sessions/$sessionId',
-            params: { sessionId: String(newSession.id) },
+            params: { sessionId: String(newSession?.id) },
             viewTransition: { types: ['slide-left'] }
           })
         }}

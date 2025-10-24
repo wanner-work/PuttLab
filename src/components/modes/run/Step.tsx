@@ -26,8 +26,7 @@ export default function Step({
   step,
   index,
   initialSession,
-  modeRun,
-  onComplete
+  modeRun
 }: Readonly<Props>) {
   const [session, setSession] = useState<Session | undefined>(undefined)
 
@@ -167,6 +166,7 @@ export default function Step({
         </AnimatePresence>
       </div>
       <RecorderControl
+        attempts={attempts}
         session={session}
         history={history}
         hit={onHit}
