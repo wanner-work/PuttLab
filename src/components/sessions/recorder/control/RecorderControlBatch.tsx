@@ -104,12 +104,20 @@ function RecorderControlBatch({
       />
       <div className="mt-1 flex justify-between gap-2">
         <div className="flex gap-1">
-          <Button className="!p-2 !px-2.5 text-xs" variant="secondary">
+          <Button
+            className="!p-2 !px-2.5 text-xs"
+            variant="secondary"
+            disabled={disabled}
+          >
             Batch Mode
           </Button>
           <Drawer>
             <DrawerTrigger asChild>
-              <Button className="!p-2 text-xs" variant="secondary">
+              <Button
+                className="!p-2 text-xs"
+                variant="secondary"
+                disabled={disabled}
+              >
                 <AlertCircleIcon />
               </Button>
             </DrawerTrigger>
@@ -132,6 +140,7 @@ function RecorderControlBatch({
 
         <div className="flex gap-2">
           <Button
+            disabled={disabled}
             onClick={() => setOpenSelectBatchAmount(true)}
             className="!p-2 !pl-2.5 text-xs"
             variant="secondary"
