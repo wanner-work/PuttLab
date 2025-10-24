@@ -88,7 +88,7 @@ function Sessions() {
           onClick={() => setCreateDrawerOpen(true)}
           className="rounded-full"
         >
-          <PlusIcon />
+          <PlusIcon strokeWidth={2} />
           Create Session
         </Button>
       </div>

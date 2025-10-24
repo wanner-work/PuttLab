@@ -22,7 +22,8 @@ import { Route as ImprovedSessionsIndexRouteImport } from './routes/improved/ses
 import { Route as ImprovedModesIndexRouteImport } from './routes/improved/modes/index'
 import { Route as ModesModeIdModeRunIdRouteImport } from './routes/modes/$modeId/$modeRunId'
 import { Route as ImprovedSessionsSessionIdRouteImport } from './routes/improved/sessions/$sessionId'
-import { Route as ImprovedModesModeIdRouteImport } from './routes/improved/modes/$modeId'
+import { Route as ImprovedModesModeIdIndexRouteImport } from './routes/improved/modes/$modeId/index'
+import { Route as ImprovedModesModeIdModeRunIdRouteImport } from './routes/improved/modes/$modeId/$modeRunId'
 
 const InfoRoute = InfoRouteImport.update({
   id: '/info',
@@ -90,11 +91,18 @@ const ImprovedSessionsSessionIdRoute =
     path: '/improved/sessions/$sessionId',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ImprovedModesModeIdRoute = ImprovedModesModeIdRouteImport.update({
-  id: '/improved/modes/$modeId',
-  path: '/improved/modes/$modeId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ImprovedModesModeIdIndexRoute =
+  ImprovedModesModeIdIndexRouteImport.update({
+    id: '/improved/modes/$modeId/',
+    path: '/improved/modes/$modeId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ImprovedModesModeIdModeRunIdRoute =
+  ImprovedModesModeIdModeRunIdRouteImport.update({
+    id: '/improved/modes/$modeId/$modeRunId',
+    path: '/improved/modes/$modeId/$modeRunId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,13 +112,14 @@ export interface FileRoutesByFullPath {
   '/improved': typeof ImprovedIndexRoute
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
-  '/improved/modes/$modeId': typeof ImprovedModesModeIdRoute
   '/improved/sessions/$sessionId': typeof ImprovedSessionsSessionIdRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
   '/improved/modes': typeof ImprovedModesIndexRoute
   '/improved/sessions': typeof ImprovedSessionsIndexRoute
   '/improved/settings': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/improved/modes/$modeId/$modeRunId': typeof ImprovedModesModeIdModeRunIdRoute
+  '/improved/modes/$modeId': typeof ImprovedModesModeIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -120,13 +129,14 @@ export interface FileRoutesByTo {
   '/improved': typeof ImprovedIndexRoute
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
-  '/improved/modes/$modeId': typeof ImprovedModesModeIdRoute
   '/improved/sessions/$sessionId': typeof ImprovedSessionsSessionIdRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
   '/improved/modes': typeof ImprovedModesIndexRoute
   '/improved/sessions': typeof ImprovedSessionsIndexRoute
   '/improved/settings': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/improved/modes/$modeId/$modeRunId': typeof ImprovedModesModeIdModeRunIdRoute
+  '/improved/modes/$modeId': typeof ImprovedModesModeIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -137,13 +147,14 @@ export interface FileRoutesById {
   '/improved/': typeof ImprovedIndexRoute
   '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
-  '/improved/modes/$modeId': typeof ImprovedModesModeIdRoute
   '/improved/sessions/$sessionId': typeof ImprovedSessionsSessionIdRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
   '/improved/modes/': typeof ImprovedModesIndexRoute
   '/improved/sessions/': typeof ImprovedSessionsIndexRoute
   '/improved/settings/': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
+  '/improved/modes/$modeId/$modeRunId': typeof ImprovedModesModeIdModeRunIdRoute
+  '/improved/modes/$modeId/': typeof ImprovedModesModeIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -155,13 +166,14 @@ export interface FileRouteTypes {
     | '/improved'
     | '/modes'
     | '/sessions'
-    | '/improved/modes/$modeId'
     | '/improved/sessions/$sessionId'
     | '/modes/$modeId/$modeRunId'
     | '/improved/modes'
     | '/improved/sessions'
     | '/improved/settings'
     | '/modes/$modeId'
+    | '/improved/modes/$modeId/$modeRunId'
+    | '/improved/modes/$modeId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -171,13 +183,14 @@ export interface FileRouteTypes {
     | '/improved'
     | '/modes'
     | '/sessions'
-    | '/improved/modes/$modeId'
     | '/improved/sessions/$sessionId'
     | '/modes/$modeId/$modeRunId'
     | '/improved/modes'
     | '/improved/sessions'
     | '/improved/settings'
     | '/modes/$modeId'
+    | '/improved/modes/$modeId/$modeRunId'
+    | '/improved/modes/$modeId'
   id:
     | '__root__'
     | '/'
@@ -187,13 +200,14 @@ export interface FileRouteTypes {
     | '/improved/'
     | '/modes/'
     | '/sessions/'
-    | '/improved/modes/$modeId'
     | '/improved/sessions/$sessionId'
     | '/modes/$modeId/$modeRunId'
     | '/improved/modes/'
     | '/improved/sessions/'
     | '/improved/settings/'
     | '/modes/$modeId/'
+    | '/improved/modes/$modeId/$modeRunId'
+    | '/improved/modes/$modeId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -204,13 +218,14 @@ export interface RootRouteChildren {
   ImprovedIndexRoute: typeof ImprovedIndexRoute
   ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
-  ImprovedModesModeIdRoute: typeof ImprovedModesModeIdRoute
   ImprovedSessionsSessionIdRoute: typeof ImprovedSessionsSessionIdRoute
   ModesModeIdModeRunIdRoute: typeof ModesModeIdModeRunIdRoute
   ImprovedModesIndexRoute: typeof ImprovedModesIndexRoute
   ImprovedSessionsIndexRoute: typeof ImprovedSessionsIndexRoute
   ImprovedSettingsIndexRoute: typeof ImprovedSettingsIndexRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
+  ImprovedModesModeIdModeRunIdRoute: typeof ImprovedModesModeIdModeRunIdRoute
+  ImprovedModesModeIdIndexRoute: typeof ImprovedModesModeIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -306,11 +321,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImprovedSessionsSessionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/improved/modes/$modeId': {
-      id: '/improved/modes/$modeId'
+    '/improved/modes/$modeId/': {
+      id: '/improved/modes/$modeId/'
       path: '/improved/modes/$modeId'
       fullPath: '/improved/modes/$modeId'
-      preLoaderRoute: typeof ImprovedModesModeIdRouteImport
+      preLoaderRoute: typeof ImprovedModesModeIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/improved/modes/$modeId/$modeRunId': {
+      id: '/improved/modes/$modeId/$modeRunId'
+      path: '/improved/modes/$modeId/$modeRunId'
+      fullPath: '/improved/modes/$modeId/$modeRunId'
+      preLoaderRoute: typeof ImprovedModesModeIdModeRunIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -324,13 +346,14 @@ const rootRouteChildren: RootRouteChildren = {
   ImprovedIndexRoute: ImprovedIndexRoute,
   ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
-  ImprovedModesModeIdRoute: ImprovedModesModeIdRoute,
   ImprovedSessionsSessionIdRoute: ImprovedSessionsSessionIdRoute,
   ModesModeIdModeRunIdRoute: ModesModeIdModeRunIdRoute,
   ImprovedModesIndexRoute: ImprovedModesIndexRoute,
   ImprovedSessionsIndexRoute: ImprovedSessionsIndexRoute,
   ImprovedSettingsIndexRoute: ImprovedSettingsIndexRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
+  ImprovedModesModeIdModeRunIdRoute: ImprovedModesModeIdModeRunIdRoute,
+  ImprovedModesModeIdIndexRoute: ImprovedModesModeIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
