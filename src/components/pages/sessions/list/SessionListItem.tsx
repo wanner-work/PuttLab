@@ -38,7 +38,7 @@ export default function SessionListItem({
           className: 'text-yellow-500 bg-yellow-300/20'
         }
       } else if (session.maxAttempts <= session.attempts) {
-        return { icon: Check, className: 'text-green-500 bg-green-300/20' }
+        return { icon: Check, className: 'text-blue-500 bg-blue-300/20' }
       }
     }
 

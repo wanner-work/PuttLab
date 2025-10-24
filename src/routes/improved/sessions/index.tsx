@@ -58,7 +58,11 @@ function Sessions() {
         onSuccess={onCreateSuccess}
       />
 
-      <SessionListFilter sessions={sessions || []} onFilter={setFilter} />
+      <SessionListFilter
+        sessions={sessions || []}
+        filteredSessions={filteredSessions}
+        onFilter={setFilter}
+      />
 
       <AnimateLoading
         isLoading={isLoading || !filteredSessions}
