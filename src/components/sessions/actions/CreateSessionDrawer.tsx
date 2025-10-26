@@ -5,7 +5,7 @@ import {
 import QUERY from '@/constants/QUERY.ts'
 import type { Session } from '@/data/entities/session.ts'
 import useUnit from '@/hooks/units/useUnit.ts'
-import type DrawerProps from '@/interfaces/ui/DrawerProps.ts'
+import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
 import createSession from '@/methods/data/create/createSession.ts'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'

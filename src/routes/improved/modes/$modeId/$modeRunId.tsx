@@ -1,6 +1,6 @@
 import Layout from '@/components/common/layout/Layout'
 import AnimateLoading from '@/components/common/loading/AnimateLoading'
-import ModeRunDisplay from '@/components/pages/modes/run/ModeRunDisplay'
+import ModeRunAction from '@/components/pages/modes/run/ModeRunAction.tsx'
 import useModeRun from '@/hooks/data/mode/useModeRun'
 import useMode from '@/hooks/modes/useMode'
 import { createFileRoute } from '@tanstack/react-router'
@@ -20,7 +20,7 @@ function ModeRun() {
       <AnimateLoading
         isLoading={isLoading || !modeRun}
         render={({ wasLoading }) => (
-          <ModeRunDisplay
+          <ModeRunAction
             wasLoaded={wasLoading}
             mode={mode}
             modeRun={modeRun!}

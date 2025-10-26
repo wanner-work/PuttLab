@@ -1,10 +1,12 @@
+import Screen from '@/components/common/layout/Screen.tsx'
 import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
 import type { Session } from '@/data/entities/session'
 import useSessionCreation from '@/hooks/data/session/useSessionCreation'
+import useModeStep from '@/hooks/modes/useModeStep.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
-import { AnimatePresence, motion } from 'motion/react'
-import { useMemo, useState } from 'react'
+import { AnimatePresence } from 'motion/react'
+import { useState } from 'react'
 import ModeRunStep from './ModeRunStep'
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
   modeRun: ModeRun
 }
 
-export default function ModeRunDisplay({ mode, modeRun }: Props) {
+export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
   const [sessions, setSessions] = useState<Session[]>(modeRun.sessions)
 
   const { mutate: createSession } = useSessionCreation((newSession) => {
@@ -22,45 +24,7 @@ export default function ModeRunDisplay({ mode, modeRun }: Props) {
     }
   })
 
-  const { step, session } = useMemo(() => {
-    if (sessions.length === 0) {
-      return {
-        step: mode.steps[0],
-        session: null
-      }
-    }
-
-    if (sessions.length >= mode.steps.length) {
-      return {
-        step: null,
-        session: null
-      }
-    }
-
-    console.log('sessions.length', sessions.length)
-
-    console.log('getting step and session for index', sessions.length - 1)
-
-    console.log('steps', sessions)
-    console.log('steps', mode.steps)
-    console.log('step complete', mode.steps[sessions.length - 1])
-
-    console.log(
-      'step',
-      mode.steps[sessions.length - 1].repetitions,
-      mode.steps[sessions.length - 1].distance
-    )
-    console.log(
-      'session',
-      sessions[sessions.length - 1].maxAttempts,
-      sessions[sessions.length - 1].distance
-    )
-
-    return {
-      step: mode.steps[sessions.length - 1],
-      session: sessions[sessions.length - 1]
-    }
-  }, [sessions, mode.steps])
+  const { step, session } = useModeStep(mode, sessions)
 
   const onStartStep = () => {
     const firstStep = mode.steps[0]
@@ -86,22 +50,17 @@ export default function ModeRunDisplay({ mode, modeRun }: Props) {
   }
 
   return (
-    <motion.div
+    <Screen
+      rows={['auto', '1fr']}
       key="mode-run-display"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2>Mode: {mode.name}</h2>
-      <h3>Mode Run: {modeRun.id}</h3>
-      <p>Sessions: {sessions.length}</p>
-      <h4>Current Step: {step ? step.label : 'Completed'}</h4>
+      <div></div>
 
       {sessions.length === 0 && (
-        <div>
-          Ready?
-          <Button onClick={onStartStep} variant="outline">
-            Let's Go!
-          </Button>
+        <div className="flex items-center justify-center">
+          <Button onClick={onStartStep}>Let's Go!</Button>
         </div>
       )}
 
@@ -116,6 +75,6 @@ export default function ModeRunDisplay({ mode, modeRun }: Props) {
           />
         )}
       </AnimatePresence>
-    </motion.div>
+    </Screen>
   )
 }

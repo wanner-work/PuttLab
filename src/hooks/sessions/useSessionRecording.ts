@@ -18,6 +18,7 @@ export default function useSessionRecording(
   const debouncedHits = useDebounce(hits, 400)
 
   const {
+    clearHistory,
     addHistoryEntry,
     getLastHistoryEntry,
     removeLastHistoryEntry,
@@ -47,7 +48,7 @@ export default function useSessionRecording(
   }
 
   const onUndo = () => {
-    vibrate(ImpactStyle.Medium)
+    void vibrate(ImpactStyle.Medium)
 
     const lastEntry = getLastHistoryEntry()
 
@@ -70,10 +71,12 @@ export default function useSessionRecording(
   }
 
   /**
-   * As soon as the session is loaded, set the hits and attempts
+   * As soon as the session is loaded, set the hits and attempts and clear
+   * the previous history
    */
   useEffect(() => {
     if (session) {
+      clearHistory()
       setHits(session.hits)
       setAttempts(session.attempts)
     }

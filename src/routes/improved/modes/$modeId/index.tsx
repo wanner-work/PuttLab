@@ -47,7 +47,7 @@ function Modes() {
           className="rounded-full"
         >
           {isPending ? <Loader className="animate-pulse" /> : <PlayIcon />}
-          Play {mode.name}
+          Play
         </Button>
       </div>
     </Layout>

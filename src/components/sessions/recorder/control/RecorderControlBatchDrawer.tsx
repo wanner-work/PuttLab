@@ -10,7 +10,7 @@ import {
 import { WheelPicker, WheelPickerWrapper } from '@/components/ui/wheel-picker'
 import useSettings from '@/hooks/data/settings/useSettings'
 import useSettingsMutation from '@/hooks/data/settings/useSettingsMutation'
-import type DrawerProps from '@/interfaces/ui/DrawerProps'
+import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
 import { Loader2Icon } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 

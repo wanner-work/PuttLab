@@ -1,4 +1,4 @@
-import type DrawerProps from '@/interfaces/ui/DrawerProps.ts'
+import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
 import deleteSession from '@/methods/data/delete/deleteSession.ts'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
