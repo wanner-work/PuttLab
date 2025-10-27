@@ -8,7 +8,7 @@ import useSettings from '@/hooks/data/settings/useSettings'
 import { createFileRoute } from '@tanstack/react-router'
 import { AnimatePresence } from 'motion/react'
 
-export const Route = createFileRoute('/improved/settings/')({
+export const Route = createFileRoute('/settings/')({
   component: RouteComponent
 })
 
@@ -17,7 +17,7 @@ function RouteComponent() {
 
   return (
     <Layout rows={['auto', 'auto', '1fr', 'auto']}>
-      <Header backTo="/improved" />
+      <Header backTo="/" />
       <Headline title="Settings" subtitle="Fine-tune your experience" />
 
       <AnimatePresence mode="wait">

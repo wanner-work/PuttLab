@@ -9,35 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as InfoRouteImport } from './routes/info'
-import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as ModesIndexRouteImport } from './routes/modes/index'
-import { Route as ImprovedIndexRouteImport } from './routes/improved/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
-import { Route as ImprovedSettingsIndexRouteImport } from './routes/improved/settings/index'
-import { Route as ImprovedSessionsIndexRouteImport } from './routes/improved/sessions/index'
-import { Route as ImprovedModesIndexRouteImport } from './routes/improved/modes/index'
 import { Route as ModesModeIdModeRunIdRouteImport } from './routes/modes/$modeId/$modeRunId'
-import { Route as ImprovedSessionsSessionIdRouteImport } from './routes/improved/sessions/$sessionId'
-import { Route as ImprovedModesModeIdIndexRouteImport } from './routes/improved/modes/$modeId/index'
-import { Route as ImprovedModesModeIdModeRunIdRouteImport } from './routes/improved/modes/$modeId/$modeRunId'
 
-const InfoRoute = InfoRouteImport.update({
-  id: '/info',
-  path: '/info',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnalyticsRoute = AnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SessionsIndexRoute = SessionsIndexRouteImport.update({
@@ -50,11 +37,6 @@ const ModesIndexRoute = ModesIndexRouteImport.update({
   path: '/modes/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ImprovedIndexRoute = ImprovedIndexRouteImport.update({
-  id: '/improved/',
-  path: '/improved/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   id: '/sessions/$sessionId',
   path: '/sessions/$sessionId',
@@ -65,190 +47,94 @@ const ModesModeIdIndexRoute = ModesModeIdIndexRouteImport.update({
   path: '/modes/$modeId/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ImprovedSettingsIndexRoute = ImprovedSettingsIndexRouteImport.update({
-  id: '/improved/settings/',
-  path: '/improved/settings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ImprovedSessionsIndexRoute = ImprovedSessionsIndexRouteImport.update({
-  id: '/improved/sessions/',
-  path: '/improved/sessions/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ImprovedModesIndexRoute = ImprovedModesIndexRouteImport.update({
-  id: '/improved/modes/',
-  path: '/improved/modes/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ModesModeIdModeRunIdRoute = ModesModeIdModeRunIdRouteImport.update({
   id: '/modes/$modeId/$modeRunId',
   path: '/modes/$modeId/$modeRunId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ImprovedSessionsSessionIdRoute =
-  ImprovedSessionsSessionIdRouteImport.update({
-    id: '/improved/sessions/$sessionId',
-    path: '/improved/sessions/$sessionId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ImprovedModesModeIdIndexRoute =
-  ImprovedModesModeIdIndexRouteImport.update({
-    id: '/improved/modes/$modeId/',
-    path: '/improved/modes/$modeId/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ImprovedModesModeIdModeRunIdRoute =
-  ImprovedModesModeIdModeRunIdRouteImport.update({
-    id: '/improved/modes/$modeId/$modeRunId',
-    path: '/improved/modes/$modeId/$modeRunId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
-  '/improved': typeof ImprovedIndexRoute
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
-  '/improved/sessions/$sessionId': typeof ImprovedSessionsSessionIdRoute
+  '/settings': typeof SettingsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
-  '/improved/modes': typeof ImprovedModesIndexRoute
-  '/improved/sessions': typeof ImprovedSessionsIndexRoute
-  '/improved/settings': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
-  '/improved/modes/$modeId/$modeRunId': typeof ImprovedModesModeIdModeRunIdRoute
-  '/improved/modes/$modeId': typeof ImprovedModesModeIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
-  '/improved': typeof ImprovedIndexRoute
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
-  '/improved/sessions/$sessionId': typeof ImprovedSessionsSessionIdRoute
+  '/settings': typeof SettingsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
-  '/improved/modes': typeof ImprovedModesIndexRoute
-  '/improved/sessions': typeof ImprovedSessionsIndexRoute
-  '/improved/settings': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
-  '/improved/modes/$modeId/$modeRunId': typeof ImprovedModesModeIdModeRunIdRoute
-  '/improved/modes/$modeId': typeof ImprovedModesModeIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
-  '/improved/': typeof ImprovedIndexRoute
   '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
-  '/improved/sessions/$sessionId': typeof ImprovedSessionsSessionIdRoute
+  '/settings/': typeof SettingsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
-  '/improved/modes/': typeof ImprovedModesIndexRoute
-  '/improved/sessions/': typeof ImprovedSessionsIndexRoute
-  '/improved/settings/': typeof ImprovedSettingsIndexRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
-  '/improved/modes/$modeId/$modeRunId': typeof ImprovedModesModeIdModeRunIdRoute
-  '/improved/modes/$modeId/': typeof ImprovedModesModeIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/analytics'
-    | '/info'
     | '/sessions/$sessionId'
-    | '/improved'
     | '/modes'
     | '/sessions'
-    | '/improved/sessions/$sessionId'
+    | '/settings'
     | '/modes/$modeId/$modeRunId'
-    | '/improved/modes'
-    | '/improved/sessions'
-    | '/improved/settings'
     | '/modes/$modeId'
-    | '/improved/modes/$modeId/$modeRunId'
-    | '/improved/modes/$modeId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/analytics'
-    | '/info'
     | '/sessions/$sessionId'
-    | '/improved'
     | '/modes'
     | '/sessions'
-    | '/improved/sessions/$sessionId'
+    | '/settings'
     | '/modes/$modeId/$modeRunId'
-    | '/improved/modes'
-    | '/improved/sessions'
-    | '/improved/settings'
     | '/modes/$modeId'
-    | '/improved/modes/$modeId/$modeRunId'
-    | '/improved/modes/$modeId'
   id:
     | '__root__'
     | '/'
-    | '/analytics'
-    | '/info'
     | '/sessions/$sessionId'
-    | '/improved/'
     | '/modes/'
     | '/sessions/'
-    | '/improved/sessions/$sessionId'
+    | '/settings/'
     | '/modes/$modeId/$modeRunId'
-    | '/improved/modes/'
-    | '/improved/sessions/'
-    | '/improved/settings/'
     | '/modes/$modeId/'
-    | '/improved/modes/$modeId/$modeRunId'
-    | '/improved/modes/$modeId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnalyticsRoute: typeof AnalyticsRoute
-  InfoRoute: typeof InfoRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
-  ImprovedIndexRoute: typeof ImprovedIndexRoute
   ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
-  ImprovedSessionsSessionIdRoute: typeof ImprovedSessionsSessionIdRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
   ModesModeIdModeRunIdRoute: typeof ModesModeIdModeRunIdRoute
-  ImprovedModesIndexRoute: typeof ImprovedModesIndexRoute
-  ImprovedSessionsIndexRoute: typeof ImprovedSessionsIndexRoute
-  ImprovedSettingsIndexRoute: typeof ImprovedSettingsIndexRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
-  ImprovedModesModeIdModeRunIdRoute: typeof ImprovedModesModeIdModeRunIdRoute
-  ImprovedModesModeIdIndexRoute: typeof ImprovedModesModeIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/info': {
-      id: '/info'
-      path: '/info'
-      fullPath: '/info'
-      preLoaderRoute: typeof InfoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analytics': {
-      id: '/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof AnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sessions/': {
@@ -265,13 +151,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/improved/': {
-      id: '/improved/'
-      path: '/improved'
-      fullPath: '/improved'
-      preLoaderRoute: typeof ImprovedIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sessions/$sessionId': {
       id: '/sessions/$sessionId'
       path: '/sessions/$sessionId'
@@ -286,27 +165,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesModeIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/improved/settings/': {
-      id: '/improved/settings/'
-      path: '/improved/settings'
-      fullPath: '/improved/settings'
-      preLoaderRoute: typeof ImprovedSettingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/improved/sessions/': {
-      id: '/improved/sessions/'
-      path: '/improved/sessions'
-      fullPath: '/improved/sessions'
-      preLoaderRoute: typeof ImprovedSessionsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/improved/modes/': {
-      id: '/improved/modes/'
-      path: '/improved/modes'
-      fullPath: '/improved/modes'
-      preLoaderRoute: typeof ImprovedModesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/modes/$modeId/$modeRunId': {
       id: '/modes/$modeId/$modeRunId'
       path: '/modes/$modeId/$modeRunId'
@@ -314,46 +172,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesModeIdModeRunIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/improved/sessions/$sessionId': {
-      id: '/improved/sessions/$sessionId'
-      path: '/improved/sessions/$sessionId'
-      fullPath: '/improved/sessions/$sessionId'
-      preLoaderRoute: typeof ImprovedSessionsSessionIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/improved/modes/$modeId/': {
-      id: '/improved/modes/$modeId/'
-      path: '/improved/modes/$modeId'
-      fullPath: '/improved/modes/$modeId'
-      preLoaderRoute: typeof ImprovedModesModeIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/improved/modes/$modeId/$modeRunId': {
-      id: '/improved/modes/$modeId/$modeRunId'
-      path: '/improved/modes/$modeId/$modeRunId'
-      fullPath: '/improved/modes/$modeId/$modeRunId'
-      preLoaderRoute: typeof ImprovedModesModeIdModeRunIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnalyticsRoute: AnalyticsRoute,
-  InfoRoute: InfoRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
-  ImprovedIndexRoute: ImprovedIndexRoute,
   ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
-  ImprovedSessionsSessionIdRoute: ImprovedSessionsSessionIdRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
   ModesModeIdModeRunIdRoute: ModesModeIdModeRunIdRoute,
-  ImprovedModesIndexRoute: ImprovedModesIndexRoute,
-  ImprovedSessionsIndexRoute: ImprovedSessionsIndexRoute,
-  ImprovedSettingsIndexRoute: ImprovedSettingsIndexRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
-  ImprovedModesModeIdModeRunIdRoute: ImprovedModesModeIdModeRunIdRoute,
-  ImprovedModesModeIdIndexRoute: ImprovedModesModeIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

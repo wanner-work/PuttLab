@@ -1,27 +1,20 @@
-import PageContainer from '@/components/basic/PageContainer.tsx'
+import EmptyDisplay from '@/components/common/empty/EmptyDisplay'
+import Header from '@/components/common/layout/Header'
+import Headline from '@/components/common/layout/Headline'
+import Layout from '@/components/common/layout/Layout'
+import AnimateLoading from '@/components/common/loading/AnimateLoading'
+import SessionList from '@/components/pages/sessions/list/SessionList'
+import SessionListFilter from '@/components/pages/sessions/list/SessionListFilter'
+import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDrawer'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import QUERY from '@/constants/QUERY'
-import calculatePercentage from '@/methods/calculations/calculatePercentage'
-import NumberFlow from '@number-flow/react'
-import { useQuery } from '@tanstack/react-query'
+import type { Session } from '@/data/entities/session'
+import useSessions from '@/hooks/data/sessions/useSessions'
+import useSessionsFilter from '@/hooks/data/sessions/useSessionsFilter'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
-import { PlusIcon, Stars, X } from 'lucide-react'
-import { memo, useMemo, useState } from 'react'
-import { List } from 'react-window'
-
-import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDrawer.tsx'
-import SessionListDistanceFilterOptions from '@/components/sessions/list/SessionListDistanceFilterOptions'
-import SessionListItem from '@/components/sessions/list/SessionListItem'
-import useUnit from '@/hooks/units/useUnit'
-import getSessions from '@/methods/data/get/getSessions'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { PlusIcon } from 'lucide-react'
+import { memo, useState } from 'react'
 
 dayjs.extend(relativeTime)
 
@@ -32,141 +25,73 @@ export const Route = createFileRoute('/sessions/')({
 function Sessions() {
   const navigate = Route.useNavigate()
 
-  const { getDistance, unit } = useUnit()
+  const [filter, setFilter] = useState<number | null>(null)
+  const [createDrawerOpen, setCreateDrawerOpen] = useState(false)
 
-  const [createOpen, setCreateOpen] = useState(false)
-  const [distanceFilter, setDistanceFilter] = useState<string | undefined>(
-    undefined
-  )
-  const [distanceFilterOpen, setDistanceFilterOpen] = useState(false)
+  const { isLoading, sessions } = useSessions()
+  const filteredSessions = useSessionsFilter(sessions || [], filter)
 
-  const { data: allSessions } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS],
-    queryFn: () => getSessions()
-  })
+  const onCreateSuccess = (session: Session | undefined) => {
+    setCreateDrawerOpen(false)
 
-  const { data: sessions } = useQuery({
-    queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, distanceFilter],
-    queryFn: ({ queryKey }) => {
-      return getSessions(Number(queryKey[1]))
-    },
-    enabled: !!distanceFilter
-  })
-
-  const amount = useMemo(() => {
-    if (allSessions === undefined) {
-      return 'No sessions'
+    if (session) {
+      // waiting for the drawer to close
+      setTimeout(() => {
+        navigate({
+          to: '/sessions/$sessionId',
+          params: {
+            sessionId: String(session.id)
+          },
+          viewTransition: { types: ['slide-left'] }
+        })
+      }, 300)
     }
-
-    if (distanceFilter === undefined) {
-      if (allSessions.length === 0) {
-        return 'No sessions'
-      }
-      return `${allSessions.length > 1 ? allSessions.length : 'one'} ${allSessions.length === 1 ? 'session' : 'sessions'}`
-    } else if (sessions !== undefined) {
-      return `${sessions.length > 1 ? sessions.length : 'one'} ${sessions.length === 1 ? 'session' : 'sessions'} for ${getDistance(Number(distanceFilter))} ${unit}`
-    }
-  }, [sessions, allSessions, distanceFilter, unit, getDistance])
-
-  const selectedAverage = useMemo(() => {
-    const sessionsToUse = sessions ?? allSessions
-
-    if (sessionsToUse === undefined || sessionsToUse.length === 0) {
-      return 0
-    }
-    const totalAttempts = sessionsToUse.reduce(
-      (sum, session) => sum + session.attempts,
-      0
-    )
-    const totalHits = sessionsToUse.reduce(
-      (sum, session) => sum + session.hits,
-      0
-    )
-
-    return calculatePercentage(totalAttempts, totalHits)
-  }, [sessions, allSessions])
+  }
 
   return (
-    <PageContainer
-      title="Sessions"
-      subtitle="Manage your training sessions"
-      back="/"
-      style={{
-        gridTemplateRows:
-          'minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, 1fr)'
-      }}
-      className="grid h-dvh pb-0"
-    >
+    <Layout rows={['auto', 'auto', 'auto', '1fr']} className="pb-0">
+      <Header backTo="/" />
+      <Headline title="Sessions" subtitle="Manage your sessions effectively" />
+
       <CreateSessionDrawer
-        open={createOpen}
-        onOpenChange={setCreateOpen}
-        onSuccess={(newSession) => {
-          void navigate({
-            to: '/sessions/$sessionId',
-            params: { sessionId: String(newSession?.id) },
-            viewTransition: { types: ['slide-left'] }
-          })
-        }}
+        open={createDrawerOpen}
+        onOpenChange={setCreateDrawerOpen}
+        onSuccess={onCreateSuccess}
       />
 
-      <div className="flex gap-3">
-        <Select
-          value={distanceFilter ?? ''}
-          onValueChange={(value) => setDistanceFilter(value || undefined)}
-          onOpenChange={() => setDistanceFilterOpen(true)}
-        >
-          <SelectTrigger id="distance" className="w-full">
-            <SelectValue placeholder="Filter for distance" />
-          </SelectTrigger>
+      <SessionListFilter
+        sessions={sessions || []}
+        filteredSessions={filteredSessions}
+        onFilter={setFilter}
+      />
 
-          <SelectContent>
-            {distanceFilterOpen && (
-              <SessionListDistanceFilterOptions sessions={allSessions || []} />
-            )}
-          </SelectContent>
-        </Select>
-        {distanceFilter && (
-          <Button
-            variant="outline"
-            onClick={() => setDistanceFilter(undefined)}
-          >
-            <X />
-          </Button>
+      <AnimateLoading
+        isLoading={isLoading || !filteredSessions}
+        isEmpty={filteredSessions.length === 0}
+        renderEmpty={() => (
+          <EmptyDisplay
+            className="pb-20"
+            message="No sessions found. Create one!"
+          />
         )}
-      </div>
-      <div className="my-4 flex items-center justify-between">
-        <p className="text-muted-foreground text-sm uppercase">{amount}</p>
-        <p className="text-muted-foreground font-mono text-sm font-bold">
-          <NumberFlow value={selectedAverage} suffix="%" />
-        </p>
-      </div>
-      <div className="overflow-hidden">
-        {(!sessions && !allSessions) ||
-          (allSessions && allSessions.length === 0 && (
-            <div className="text-muted-foreground flex h-full flex-col items-center justify-center p-4">
-              <Stars strokeWidth={1.5} className="mb-4 inline-block size-8" />
-              <p className="max-w-32 text-center">
-                No sessions yet. Create one!
-              </p>
-            </div>
-          ))}
+        render={({ wasLoading }) => (
+          <SessionList
+            key={filter}
+            wasLoaded={wasLoading}
+            sessions={filteredSessions}
+          />
+        )}
+      />
 
-        <List
-          rowComponent={SessionListItem}
-          rowCount={(sessions || allSessions)?.length || 0}
-          rowHeight={(index) =>
-            index === ((sessions || allSessions)?.length || 0) - 1 ? 172 : 82
-          }
-          rowProps={{ sessions: sessions || allSessions || [] }}
-        />
+      <div className="fixed bottom-6 left-0 flex w-full justify-center">
+        <Button
+          onClick={() => setCreateDrawerOpen(true)}
+          className="rounded-full"
+        >
+          <PlusIcon strokeWidth={2} />
+          Create Session
+        </Button>
       </div>
-      <Button
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full font-bold"
-        onClick={() => setCreateOpen(true)}
-      >
-        <PlusIcon strokeWidth={3} />
-        Create Session
-      </Button>
-    </PageContainer>
+    </Layout>
   )
 }

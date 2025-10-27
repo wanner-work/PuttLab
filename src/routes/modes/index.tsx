@@ -1,12 +1,12 @@
-import PageContainer from '@/components/basic/PageContainer.tsx'
+import Header from '@/components/common/layout/Header'
+import Headline from '@/components/common/layout/Headline'
+import Layout from '@/components/common/layout/Layout'
+import ModesList from '@/components/pages/modes/list/ModesList'
+import useModes from '@/hooks/data/modes/useModes'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
-import { memo } from 'react'
-import { List } from 'react-window'
-
-import ModeListItem from '@/components/modes/list/ModeListItem.tsx'
-import MODES from '@/constants/MODES.ts'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { memo } from 'react'
 
 dayjs.extend(relativeTime)
 
@@ -15,24 +15,14 @@ export const Route = createFileRoute('/modes/')({
 })
 
 function Modes() {
+  const modes = useModes()
+
   return (
-    <PageContainer
-      title="Modes"
-      subtitle="Select a mode to play"
-      back="/"
-      style={{
-        gridTemplateRows: 'minmax(0, auto) minmax(0, auto) minmax(0, 1fr)'
-      }}
-      className="grid h-dvh pb-0"
-    >
-      <div className="overflow-hidden">
-        <List
-          rowComponent={ModeListItem}
-          rowCount={MODES.DEFINITIONS.length}
-          rowHeight={160}
-          rowProps={{ modes: MODES.DEFINITIONS }}
-        />
-      </div>
-    </PageContainer>
+    <Layout rows={['auto', 'auto', '1fr']} className="pb-0">
+      <Header backTo="/" />
+      <Headline title="Modes" subtitle="Train by playing a mode" />
+
+      <ModesList modes={modes} />
+    </Layout>
   )
 }

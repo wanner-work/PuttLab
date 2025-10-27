@@ -51,7 +51,7 @@ export default function SessionListItem({
   return (
     <Link
       key={session.id}
-      to="/improved/sessions/$sessionId"
+      to="/sessions/$sessionId"
       viewTransition={{ types: ['slide-left'] }}
       params={{ sessionId: String(session.id) }}
       className="select-none"

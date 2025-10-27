@@ -17,7 +17,7 @@ export default function ModeListItem({
 
   return (
     <Link
-      to="/improved/modes/$modeId"
+      to="/modes/$modeId"
       viewTransition={{ types: ['slide-left'] }}
       params={{ modeId: String(mode.id) }}
       className="select-none"

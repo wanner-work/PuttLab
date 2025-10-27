@@ -1,56 +1,55 @@
-import PageContainer from '@/components/basic/PageContainer.tsx'
+import Header from '@/components/common/layout/Header'
+import Headline from '@/components/common/layout/Headline'
+import Layout from '@/components/common/layout/Layout'
 import { Button } from '@/components/ui/button'
+import useModeRunCreation from '@/hooks/data/mode/useModeRunCreation'
 import useMode from '@/hooks/modes/useMode'
-import createModeRun from '@/methods/data/create/createModeRun'
-import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { Loader2Icon, PlayIcon } from 'lucide-react'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { Loader, PlayIcon } from 'lucide-react'
 import { memo } from 'react'
 
+dayjs.extend(relativeTime)
+
 export const Route = createFileRoute('/modes/$modeId/')({
-  component: memo(ModeRoute)
+  component: memo(Modes)
 })
 
-function ModeRoute() {
+function Modes() {
   const navigate = Route.useNavigate()
 
-  const { modeId } = Route.useParams()
-  const mode = useMode(modeId)
+  const mode = useMode(Route.useParams().modeId)
 
-  const { mutate: create, isPending } = useMutation({
-    mutationFn: () => createModeRun(modeId),
-    onSuccess: (modeRun) => {
+  const { mutate: createModeRun, isPending } = useModeRunCreation(
+    mode.id,
+    (modeRun) => {
       navigate({
         to: '/modes/$modeId/$modeRunId',
         params: {
-          modeId,
+          modeId: mode.id,
           modeRunId: String(modeRun.id)
         },
-        viewTransition: { types: ['slide-right'] }
+        viewTransition: { types: ['slide-left'] }
       })
     }
-  })
+  )
 
   return (
-    <PageContainer
-      className="grid h-dvh max-h-full"
-      style={{
-        gridTemplateRows: 'minmax(0, auto) minmax(0, 1fr) minmax(0, auto)'
-      }}
-      back="/modes"
-      title={mode.name}
-      subtitle={mode.description}
-      actions={<></>}
-    >
-      <Button
-        onClick={() => create()}
-        disabled={isPending}
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full font-bold"
-      >
-        {isPending && <Loader2Icon className="animate-spin" />}
-        <PlayIcon strokeWidth={3} />
-        Play now!
-      </Button>
-    </PageContainer>
+    <Layout rows={['auto', 'auto', '1fr']} className="pb-0">
+      <Header backTo="/modes" />
+      <Headline title={mode.name} subtitle={mode.description} />
+
+      <div className="fixed bottom-6 left-0 flex w-full justify-center">
+        <Button
+          disabled={isPending}
+          onClick={() => createModeRun()}
+          className="rounded-full"
+        >
+          {isPending ? <Loader className="animate-pulse" /> : <PlayIcon />}
+          Play
+        </Button>
+      </div>
+    </Layout>
   )
 }

@@ -10,6 +10,7 @@ export default function useModeStep(
   return useMemo(() => {
     if (!sessions) {
       return {
+        index: undefined,
         step: undefined,
         session: null
       }
@@ -17,6 +18,7 @@ export default function useModeStep(
 
     if (sessions.length === 0) {
       return {
+        index: 0,
         step: mode.steps[0],
         session: null
       }
@@ -28,6 +30,7 @@ export default function useModeStep(
         sessions.at(-1)!.attempts >= sessions.at(-1)!.maxAttempts)
     ) {
       return {
+        index: mode.steps.length - 1,
         step: null,
         session: null
       }
@@ -35,12 +38,14 @@ export default function useModeStep(
 
     if (sessions.length > mode.steps.length) {
       return {
+        index: mode.steps.length - 1,
         step: null,
         session: null
       }
     }
 
     return {
+      index: sessions.length - 1,
       step: mode.steps[sessions.length - 1],
       session: sessions.at(-1)
     }

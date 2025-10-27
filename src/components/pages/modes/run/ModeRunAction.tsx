@@ -5,6 +5,8 @@ import type { Session } from '@/data/entities/session'
 import useSessionCreation from '@/hooks/data/session/useSessionCreation'
 import useModeStep from '@/hooks/modes/useModeStep.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
+import NumberFlow from '@number-flow/react'
+import { Slash } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
 import ModeRunStep from './ModeRunStep'
@@ -25,7 +27,11 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
     }
   })
 
-  const { step, session } = useModeStep(mode, sessions, isCurrentlyFinished)
+  const { step, index, session } = useModeStep(
+    mode,
+    sessions,
+    isCurrentlyFinished
+  )
 
   const isNotStarted = useMemo(() => sessions.length === 0, [sessions])
   const isFinished = useMemo(() => {
@@ -71,7 +77,22 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div></div>
+      <div className="flex flex-col items-center justify-center text-center">
+        <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
+          Steps
+        </p>
+        <div className="flex items-center gap-2">
+          <p className="font-mono text-lg font-bold">
+            <NumberFlow
+              value={index !== undefined && index !== null ? index + 1 : 0}
+            />
+          </p>
+          <Slash className="size-2 text-neutral-500" />
+          <p className="font-mono text-lg font-medium text-neutral-300">
+            <NumberFlow value={mode.steps.length} />
+          </p>
+        </div>
+      </div>
 
       {isNotStarted && (
         <div className="flex items-center justify-center">
