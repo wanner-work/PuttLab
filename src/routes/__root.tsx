@@ -1,8 +1,16 @@
+import Screen from '@/components/common/layout/Screen.tsx'
+import { Button } from '@/components/ui/button.tsx'
 import usePlatform from '@/hooks/capacitor/usePlatform'
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import clsx from 'clsx'
+import { CircleOff, MoveLeft } from 'lucide-react'
 import { motion } from 'motion/react'
 import { memo, useMemo } from 'react'
+
+export const Route = createRootRoute({
+  component: memo(RootLayout),
+  notFoundComponent: NotFound
+})
 
 function RootLayout() {
   const platform = usePlatform()
@@ -44,4 +52,36 @@ function RootLayout() {
   )
 }
 
-export const Route = createRootRoute({ component: memo(RootLayout) })
+function NotFound() {
+  return (
+    <Screen className="items-center justify-center">
+      <div className="text-center">
+        <CircleOff className="mx-auto mb-6 size-10 text-neutral-400" />
+        <p className="mb-16 text-lg text-neutral-400">
+          Genuinely,<span className="italic"> how on earth</span>
+          <br />
+          did you get here?
+        </p>
+        <Link
+          to="/"
+          search={{
+            internal: true
+          }}
+          viewTransition={{ types: ['slide-right'] }}
+        >
+          <Button>
+            <MoveLeft />
+            Take me back
+          </Button>
+        </Link>
+        <a
+          className="mt-2 flex justify-center gap-2 text-center font-light text-neutral-400 italic underline"
+          href="https://github.com/wanner-work/PuttLab/issues/new?template=bug_report.md"
+          target="_blank"
+        >
+          <span>or report a bug</span>
+        </a>
+      </div>
+    </Screen>
+  )
+}
