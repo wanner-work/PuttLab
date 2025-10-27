@@ -15,12 +15,19 @@ interface Props {
   session: Session
   modeRun: ModeRun
   mode: ModeDefinition
-  onComplete: () => void
+  onComplete: (session: Session) => void
 }
 
 export default function ModeRunStep({ step, session, onComplete }: Props) {
   const { attempts, hits, history, onHit, onMiss, onBatch, onUndo } =
     useSessionRecording(session)
+
+  const handleComplete = () => {
+    session.attempts = attempts
+    session.hits = hits
+
+    onComplete(session)
+  }
 
   return (
     <Screen
@@ -70,7 +77,7 @@ export default function ModeRunStep({ step, session, onComplete }: Props) {
       </div>
       <div>
         {attempts === step.repetitions && (
-          <Button onClick={onComplete} className="mb-4 w-full">
+          <Button onClick={handleComplete} className="mb-4 w-full">
             Continue
             <CheckIcon strokeWidth={2} className="size-5" />
           </Button>

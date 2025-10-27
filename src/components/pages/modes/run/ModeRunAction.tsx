@@ -54,7 +54,14 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
     })
   }
 
-  const onNextStep = () => {
+  const onNextStep = (updatedSession: Session) => {
+    // update the session in the list to keep state in sync
+    setSessions((prev) =>
+      prev.map((session) =>
+        session.id === updatedSession.id ? updatedSession : session
+      )
+    )
+
     const nextStepIndex = sessions.length
     if (nextStepIndex >= mode.steps.length) {
       setIsCurrentlyFinished(true)
@@ -78,20 +85,24 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
       animate={{ opacity: 1 }}
     >
       <div className="flex flex-col items-center justify-center text-center">
-        <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-          Steps
-        </p>
-        <div className="flex items-center gap-2">
-          <p className="font-mono text-lg font-bold">
-            <NumberFlow
-              value={index !== undefined && index !== null ? index + 1 : 0}
-            />
-          </p>
-          <Slash className="size-2 text-neutral-500" />
-          <p className="font-mono text-lg font-medium text-neutral-300">
-            <NumberFlow value={mode.steps.length} />
-          </p>
-        </div>
+        {!isFinished && (
+          <>
+            <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
+              Steps
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="font-mono text-lg font-bold">
+                <NumberFlow
+                  value={index !== undefined && index !== null ? index + 1 : 0}
+                />
+              </p>
+              <Slash className="size-2 text-neutral-500" />
+              <p className="font-mono text-lg font-medium text-neutral-300">
+                <NumberFlow value={mode.steps.length} />
+              </p>
+            </div>
+          </>
+        )}
       </div>
 
       {isNotStarted && (
@@ -102,8 +113,13 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
 
       {isFinished && (
         <div className="flex flex-col items-center justify-center gap-4">
-          <h2 className="text-2xl font-semibold">Well Done!</h2>
-          <p>You have completed all the steps in this mode.</p>
+          <p className="font-mono text-3xl font-bold">
+            {mode.calculateScore({
+              sessions,
+              modeRun,
+              mode
+            })}
+          </p>
         </div>
       )}
 

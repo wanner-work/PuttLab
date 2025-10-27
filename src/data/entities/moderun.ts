@@ -12,9 +12,6 @@ export class ModeRun {
   @Column('text')
   date!: string
 
-  @Column('float')
-  score!: number
-
   @OneToMany(() => Session, (session) => session.modeRun, {
     cascade: true
   })

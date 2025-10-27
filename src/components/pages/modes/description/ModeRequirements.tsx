@@ -2,10 +2,11 @@ import useUnit from '@/hooks/units/useUnit'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 
 interface Props {
-  requirements: ModeDefinition['requirements']
+  mode: ModeDefinition
 }
 
-export default function ModeIntroduction({ requirements }: Props) {
+export default function ModeIntroduction({ mode }: Props) {
+  const { requirements } = mode
   const { getDistance, unit } = useUnit()
 
   return (

@@ -4,7 +4,6 @@ import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
 
 export default interface ModeCalculationParams {
   sessions: Session[]
-  elapsedTime: number
-  run: ModeRun
-  definition: ModeDefinition
+  modeRun: ModeRun
+  mode: ModeDefinition
 }
