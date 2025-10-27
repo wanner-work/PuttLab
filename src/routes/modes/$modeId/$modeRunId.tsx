@@ -23,7 +23,6 @@ function RouteComponent() {
   })
   const stepIndex = useMemo(() => {
     if (!modeRun) return 0
-    console.log('moderun', modeRun) // For debugging
     return modeRun.sessions?.length || 0
   }, [modeRun])
 

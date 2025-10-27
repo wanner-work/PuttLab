@@ -4,7 +4,8 @@ import { useMemo } from 'react'
 
 export default function useModeStep(
   mode: ModeDefinition,
-  sessions: Session[] | undefined
+  sessions: Session[] | undefined,
+  isCurrentlyFinished?: boolean
 ) {
   return useMemo(() => {
     if (!sessions) {
@@ -21,7 +22,18 @@ export default function useModeStep(
       }
     }
 
-    if (sessions.length >= mode.steps.length) {
+    if (
+      isCurrentlyFinished ||
+      (sessions.length === mode.steps.length &&
+        sessions.at(-1)!.attempts >= sessions.at(-1)!.maxAttempts)
+    ) {
+      return {
+        step: null,
+        session: null
+      }
+    }
+
+    if (sessions.length > mode.steps.length) {
       return {
         step: null,
         session: null
@@ -32,5 +44,5 @@ export default function useModeStep(
       step: mode.steps[sessions.length - 1],
       session: sessions.at(-1)
     }
-  }, [sessions, mode.steps])
+  }, [sessions, mode.steps, isCurrentlyFinished])
 }
