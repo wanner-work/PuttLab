@@ -9,6 +9,7 @@ export default function getModeRuns(mode: string) {
     },
     relations: {
       sessions: true
-    }
+    },
+    order: { date: 'DESC' }
   })
 }
