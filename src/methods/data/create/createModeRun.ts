@@ -9,7 +9,6 @@ export default async function createModeRun(modeId: string) {
   const modeRun = new ModeRun()
   modeRun.date = new Date().toISOString()
   modeRun.mode = modeId
-  modeRun.score = 0
   modeRun.sessions = []
 
   await PuttLabDataSource.getRepository(ModeRun).save(modeRun)
