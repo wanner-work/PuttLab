@@ -1,12 +1,13 @@
 import Header from '@/components/common/layout/Header'
 import Layout from '@/components/common/layout/Layout'
 import ModeHeadline from '@/components/pages/modes/detail/ModeHeadline.tsx'
-import ModeRules from '@/components/pages/modes/detail/ModeRules.tsx'
+import ModeHighlights from '@/components/pages/modes/detail/ModeHighlights'
+import ModeInformation from '@/components/pages/modes/detail/ModeInformation'
 import { Badge } from '@/components/ui/badge.tsx'
 import { Button } from '@/components/ui/button'
+import useMode from '@/hooks/data/mode/useMode'
 import useModeRunCreation from '@/hooks/data/mode/useModeRunCreation'
 import useModeRuns from '@/hooks/data/mode/useModeRuns'
-import useMode from '@/hooks/modes/useMode'
 import NumberFlow from '@number-flow/react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import dayjs from 'dayjs'
@@ -41,11 +42,12 @@ function Modes() {
   )
 
   return (
-    <Layout rows={['auto', 'auto', '1fr']} className="pb-0">
-      <Header backTo="/modes" />
+    <Layout rows={['1fr']} className="overflow-auto pb-0">
+      <Header backTo="/modes" className="sticky top-6" />
       <ModeHeadline mode={mode} />
 
-      <ModeRules mode={mode} />
+      <ModeHighlights mode={mode} modeRuns={modeRuns} />
+      <ModeInformation mode={mode} />
 
       <div className="fixed bottom-6 left-0 flex w-full justify-center">
         <Link

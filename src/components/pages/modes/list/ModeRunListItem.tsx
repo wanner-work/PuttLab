@@ -1,4 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card'
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import NumberFlow from '@number-flow/react'
@@ -43,16 +42,14 @@ export default function ModeRunListItem({
 
   return (
     <div style={style} className="">
-      <Card>
-        <CardContent>
-          <p className="mb-2 font-mono text-xs font-bold text-neutral-400">
-            # {modeRun.id}
-          </p>
-          <p className="font-mono text-2xl font-bold">
-            {dnf ? 'DNF' : <NumberFlow value={score} />}
-          </p>
-        </CardContent>
-      </Card>
+      <div className="bg-card rounded-3xl border px-4 py-2">
+        <p className="mb-2 font-mono text-xs font-bold text-neutral-400">
+          # {modeRun.id}
+        </p>
+        <p className="font-mono text-2xl font-bold">
+          {dnf ? 'DNF' : <NumberFlow value={score} />}
+        </p>
+      </div>
     </div>
   )
 }

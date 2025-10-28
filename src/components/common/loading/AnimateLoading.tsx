@@ -32,20 +32,37 @@ interface Props {
    * @returns A ReactNode to be rendered when there is no data after the loading.
    */
   renderEmpty?: (params: RenderParams) => ReactNode
+
+  /**
+   * Render a UI while loading. If not provided, a default loading display will be used.
+   *
+   * @returns A ReactNode to be rendered when loading.
+   */
+  renderLoading?: () => ReactNode
 }
 
 export default function AnimateLoading({
   isLoading,
   isEmpty,
   render,
-  renderEmpty
+  renderEmpty,
+  renderLoading
 }: Props) {
   const [wasLoading, setWasLoading] = useState(false)
 
   return (
     <AnimatePresence mode="wait">
       {isLoading ? (
-        <LoadingDisplay onMount={() => setWasLoading(true)} />
+        <>
+          {renderLoading ? (
+            <>
+              {setWasLoading(true)}
+              {renderLoading()}
+            </>
+          ) : (
+            <LoadingDisplay onMount={() => setWasLoading(true)} />
+          )}
+        </>
       ) : isEmpty && renderEmpty ? (
         renderEmpty({
           wasLoading,

@@ -1,6 +1,7 @@
+import QUERY from '@/constants/QUERY.ts'
+import type { ModeRun } from '@/data/entities/moderun.ts'
+import useModeRunDeletion from '@/hooks/data/mode/useModeRunDeletion.ts'
 import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
-import deleteSession from '@/methods/data/delete/deleteSession.ts'
-import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
 import { Button } from '../../ui/button.tsx'
 import {
@@ -14,40 +15,46 @@ import {
 } from '../../ui/drawer.tsx'
 
 interface Props extends DrawerProps {
-  sessionId: number
-  attempts: number
+  modeId: string
+  modeRuns: ModeRun[]
 }
 
-export default function DeleteSessionDrawer({
+export default function DeleteDNFModeRunDrawer({
   open,
   onOpenChange,
   onSuccess,
-  sessionId,
-  attempts
+  modeId,
+  modeRuns
 }: Props) {
-  const { mutate: remove, isPending: isRemoving } = useMutation({
-    mutationFn: deleteSession,
-    onSuccess: () => onSuccess?.()
+  const { remove, isPending } = useModeRunDeletion(() => {
+    QUERY.CLIENT.invalidateQueries({
+      queryKey: [QUERY.CACHE_KEYS.MODE_RUN, modeId]
+    })
+    onSuccess?.()
   })
+
+  const handleDelete = () => {
+    remove(modeRuns)
+  }
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="">
         <DrawerHeader>
-          <DrawerTitle>Delete this session?</DrawerTitle>
+          <DrawerTitle>Delete all DNF mode runs?</DrawerTitle>
           <DrawerDescription>
-            Are you sure you want to delete this session?{' '}
-            {attempts > 0 && `All ${attempts} recorded attempts will be lost.`}{' '}
+            Are you sure you want to delete all {modeRuns.length} mode runs
+            which you did not finish?{' '}
             <strong>This action cannot be undone.</strong>
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="mx-4">
           <Button
-            onClick={() => remove(sessionId)}
-            disabled={isRemoving}
+            onClick={handleDelete}
+            disabled={isPending}
             variant="destructive"
           >
-            {isRemoving && <Loader2Icon className="animate-spin" />}
+            {isPending && <Loader2Icon className="animate-spin" />}
             Delete
           </Button>
           <DrawerClose asChild>

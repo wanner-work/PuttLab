@@ -7,7 +7,7 @@ interface Props {
   mode: ModeDefinition
 }
 
-export default function ModeRules({ mode }: Props) {
+export default function ModeInformation({ mode }: Props) {
   const { requirements } = mode
   const { getDistance, unit } = useUnit()
 
@@ -21,7 +21,7 @@ export default function ModeRules({ mode }: Props) {
     return Array.from(distances).sort((a, b) => a - b)
   }, [mode])
   return (
-    <div className="h-full overflow-auto pb-26">
+    <div className="h-full pb-26">
       <Card className="mb-2">
         <CardHeader>
           <CardTitle className="mt-1">Rules & Requirements</CardTitle>
@@ -58,7 +58,7 @@ export default function ModeRules({ mode }: Props) {
         <CardHeader>
           <CardTitle className="mt-1">Notes</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="-mt-4">
           <p className="text-sm">
             It is recommended to mark the distances before starting the mode.
             This mode includes:{' '}

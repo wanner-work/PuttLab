@@ -14,7 +14,7 @@ export default function ModeTag({
   return (
     <motion.div
       className={clsx(
-        'inline-block rounded-lg bg-[#363094]/20 px-2 py-1 font-mono text-xs font-bold text-[#363094] uppercase',
+        'inline-block rounded-lg bg-[#363094]/20 px-2 pt-1 pb-0.5 font-mono text-xs font-bold text-[#363094] uppercase',
         className
       )}
       {...props}
