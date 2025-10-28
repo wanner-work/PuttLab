@@ -1,25 +1,24 @@
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
 import calculation from '@/modes/circleOneChampion/calculation.ts'
-import Introduction from '@/modes/circleOneChampion/Introduction.tsx'
-import Result from '@/modes/circleOneChampion/Result.tsx'
 import { TrophyIcon } from 'lucide-react'
 
 const definition: ModeDefinition = {
   id: 'circle-one-champion',
-  name: 'Circle One Champion',
-  description: 'The circle one putting challenge.',
+  name: 'Circle One',
+  category: 'champion',
+  description: 'The official circle one putting challenge.',
   icon: TrophyIcon,
   requirements: {
     availableDistance: 9,
     availableTime: 15,
-    availablePutters: 1
+    allowedPutters: 1,
+    additionalInformation:
+      'It is advised to mark your distances before starting. This mode needs the following'
   },
   settings: {
     countdown: false,
     infinite: false
   },
-  introduction: Introduction,
-  result: Result,
   calculateScore: calculation,
   steps: [
     {

@@ -15,6 +15,12 @@ export default interface ModeDefinition {
   name: string
 
   /**
+   * The category of the mode. Will be used to group modes in the UI and will maybe separate
+   * free modes from paid ones in the future.
+   */
+  category: 'standard' | 'champion'
+
+  /**
    * A very brief description of the mode.
    */
   description: string
@@ -39,9 +45,14 @@ export default interface ModeDefinition {
     availableTime: number
 
     /**
-     * The minimum number of putters the user must have to use this mode.
+     * The maximum number of putters the user is allowed to use while playing this mode.
      */
-    availablePutters: number
+    allowedPutters: number
+
+    /**
+     * Additional information about the mode that will be displayed to the user.
+     */
+    additionalInformation: string
   }
 
   /**
@@ -59,16 +70,6 @@ export default interface ModeDefinition {
      */
     infinite: boolean
   }
-
-  /**
-   * Introduction Component
-   */
-  introduction: FunctionComponent<{ mode: ModeDefinition }>
-
-  /**
-   * Result Component
-   */
-  result: FunctionComponent<{ mode: ModeDefinition }>
 
   /**
    * Calculation function to determine the score of a session.

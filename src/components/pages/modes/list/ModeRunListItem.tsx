@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import NumberFlow from '@number-flow/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { RowComponentProps } from 'react-window'
 
 interface Props {
@@ -19,6 +19,17 @@ export default function ModeRunListItem({
   const modeRun = modeRuns[index]
 
   const [score, setScore] = useState<number>(0)
+
+  const dnf = useMemo(() => {
+    if (modeRun.sessions.length < mode.steps.length) {
+      return true
+    } else {
+      const lastSession = modeRun.sessions.at(-1)
+      return lastSession
+        ? lastSession.attempts < lastSession.maxAttempts
+        : false
+    }
+  }, [modeRun])
 
   useEffect(() => {
     setScore(
@@ -38,7 +49,7 @@ export default function ModeRunListItem({
             # {modeRun.id}
           </p>
           <p className="font-mono text-2xl font-bold">
-            <NumberFlow value={score} />
+            {dnf ? 'DNF' : <NumberFlow value={score} />}
           </p>
         </CardContent>
       </Card>

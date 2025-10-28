@@ -15,6 +15,7 @@ import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
+import { Route as ModesModeIdRunsRouteImport } from './routes/modes/$modeId/runs'
 import { Route as ModesModeIdModeRunIdRouteImport } from './routes/modes/$modeId/$modeRunId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const ModesModeIdIndexRoute = ModesModeIdIndexRouteImport.update({
   path: '/modes/$modeId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModesModeIdRunsRoute = ModesModeIdRunsRouteImport.update({
+  id: '/modes/$modeId/runs',
+  path: '/modes/$modeId/runs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModesModeIdModeRunIdRoute = ModesModeIdModeRunIdRouteImport.update({
   id: '/modes/$modeId/$modeRunId',
   path: '/modes/$modeId/$modeRunId',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
+  '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
+  '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/sessions/': typeof SessionsIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
+  '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/sessions'
     | '/settings'
     | '/modes/$modeId/$modeRunId'
+    | '/modes/$modeId/runs'
     | '/modes/$modeId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/sessions'
     | '/settings'
     | '/modes/$modeId/$modeRunId'
+    | '/modes/$modeId/runs'
     | '/modes/$modeId'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/sessions/'
     | '/settings/'
     | '/modes/$modeId/$modeRunId'
+    | '/modes/$modeId/runs'
     | '/modes/$modeId/'
   fileRoutesById: FileRoutesById
 }
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   SessionsIndexRoute: typeof SessionsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
   ModesModeIdModeRunIdRoute: typeof ModesModeIdModeRunIdRoute
+  ModesModeIdRunsRoute: typeof ModesModeIdRunsRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
 }
 
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesModeIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/modes/$modeId/runs': {
+      id: '/modes/$modeId/runs'
+      path: '/modes/$modeId/runs'
+      fullPath: '/modes/$modeId/runs'
+      preLoaderRoute: typeof ModesModeIdRunsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/modes/$modeId/$modeRunId': {
       id: '/modes/$modeId/$modeRunId'
       path: '/modes/$modeId/$modeRunId'
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   SessionsIndexRoute: SessionsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
   ModesModeIdModeRunIdRoute: ModesModeIdModeRunIdRoute,
+  ModesModeIdRunsRoute: ModesModeIdRunsRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
 }
 export const routeTree = rootRouteImport

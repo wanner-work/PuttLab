@@ -1,5 +1,4 @@
 import Screen from '@/components/common/layout/Screen.tsx'
-import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
 import type { Session } from '@/data/entities/session'
 import useSessionCreation from '@/hooks/data/session/useSessionCreation'
@@ -33,7 +32,6 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
     isCurrentlyFinished
   )
 
-  const isNotStarted = useMemo(() => sessions.length === 0, [sessions])
   const isFinished = useMemo(() => {
     if (isCurrentlyFinished) return true
     if (sessions.length >= mode.steps.length) {
@@ -43,16 +41,6 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
         : false
     }
   }, [sessions, mode.steps.length, isCurrentlyFinished])
-
-  const onStartStep = () => {
-    const firstStep = mode.steps[0]
-
-    createSession({
-      modeRun,
-      maxAttempts: firstStep.repetitions,
-      distance: firstStep.distance
-    })
-  }
 
   const onNextStep = (updatedSession: Session) => {
     // update the session in the list to keep state in sync
@@ -104,12 +92,6 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
           </>
         )}
       </div>
-
-      {isNotStarted && (
-        <div className="flex items-center justify-center">
-          <Button onClick={onStartStep}>Let's Go!</Button>
-        </div>
-      )}
 
       {isFinished && (
         <div className="flex flex-col items-center justify-center gap-4">
