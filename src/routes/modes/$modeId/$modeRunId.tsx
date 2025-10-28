@@ -1,8 +1,8 @@
 import Layout from '@/components/common/layout/Layout'
 import AnimateLoading from '@/components/common/loading/AnimateLoading'
 import ModeRunAction from '@/components/pages/modes/run/ModeRunAction.tsx'
-import useModeRun from '@/hooks/data/mode/useModeRun'
 import useMode from '@/hooks/data/mode/useMode'
+import useModeRun from '@/hooks/data/mode/useModeRun'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/modes/$modeId/$modeRunId')({

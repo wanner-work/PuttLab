@@ -1,4 +1,5 @@
 import Screen from '@/components/common/layout/Screen.tsx'
+import QUERY from '@/constants/QUERY'
 import type { ModeRun } from '@/data/entities/moderun'
 import type { Session } from '@/data/entities/session'
 import useSessionCreation from '@/hooks/data/session/useSessionCreation'
@@ -53,6 +54,9 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
     const nextStepIndex = sessions.length
     if (nextStepIndex >= mode.steps.length) {
       setIsCurrentlyFinished(true)
+      QUERY.CLIENT.invalidateQueries({
+        queryKey: [QUERY.CACHE_KEYS.MODE_RUN]
+      })
       return
     }
 
