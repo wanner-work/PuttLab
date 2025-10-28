@@ -51,12 +51,13 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
       )
     )
 
+    QUERY.CLIENT.invalidateQueries({
+      queryKey: [QUERY.CACHE_KEYS.MODE_RUN]
+    })
+
     const nextStepIndex = sessions.length
     if (nextStepIndex >= mode.steps.length) {
       setIsCurrentlyFinished(true)
-      QUERY.CLIENT.invalidateQueries({
-        queryKey: [QUERY.CACHE_KEYS.MODE_RUN]
-      })
       return
     }
 

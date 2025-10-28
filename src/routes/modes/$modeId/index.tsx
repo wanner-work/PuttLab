@@ -5,6 +5,7 @@ import ModeHighlights from '@/components/pages/modes/detail/ModeHighlights'
 import ModeInformation from '@/components/pages/modes/detail/ModeInformation'
 import { Badge } from '@/components/ui/badge.tsx'
 import { Button } from '@/components/ui/button'
+import QUERY from '@/constants/QUERY'
 import useMode from '@/hooks/data/mode/useMode'
 import useModeRunCreation from '@/hooks/data/mode/useModeRunCreation'
 import useModeRuns from '@/hooks/data/mode/useModeRuns'
@@ -30,6 +31,9 @@ function Modes() {
   const { mutate: createModeRun, isPending } = useModeRunCreation(
     mode,
     (modeRun) => {
+      QUERY.CLIENT.invalidateQueries({
+        queryKey: [QUERY.CACHE_KEYS.MODE_RUN]
+      })
       navigate({
         to: '/modes/$modeId/$modeRunId',
         params: {
