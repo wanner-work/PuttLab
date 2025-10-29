@@ -31,5 +31,5 @@ export default function calculation({
   if (weightedAttempts === 0) return 0
 
   const score = (weightedHits / weightedAttempts) * 100
-  return Number(Math.max(0, Math.min(100, score)).toFixed(3))
+  return Number(Math.max(0, Math.min(100, score)).toFixed(1))
 }

@@ -77,7 +77,7 @@ export default interface ModeDefinition {
    * It receives all the sessions of the mode, the ModeRun object as well as the elapsed time in ms and the entire mode definition.
    * It should return a number representing the score of the session.
    *
-   * Cut to 3 decimal places.
+   * Cut to 1 decimal place.
    */
   calculateScore: (params: ModeCalculationParams) => number
 

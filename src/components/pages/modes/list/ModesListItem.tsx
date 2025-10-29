@@ -25,7 +25,6 @@ export default function ModeListItem({
     >
       <Card>
         <CardContent>
-          <mode.icon className="mt-1 mb-4 size-8" />
           <ModeTag mode={mode.category} className="mb-2" />
           <p className="text-xl">{mode.name}</p>
           <p className="text-sm text-neutral-400">{mode.description}</p>
