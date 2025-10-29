@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card.tsx'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
 import { Link } from '@tanstack/react-router'
 import type { RowComponentProps } from 'react-window'
+import ModeTag from '../detail/ModeTag'
 
 interface Props {
   modes: ModeDefinition[]
@@ -25,13 +25,10 @@ export default function ModeListItem({
     >
       <Card>
         <CardContent>
-          <mode.icon className="mb-4 size-8" />
+          <mode.icon className="mt-1 mb-4 size-8" />
+          <ModeTag mode={mode.category} className="mb-2" />
           <p className="text-xl">{mode.name}</p>
           <p className="text-sm text-neutral-400">{mode.description}</p>
-
-          <Button className="mt-4 w-full" size="sm" variant="outline">
-            Play Mode
-          </Button>
         </CardContent>
       </Card>
     </Link>

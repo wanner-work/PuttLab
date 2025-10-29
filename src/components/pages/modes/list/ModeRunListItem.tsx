@@ -1,6 +1,9 @@
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import NumberFlow from '@number-flow/react'
+import clsx from 'clsx'
+import dayjs from 'dayjs'
+import { Slash } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { RowComponentProps } from 'react-window'
 
@@ -28,7 +31,11 @@ export default function ModeRunListItem({
         ? lastSession.attempts < lastSession.maxAttempts
         : false
     }
-  }, [modeRun])
+  }, [modeRun, mode.steps.length])
+
+  const date = useMemo(() => {
+    return dayjs(modeRun.date).fromNow()
+  }, [modeRun.date])
 
   useEffect(() => {
     setScore(
@@ -42,12 +49,21 @@ export default function ModeRunListItem({
 
   return (
     <div style={style} className="">
-      <div className="bg-card rounded-3xl border px-4 py-2">
-        <p className="mb-2 font-mono text-xs font-bold text-neutral-400">
-          # {modeRun.id}
+      <div
+        className={clsx(
+          'bg-card rounded-3xl border px-5 py-4',
+          dnf && 'opacity-50'
+        )}
+      >
+        <p className="mb-0 flex items-center gap-3 font-mono text-xs font-bold text-neutral-400">
+          # {modeRun.id} <Slash className="inline-block size-2" /> {date}
         </p>
-        <p className="font-mono text-2xl font-bold">
-          {dnf ? 'DNF' : <NumberFlow value={score} />}
+        <p className="-mb-2 font-mono text-2xl font-bold">
+          {dnf ? (
+            <span className="block h-[36px]">DNF</span>
+          ) : (
+            <NumberFlow value={score} />
+          )}
         </p>
       </div>
     </div>

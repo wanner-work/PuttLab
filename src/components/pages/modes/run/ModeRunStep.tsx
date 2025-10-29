@@ -1,10 +1,10 @@
 import Screen from '@/components/common/layout/Screen.tsx'
 import RecorderControl from '@/components/sessions/recorder/control/RecorderControl'
-import RecorderHeader from '@/components/sessions/recorder/header/RecorderHeader'
 import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
 import type { Session } from '@/data/entities/session'
 import useSessionRecording from '@/hooks/sessions/useSessionRecording'
+import useUnit from '@/hooks/units/useUnit'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import type ModeStep from '@/interfaces/data/mode/ModeStep'
 import NumberFlow from '@number-flow/react'
@@ -22,6 +22,8 @@ export default function ModeRunStep({ step, session, onComplete }: Props) {
   const { attempts, hits, history, onHit, onMiss, onBatch, onUndo } =
     useSessionRecording(session)
 
+  const { getDistance, unit } = useUnit()
+
   const handleComplete = () => {
     session.attempts = attempts
     session.hits = hits
@@ -38,6 +40,15 @@ export default function ModeRunStep({ step, session, onComplete }: Props) {
     >
       <div className="flex flex-col justify-evenly overflow-auto pt-6">
         <div className="text-center">
+          <p className="font-mono text-xl font-bold text-neutral-400 uppercase">
+            <NumberFlow
+              value={getDistance(session.distance)}
+              suffix={' ' + unit}
+            />
+          </p>
+          <p className="mt-8 mb-10 font-mono text-4xl font-bold uppercase">
+            {step.label}
+          </p>
           <p className="text-xs font-bold text-neutral-400 uppercase">
             Attempts
           </p>
@@ -50,11 +61,7 @@ export default function ModeRunStep({ step, session, onComplete }: Props) {
               <NumberFlow value={step.repetitions} />
             </p>
           </div>
-          <p className="mt-6 font-mono text-3xl font-bold uppercase">
-            {step.label}
-          </p>
         </div>
-        <RecorderHeader session={session} />
         <div className="mx-auto mt-4 flex w-full max-w-96 items-center justify-around gap-3 px-4 text-center">
           <div className="w-32">
             <p className="-mb-2 text-xs font-bold text-neutral-400 uppercase">

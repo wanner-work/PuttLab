@@ -12,8 +12,6 @@ export class ModeRun {
   @Column('text')
   date!: string
 
-  @OneToMany(() => Session, (session) => session.modeRun, {
-    cascade: true
-  })
+  @OneToMany(() => Session, (session) => session.modeRun, { cascade: true })
   sessions!: Session[]
 }

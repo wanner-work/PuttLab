@@ -65,7 +65,7 @@ export default function ModeHighlights({ modeRuns, mode }: Props) {
               />
             </p>
             <p className="text-muted-foreground font-mono text-sm uppercase">
-              Last run: {latest}
+              Latest: {latest}
             </p>
           </div>
         </div>

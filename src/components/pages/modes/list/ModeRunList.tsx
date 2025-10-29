@@ -22,7 +22,7 @@ export default function ModeRunList({ modeRuns, mode, wasLoaded }: Props) {
       <List
         rowComponent={ModeRunListItem}
         rowCount={modeRuns.length || 0}
-        rowHeight={(index) => (index === modeRuns.length - 1 ? 120 : 82)}
+        rowHeight={(index) => (index === modeRuns.length - 1 ? 120 : 86)}
         rowProps={{ modeRuns, mode }}
         overscanCount={5}
       />

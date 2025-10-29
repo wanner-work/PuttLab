@@ -9,6 +9,7 @@ import NumberFlow from '@number-flow/react'
 import { Slash } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
+import ModeRunFinish from './ModeRunFinish'
 import ModeRunStep from './ModeRunStep'
 
 interface Props {
@@ -98,17 +99,7 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
         )}
       </div>
 
-      {isFinished && (
-        <div className="flex flex-col items-center justify-center gap-4">
-          <p className="font-mono text-3xl font-bold">
-            {mode.calculateScore({
-              sessions,
-              modeRun,
-              mode
-            })}
-          </p>
-        </div>
-      )}
+      {isFinished && <ModeRunFinish mode={mode} modeRun={modeRun} />}
 
       <AnimatePresence mode="wait">
         {step && session && (
