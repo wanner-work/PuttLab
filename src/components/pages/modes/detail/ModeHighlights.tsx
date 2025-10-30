@@ -8,7 +8,7 @@ import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import NumberFlow from '@number-flow/react'
 import dayjs from 'dayjs'
 import party from 'party-js'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { CartesianGrid, Line, LineChart, YAxis } from 'recharts'
 
 interface Props {
@@ -17,6 +17,8 @@ interface Props {
 }
 
 export default function ModeHighlights({ modeRuns, mode }: Props) {
+  const hasRunRef = useRef(false)
+
   const calculatedRuns = useModeRunsCalculated(mode, modeRuns || [], false)
   const highscoreRun = useModeRunHighscore(mode, modeRuns || [])
 
@@ -30,11 +32,13 @@ export default function ModeHighlights({ modeRuns, mode }: Props) {
   const { ref, run } = useParty()
 
   useEffect(() => {
+    if (hasRunRef.current) return
     if (highscoreRun && highscoreRun.score === 100) {
       run({
         count: 20,
         size: party.variation.range(0.8, 1.2)
       })
+      hasRunRef.current = true
     }
   }, [highscoreRun, run])
 
