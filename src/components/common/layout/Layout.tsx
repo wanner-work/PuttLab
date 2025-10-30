@@ -1,6 +1,6 @@
-import Screen from '@/components/common/layout/Screen.tsx'
+import Screen from '@/components/common/layout/Grid'
 import usePlatform from '@/hooks/capacitor/usePlatform'
-import type ScreenProps from '@/interfaces/ui/layout/ScreenProps.ts'
+import type GridProps from '@/interfaces/ui/layout/GridProps'
 import clsx from 'clsx'
 import { useMemo, type PropsWithChildren } from 'react'
 
@@ -9,7 +9,7 @@ export default function Layout({
   children,
   className,
   ...props
-}: PropsWithChildren<ScreenProps>) {
+}: PropsWithChildren<GridProps>) {
   const platform = usePlatform()
 
   const containerClassName = useMemo(() => {

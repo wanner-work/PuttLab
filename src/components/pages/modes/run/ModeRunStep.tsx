@@ -1,4 +1,4 @@
-import Screen from '@/components/common/layout/Screen.tsx'
+import Grid from '@/components/common/layout/Grid'
 import RecorderControl from '@/components/sessions/recorder/control/RecorderControl'
 import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
@@ -32,7 +32,7 @@ export default function ModeRunStep({ step, session, onComplete }: Props) {
   }
 
   return (
-    <Screen
+    <Grid
       key={`mode-run-step-${session.id}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -99,6 +99,6 @@ export default function ModeRunStep({ step, session, onComplete }: Props) {
           undo={onUndo}
         />
       </div>
-    </Screen>
+    </Grid>
   )
 }

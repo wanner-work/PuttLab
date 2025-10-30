@@ -1,14 +1,14 @@
-import type ScreenProps from '@/interfaces/ui/layout/ScreenProps.ts'
+import type GridProps from '@/interfaces/ui/layout/GridProps'
 import clsx from 'clsx'
 import { motion } from 'motion/react'
 import { type PropsWithChildren, useMemo } from 'react'
 
-export default function Screen({
+export default function Grid({
   rows,
   className,
   children,
   ...props
-}: Readonly<PropsWithChildren<ScreenProps>>) {
+}: Readonly<PropsWithChildren<GridProps>>) {
   const gridTemplateRows = useMemo(() => {
     if (!rows) {
       return 'minmax(0, 1fr)'

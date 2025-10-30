@@ -1,4 +1,4 @@
-import Screen from '@/components/common/layout/Screen.tsx'
+import Grid from '@/components/common/layout/Grid'
 import QUERY from '@/constants/QUERY'
 import type { ModeRun } from '@/data/entities/moderun'
 import type { Session } from '@/data/entities/session'
@@ -72,7 +72,7 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
   }
 
   return (
-    <Screen
+    <Grid
       rows={['auto', '1fr']}
       key="mode-run-display"
       initial={{ opacity: 0 }}
@@ -112,6 +112,6 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
           />
         )}
       </AnimatePresence>
-    </Screen>
+    </Grid>
   )
 }

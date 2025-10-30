@@ -1,4 +1,4 @@
-import Screen from '@/components/common/layout/Screen.tsx'
+import Grid from '@/components/common/layout/Grid'
 import { Button } from '@/components/ui/button.tsx'
 import usePlatform from '@/hooks/capacitor/usePlatform'
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
@@ -55,7 +55,7 @@ function RootLayout() {
 
 function NotFound() {
   return (
-    <Screen className="items-center justify-center">
+    <Grid className="items-center justify-center">
       <div className="text-center">
         <CircleOff className="mx-auto mb-6 size-10 text-neutral-400" />
         <p className="mb-16 text-lg text-neutral-400">
@@ -83,13 +83,13 @@ function NotFound() {
           <span>or report a bug</span>
         </a>
       </div>
-    </Screen>
+    </Grid>
   )
 }
 
 function Fail() {
   return (
-    <Screen className="items-center justify-center">
+    <Grid className="items-center justify-center">
       <div className="text-center">
         <FrownIcon className="mx-auto mb-6 size-10 text-neutral-400" />
         <p className="mb-16 text-lg text-neutral-400">
@@ -117,6 +117,6 @@ function Fail() {
           <span>or report a bug</span>
         </a>
       </div>
-    </Screen>
+    </Grid>
   )
 }
