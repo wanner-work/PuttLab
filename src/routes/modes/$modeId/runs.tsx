@@ -43,15 +43,17 @@ function ModeRuns() {
       backTo={`/modes/${mode.id}`}
     >
       <Header backTo={`/modes/${mode.id}`} className="mb-8">
-        <Button
-          variant="destructive"
-          size="sm"
-          disabled={dNFModeRuns.length === 0}
-          onClick={() => setDeleteDrawerOpen(true)}
-        >
-          <Trash2 />
-          Delete all DNF
-        </Button>
+        {dNFModeRuns.length > 0 && (
+          <Button
+            variant="destructive"
+            size="sm"
+            disabled={dNFModeRuns.length === 0}
+            onClick={() => setDeleteDrawerOpen(true)}
+          >
+            <Trash2 />
+            Delete DNF
+          </Button>
+        )}
       </Header>
 
       <div className="mb-3 flex items-center justify-between">
@@ -76,25 +78,23 @@ function ModeRuns() {
         />
       )}
 
-      <div className="h-full">
-        <AnimateLoading
-          isLoading={isLoading || !modeRuns}
-          isEmpty={modeRuns?.length === 0}
-          renderEmpty={() => (
-            <EmptyDisplay
-              className="pb-20"
-              message="You haven't played this mode yet."
-            />
-          )}
-          render={({ wasLoading }) => (
-            <ModeRunList
-              wasLoaded={wasLoading}
-              modeRuns={modeRuns!}
-              mode={mode}
-            />
-          )}
-        />
-      </div>
+      <AnimateLoading
+        isLoading={isLoading || !modeRuns}
+        isEmpty={modeRuns?.length === 0}
+        renderEmpty={() => (
+          <EmptyDisplay
+            className="pb-20"
+            message="You haven't played this mode yet."
+          />
+        )}
+        render={({ wasLoading }) => (
+          <ModeRunList
+            wasLoaded={wasLoading}
+            modeRuns={modeRuns!}
+            mode={mode}
+          />
+        )}
+      />
     </Layout>
   )
 }

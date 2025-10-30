@@ -5,12 +5,11 @@ import type { Session } from '@/data/entities/session'
 import useSessionCreation from '@/hooks/data/session/useSessionCreation'
 import useModeStep from '@/hooks/modes/useModeStep.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
-import NumberFlow from '@number-flow/react'
-import { Slash } from 'lucide-react'
 import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
-import ModeRunFinish from './ModeRunFinish'
-import ModeRunStep from './ModeRunStep'
+import ModeRunActionFinish from './ModeRunActionFinish'
+import ModeRunActionHeader from './ModeRunActionHeader'
+import ModeRunActionStep from './ModeRunActionStep'
 
 interface Props {
   wasLoaded?: boolean
@@ -78,32 +77,19 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className="flex flex-col items-center justify-center text-center">
-        {!isFinished && (
-          <>
-            <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-              Step
-            </p>
-            <div className="flex items-center gap-2">
-              <p className="font-mono text-lg font-bold">
-                <NumberFlow
-                  value={index !== undefined && index !== null ? index + 1 : 0}
-                />
-              </p>
-              <Slash className="size-2 text-neutral-500" />
-              <p className="font-mono text-lg font-medium text-neutral-300">
-                <NumberFlow value={mode.steps.length} />
-              </p>
-            </div>
-          </>
-        )}
-      </div>
+      <ModeRunActionHeader
+        modeRun={modeRun}
+        mode={mode}
+        stepIndex={index || 0}
+        isFinished={isFinished}
+      />
 
-      {isFinished && <ModeRunFinish mode={mode} modeRun={modeRun} />}
+      {isFinished && <ModeRunActionFinish mode={mode} modeRun={modeRun} />}
 
       <AnimatePresence mode="wait">
         {step && session && (
-          <ModeRunStep
+          <ModeRunActionStep
+            key={`mode-run-step-${session.id}`}
             step={step}
             mode={mode}
             modeRun={modeRun}

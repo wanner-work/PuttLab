@@ -44,7 +44,7 @@ export default function ModeHighlights({ modeRuns, mode }: Props) {
 
   const latest = useMemo(() => {
     if (calculatedRuns.length === 0) return 'N/A'
-    return dayjs().to(dayjs(calculatedRuns.at(-1)?.date))
+    return dayjs().to(dayjs(calculatedRuns[0]?.date))
   }, [calculatedRuns])
 
   return (
@@ -55,7 +55,7 @@ export default function ModeHighlights({ modeRuns, mode }: Props) {
             <p className="mb-0 text-xs font-bold text-neutral-400 uppercase">
               Highscore
             </p>
-            <p className="font-mono text-3xl font-bold">
+            <p className="-mb-3 font-mono text-3xl font-bold">
               <span ref={ref}>
                 <NumberFlow value={highscoreRun?.score || 0} />
               </span>
@@ -68,7 +68,7 @@ export default function ModeHighlights({ modeRuns, mode }: Props) {
                 suffix=" finished runs"
               />
             </p>
-            <p className="text-muted-foreground font-mono text-sm uppercase">
+            <p className="text-muted-foreground max-w-[180px] truncate font-mono text-sm uppercase">
               Latest: {latest}
             </p>
           </div>

@@ -18,7 +18,11 @@ interface Props {
   onComplete: (session: Session) => void
 }
 
-export default function ModeRunStep({ step, session, onComplete }: Props) {
+export default function ModeRunActionStep({
+  step,
+  session,
+  onComplete
+}: Props) {
   const { attempts, hits, history, onHit, onMiss, onBatch, onUndo } =
     useSessionRecording(session)
 
