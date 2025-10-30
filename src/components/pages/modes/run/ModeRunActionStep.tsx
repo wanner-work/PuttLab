@@ -3,12 +3,13 @@ import RecorderControl from '@/components/sessions/recorder/control/RecorderCont
 import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
 import type { Session } from '@/data/entities/session'
+import useSessionMutation from '@/hooks/data/session/useSessionMutation'
 import useSessionRecording from '@/hooks/sessions/useSessionRecording'
 import useUnit from '@/hooks/units/useUnit'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import type ModeStep from '@/interfaces/data/mode/ModeStep'
 import NumberFlow from '@number-flow/react'
-import { CheckIcon, Slash } from 'lucide-react'
+import { CheckIcon, Loader2, Slash } from 'lucide-react'
 
 interface Props {
   step: ModeStep
@@ -23,6 +24,10 @@ export default function ModeRunActionStep({
   session,
   onComplete
 }: Props) {
+  const { mutate, isPending } = useSessionMutation(() => {
+    onComplete(session)
+  })
+
   const { attempts, hits, history, onHit, onMiss, onBatch, onUndo } =
     useSessionRecording(session)
 
@@ -32,7 +37,7 @@ export default function ModeRunActionStep({
     session.attempts = attempts
     session.hits = hits
 
-    onComplete(session)
+    mutate(session)
   }
 
   return (
@@ -88,7 +93,12 @@ export default function ModeRunActionStep({
       </div>
       <div>
         {attempts === step.repetitions && (
-          <Button onClick={handleComplete} className="mb-4 w-full">
+          <Button
+            onClick={handleComplete}
+            className="mb-4 w-full"
+            disabled={isPending}
+          >
+            {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
             Continue
             <CheckIcon strokeWidth={2} className="size-5" />
           </Button>
