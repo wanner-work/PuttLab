@@ -27,7 +27,9 @@ export default function ModeListItem({
         <CardContent>
           <ModeTag mode={mode.category} className="mb-2" />
           <p className="text-xl">{mode.name}</p>
-          <p className="text-sm text-neutral-400">{mode.description}</p>
+          <p className="max-w-52 text-sm text-neutral-400">
+            {mode.description}
+          </p>
         </CardContent>
       </Card>
     </Link>
