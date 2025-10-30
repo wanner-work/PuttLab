@@ -41,6 +41,7 @@ export default function ModeRunListItem({
   }, [modeRun.date])
 
   useEffect(() => {
+    // could do this outside of useEffect but want fancy loading animation
     setScore(
       mode.calculateScore({
         modeRun,
@@ -59,7 +60,7 @@ export default function ModeRunListItem({
         )}
       >
         <div className={clsx(dnf && 'opacity-50')}>
-          <p className="mb-0 flex items-center gap-3 font-mono text-xs font-bold text-neutral-400">
+          <p className="mb-0 flex items-center gap-3 font-mono text-xs font-bold text-neutral-400 uppercase">
             # {modeRun.id} <Slash className="inline-block size-2" /> {date}
           </p>
           <p className="-mb-2 font-mono text-2xl font-bold">
