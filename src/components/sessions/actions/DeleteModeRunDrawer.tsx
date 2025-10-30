@@ -42,7 +42,7 @@ export default function DeleteModeRunDrawer({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="">
         <DrawerHeader>
-          <DrawerTitle>Delete mode runs?</DrawerTitle>
+          <DrawerTitle>Delete mode run?</DrawerTitle>
           <DrawerDescription>
             Are you sure you want to delete this mode run?{' '}
             <strong>This action cannot be undone.</strong>

@@ -42,7 +42,7 @@ function RouteComponent() {
   }
 
   return (
-    <Layout rows={['auto', '1fr', 'auto']}>
+    <Layout rows={['auto', '1fr', 'auto']} backTo="/sessions">
       <Header backTo="/sessions">
         <div className="text-center">
           <p className="mt-1.5 text-xs font-bold text-neutral-400 uppercase">

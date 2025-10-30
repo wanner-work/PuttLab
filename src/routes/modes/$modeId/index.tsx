@@ -46,7 +46,7 @@ function Modes() {
   )
 
   return (
-    <Layout rows={['1fr']} className="overflow-auto pb-0">
+    <Layout rows={['1fr']} className="overflow-auto pb-0" backTo="/modes">
       <Header backTo="/modes" className="sticky top-6" />
       <ModeHeadline mode={mode} />
 

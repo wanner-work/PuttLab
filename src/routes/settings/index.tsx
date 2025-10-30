@@ -16,7 +16,7 @@ function RouteComponent() {
   const { settings, isLoading } = useSettings()
 
   return (
-    <Layout rows={['auto', 'auto', '1fr', 'auto']}>
+    <Layout rows={['auto', 'auto', '1fr', 'auto']} backTo="/">
       <Header backTo="/" />
       <Headline title="Settings" subtitle="Fine-tune your experience" />
 

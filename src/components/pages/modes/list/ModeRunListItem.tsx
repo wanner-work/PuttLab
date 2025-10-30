@@ -55,10 +55,10 @@ export default function ModeRunListItem({
       <div
         className={clsx(
           'bg-card flex items-center justify-between rounded-3xl border px-5 py-4',
-          dnf && 'opacity-50'
+          dnf && 'bg-card/50 border/50'
         )}
       >
-        <div>
+        <div className={clsx(dnf && 'opacity-50')}>
           <p className="mb-0 flex items-center gap-3 font-mono text-xs font-bold text-neutral-400">
             # {modeRun.id} <Slash className="inline-block size-2" /> {date}
           </p>

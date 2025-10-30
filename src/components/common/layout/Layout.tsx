@@ -1,15 +1,22 @@
 import Screen from '@/components/common/layout/Grid'
 import usePlatform from '@/hooks/capacitor/usePlatform'
 import type GridProps from '@/interfaces/ui/layout/GridProps'
+import type { ToPathOption } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { useMemo, type PropsWithChildren } from 'react'
+import Swipe from './Swipe'
+
+interface Props extends GridProps {
+  backTo?: ToPathOption
+}
 
 export default function Layout({
   rows,
+  backTo,
   children,
   className,
   ...props
-}: PropsWithChildren<GridProps>) {
+}: PropsWithChildren<Props>) {
   const platform = usePlatform()
 
   const containerClassName = useMemo(() => {
@@ -25,13 +32,15 @@ export default function Layout({
 
   return (
     <div className="relative h-full [view-transition-name:main-content]">
-      <Screen
-        rows={rows}
-        className={clsx(containerClassName, className)}
-        {...props}
-      >
-        {children}
-      </Screen>
+      <Swipe backTo={backTo}>
+        <Screen
+          rows={rows}
+          className={clsx(containerClassName, className)}
+          {...props}
+        >
+          {children}
+        </Screen>
+      </Swipe>
     </div>
   )
 }

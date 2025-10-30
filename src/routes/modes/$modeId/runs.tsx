@@ -37,7 +37,11 @@ function ModeRuns() {
   }
 
   return (
-    <Layout rows={['auto', 'auto', '1fr']} className="pb-0">
+    <Layout
+      rows={['auto', 'auto', '1fr']}
+      className="pb-0"
+      backTo={`/modes/${mode.id}`}
+    >
       <Header backTo={`/modes/${mode.id}`} className="mb-8">
         <Button
           variant="destructive"

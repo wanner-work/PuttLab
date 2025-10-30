@@ -4,6 +4,7 @@ import { type RefObject, useEffect, useState } from 'react'
 
 export function useSwipe(
   ref: RefObject<HTMLElement | null>,
+  enabled: boolean,
   callback?: (distance: number) => void,
   threshold: number = 50
 ): number {
@@ -15,6 +16,7 @@ export function useSwipe(
 
   useEffect(() => {
     if (!ref?.current) return
+    if (!enabled) return
 
     const handleTouchStart = (e: TouchEvent) => {
       if (
@@ -81,6 +83,7 @@ export function useSwipe(
     }
   }, [
     ref,
+    enabled,
     touchStart,
     touchEnd,
     touchStartY,

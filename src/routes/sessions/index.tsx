@@ -49,7 +49,7 @@ function Sessions() {
   }
 
   return (
-    <Layout rows={['auto', 'auto', 'auto', '1fr']} className="pb-0">
+    <Layout rows={['auto', 'auto', 'auto', '1fr']} className="pb-0" backTo="/">
       <Header backTo="/" />
       <Headline title="Sessions" subtitle="Manage your sessions effectively" />
 

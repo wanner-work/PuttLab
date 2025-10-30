@@ -18,7 +18,7 @@ function Modes() {
   const modes = useModes()
 
   return (
-    <Layout rows={['auto', 'auto', '1fr']} className="pb-0">
+    <Layout rows={['auto', 'auto', '1fr']} className="pb-0" backTo="/">
       <Header backTo="/" />
       <Headline title="Modes" subtitle="Train by playing a mode" />
 

@@ -82,7 +82,7 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
         {!isFinished && (
           <>
             <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-              Steps
+              Step
             </p>
             <div className="flex items-center gap-2">
               <p className="font-mono text-lg font-bold">
