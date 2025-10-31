@@ -5,9 +5,9 @@ import type { Session } from '@/data/entities/session'
 import useSessionCreation from '@/hooks/data/session/useSessionCreation'
 import useModeStep from '@/hooks/modes/useModeStep.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
+import { useNavigate } from '@tanstack/react-router'
 import { AnimatePresence } from 'motion/react'
 import { useMemo, useState } from 'react'
-import ModeRunActionFinish from './ModeRunActionFinish'
 import ModeRunActionHeader from './ModeRunActionHeader'
 import ModeRunActionStep from './ModeRunActionStep'
 
@@ -18,6 +18,8 @@ interface Props {
 }
 
 export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
+  const navigate = useNavigate()
+
   const [isCurrentlyFinished, setIsCurrentlyFinished] = useState(false)
   const [sessions, setSessions] = useState<Session[]>(modeRun.sessions)
 
@@ -57,6 +59,13 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
 
     const nextStepIndex = sessions.length
     if (nextStepIndex >= mode.steps.length) {
+      navigate({
+        to: '/modes/$modeId/$modeRunId/result',
+        params: {
+          modeId: mode.id,
+          modeRunId: String(modeRun.id)
+        }
+      })
       setIsCurrentlyFinished(true)
       return
     }
@@ -83,8 +92,6 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
         stepIndex={index || 0}
         isFinished={isFinished}
       />
-
-      {isFinished && <ModeRunActionFinish mode={mode} modeRun={modeRun} />}
 
       <AnimatePresence mode="wait">
         {step && session && (

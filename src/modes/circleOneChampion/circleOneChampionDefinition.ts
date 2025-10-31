@@ -10,8 +10,8 @@ const definition: ModeDefinition = {
   icon: TrophyIcon,
   requirements: {
     availableDistance: 9,
-    availableTime: 15,
-    allowedPutters: 1,
+    availableTime: 10,
+    allowedPutters: 2,
     additionalInformation:
       'It is advised to mark your distances before starting. This mode needs the following'
   },
@@ -24,46 +24,46 @@ const definition: ModeDefinition = {
     {
       label: 'Short Warm Up',
       distance: 5,
-      repetitions: 6
+      repetitions: 4
     },
     {
       label: 'Medium Warm Up',
       distance: 7,
-      repetitions: 6
+      repetitions: 4
     },
     {
       label: 'Distance Warm Up',
       distance: 9,
-      repetitions: 6
+      repetitions: 4
     },
     {
       label: 'Accuracy Work',
       distance: 7,
-      repetitions: 10
+      repetitions: 4
     },
     {
       label: 'Distance Work',
       distance: 9,
-      repetitions: 10
+      repetitions: 4
     },
     {
       label: 'Short Work',
       distance: 5,
-      repetitions: 10
+      repetitions: 4
     },
     {
       label: 'Quick Extension',
-      distance: 4,
+      distance: 9,
       repetitions: 1
     },
     {
       label: 'Quick Extension',
-      distance: 6,
+      distance: 7,
       repetitions: 1
     },
     {
       label: 'Quick Extension',
-      distance: 8,
+      distance: 5,
       repetitions: 1
     },
     {

@@ -16,7 +16,8 @@ import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
 import { Route as ModesModeIdRunsRouteImport } from './routes/modes/$modeId/runs'
-import { Route as ModesModeIdModeRunIdRouteImport } from './routes/modes/$modeId/$modeRunId'
+import { Route as ModesModeIdModeRunIdIndexRouteImport } from './routes/modes/$modeId/$modeRunId/index'
+import { Route as ModesModeIdModeRunIdResultRouteImport } from './routes/modes/$modeId/$modeRunId/result'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,11 +54,18 @@ const ModesModeIdRunsRoute = ModesModeIdRunsRouteImport.update({
   path: '/modes/$modeId/runs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ModesModeIdModeRunIdRoute = ModesModeIdModeRunIdRouteImport.update({
-  id: '/modes/$modeId/$modeRunId',
-  path: '/modes/$modeId/$modeRunId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ModesModeIdModeRunIdIndexRoute =
+  ModesModeIdModeRunIdIndexRouteImport.update({
+    id: '/modes/$modeId/$modeRunId/',
+    path: '/modes/$modeId/$modeRunId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ModesModeIdModeRunIdResultRoute =
+  ModesModeIdModeRunIdResultRouteImport.update({
+    id: '/modes/$modeId/$modeRunId/result',
+    path: '/modes/$modeId/$modeRunId/result',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,9 +73,10 @@ export interface FileRoutesByFullPath {
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
-  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
+  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,9 +84,10 @@ export interface FileRoutesByTo {
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
-  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
+  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,9 +96,10 @@ export interface FileRoutesById {
   '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
   '/settings/': typeof SettingsIndexRoute
-  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
+  '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
+  '/modes/$modeId/$modeRunId/': typeof ModesModeIdModeRunIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,9 +109,10 @@ export interface FileRouteTypes {
     | '/modes'
     | '/sessions'
     | '/settings'
-    | '/modes/$modeId/$modeRunId'
     | '/modes/$modeId/runs'
     | '/modes/$modeId'
+    | '/modes/$modeId/$modeRunId/result'
+    | '/modes/$modeId/$modeRunId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -108,9 +120,10 @@ export interface FileRouteTypes {
     | '/modes'
     | '/sessions'
     | '/settings'
-    | '/modes/$modeId/$modeRunId'
     | '/modes/$modeId/runs'
     | '/modes/$modeId'
+    | '/modes/$modeId/$modeRunId/result'
+    | '/modes/$modeId/$modeRunId'
   id:
     | '__root__'
     | '/'
@@ -118,9 +131,10 @@ export interface FileRouteTypes {
     | '/modes/'
     | '/sessions/'
     | '/settings/'
-    | '/modes/$modeId/$modeRunId'
     | '/modes/$modeId/runs'
     | '/modes/$modeId/'
+    | '/modes/$modeId/$modeRunId/result'
+    | '/modes/$modeId/$modeRunId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,9 +143,10 @@ export interface RootRouteChildren {
   ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
-  ModesModeIdModeRunIdRoute: typeof ModesModeIdModeRunIdRoute
   ModesModeIdRunsRoute: typeof ModesModeIdRunsRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
+  ModesModeIdModeRunIdResultRoute: typeof ModesModeIdModeRunIdResultRoute
+  ModesModeIdModeRunIdIndexRoute: typeof ModesModeIdModeRunIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,11 +200,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModesModeIdRunsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/modes/$modeId/$modeRunId': {
-      id: '/modes/$modeId/$modeRunId'
+    '/modes/$modeId/$modeRunId/': {
+      id: '/modes/$modeId/$modeRunId/'
       path: '/modes/$modeId/$modeRunId'
       fullPath: '/modes/$modeId/$modeRunId'
-      preLoaderRoute: typeof ModesModeIdModeRunIdRouteImport
+      preLoaderRoute: typeof ModesModeIdModeRunIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$modeId/$modeRunId/result': {
+      id: '/modes/$modeId/$modeRunId/result'
+      path: '/modes/$modeId/$modeRunId/result'
+      fullPath: '/modes/$modeId/$modeRunId/result'
+      preLoaderRoute: typeof ModesModeIdModeRunIdResultRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -201,9 +223,10 @@ const rootRouteChildren: RootRouteChildren = {
   ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
-  ModesModeIdModeRunIdRoute: ModesModeIdModeRunIdRoute,
   ModesModeIdRunsRoute: ModesModeIdRunsRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
+  ModesModeIdModeRunIdResultRoute: ModesModeIdModeRunIdResultRoute,
+  ModesModeIdModeRunIdIndexRoute: ModesModeIdModeRunIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
