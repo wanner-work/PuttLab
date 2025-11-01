@@ -1,6 +1,7 @@
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import type { ModeRunCalculated } from '@/interfaces/data/mode/ModeRunCalculated'
+import calculateModeScore from '@/methods/calculations/calculateModeScore.ts'
 import isDNF from '@/methods/modes/isDNF'
 import { useMemo } from 'react'
 
@@ -15,11 +16,7 @@ export default function useModeRunsCalculated(
     const calculated = modeRuns.map((run) => {
       return {
         ...run,
-        score: mode.calculateScore({
-          mode,
-          modeRun: run,
-          sessions: run.sessions
-        }),
+        score: calculateModeScore(run, mode),
         dnf: isDNF(mode, run)
       }
     })

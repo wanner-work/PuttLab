@@ -11,7 +11,7 @@ export default function ModesList({ modes }: Props) {
     <List
       rowComponent={ModesListItem}
       rowCount={modes.length || 0}
-      rowHeight={160}
+      rowHeight={(index) => (index === modes.length - 1 ? 174 : 164)}
       rowProps={{ modes }}
       overscanCount={5}
     />

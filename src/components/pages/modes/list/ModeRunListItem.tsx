@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
+import calculateModeScore from '@/methods/calculations/calculateModeScore.ts'
 import NumberFlow from '@number-flow/react'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
@@ -42,13 +43,7 @@ export default function ModeRunListItem({
 
   useEffect(() => {
     // could do this outside of useEffect but want fancy loading animation
-    setScore(
-      mode.calculateScore({
-        modeRun,
-        sessions: modeRun.sessions,
-        mode
-      })
-    )
+    setScore(calculateModeScore(modeRun, mode))
   }, [modeRun, mode])
 
   return (

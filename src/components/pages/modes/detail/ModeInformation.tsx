@@ -29,27 +29,27 @@ export default function ModeInformation({ mode }: Props) {
         <CardContent>
           <div className="mb-3">
             <p className="mb-0.5 text-xs font-bold text-neutral-400 uppercase">
+              Maximum allowed putters
+            </p>
+            <p className="font-mono text-lg font-bold uppercase">
+              {requirements.allowedPutters}{' '}
+              {requirements.allowedPutters === 1 ? 'putter' : 'putters'}
+            </p>
+          </div>
+          <div className="mb-3">
+            <p className="mb-0.5 text-xs font-bold text-neutral-400 uppercase">
               Minimum Available distance
             </p>
             <p className="font-mono text-lg font-bold uppercase">
               {getDistance(requirements.availableDistance)} {unit}
             </p>
           </div>
-          <div className="mb-3">
+          <div className="">
             <p className="mb-0.5 text-xs font-bold text-neutral-400 uppercase">
               Approximate required time
             </p>
             <p className="font-mono text-lg font-bold uppercase">
-              ~ {requirements.availableTime} minutes
-            </p>
-          </div>
-          <div className="">
-            <p className="mb-0.5 text-xs font-bold text-neutral-400 uppercase">
-              Maximum allowed putters
-            </p>
-            <p className="font-mono text-lg font-bold uppercase">
-              {requirements.allowedPutters}{' '}
-              {requirements.allowedPutters === 1 ? 'putter' : 'putters'}
+              ~ {requirements.availableTime / 60} minutes
             </p>
           </div>
         </CardContent>

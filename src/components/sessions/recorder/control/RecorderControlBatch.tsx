@@ -22,6 +22,7 @@ import { Button } from '../../../ui/button.tsx'
 import RecorderControlBatchDrawer from './RecorderControlBatchDrawer.tsx'
 
 interface Props {
+  maxPutters?: number
   session: Session | null | undefined
   attempts: number
   disabled?: boolean
@@ -32,19 +33,24 @@ interface Props {
 export default memo(RecorderControlBatch)
 
 function RecorderControlBatch({
+  maxPutters,
   batch,
   latest,
   disabled,
   session,
   attempts
-}: Props) {
+}: Readonly<Props>) {
   const { settings } = useSettings()
 
   const [openSelectBatchAmount, setOpenSelectBatchAmount] = useState(false)
 
   const putters = useMemo(() => {
     if (settings?.putters && settings.putters > 0) {
-      const p = settings.putters
+      let p = settings.putters
+
+      if (maxPutters && p > maxPutters) {
+        p = maxPutters
+      }
 
       if (session?.maxAttempts) {
         const remaining = session.maxAttempts - attempts
@@ -58,7 +64,7 @@ function RecorderControlBatch({
     }
 
     return 0
-  }, [settings, session, attempts])
+  }, [settings, session, attempts, maxPutters])
 
   const isDismissible = useMemo(() => {
     return !(settings?.putters !== undefined && settings.putters === 0)

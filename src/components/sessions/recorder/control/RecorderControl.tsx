@@ -9,6 +9,7 @@ import RecorderBatch from './RecorderControlBatch.tsx'
 import RecorderSingle from './RecorderControlSingle.tsx'
 
 interface Props {
+  maxPutters?: number
   session: Session | null | undefined
   attempts: number
   history: HistoryEntry[]
@@ -22,6 +23,7 @@ interface Props {
 export default memo(RecorderControl)
 
 function RecorderControl({
+  maxPutters,
   session,
   attempts,
   history,
@@ -87,6 +89,7 @@ function RecorderControl({
         </TabsContent>
         <TabsContent value="byBatch" className="flex flex-col gap-3">
           <RecorderBatch
+            maxPutters={maxPutters}
             batch={batch}
             attempts={attempts}
             session={session}

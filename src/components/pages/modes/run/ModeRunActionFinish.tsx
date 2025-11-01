@@ -1,5 +1,6 @@
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
+import calculateModeScore from '@/methods/calculations/calculateModeScore.ts'
 import NumberFlow from '@number-flow/react'
 import { useEffect, useState } from 'react'
 
@@ -15,13 +16,7 @@ export default function ModeRunActionFinish({
   const [score, setScore] = useState(0)
 
   useEffect(() => {
-    setScore(
-      mode.calculateScore({
-        modeRun,
-        sessions: modeRun.sessions,
-        mode
-      })
-    )
+    setScore(calculateModeScore(modeRun, mode))
   }, [mode, modeRun])
 
   return (
@@ -32,10 +27,10 @@ export default function ModeRunActionFinish({
       <p className="font-mono text-3xl font-bold">
         <NumberFlow
           willChange
-          value={score || 0.0}
-          transformTiming={{ duration: 2000, easing: 'ease-in-out' }}
-          spinTiming={{ duration: 4000, easing: 'ease-in-out' }}
-          opacityTiming={{ duration: 2000, easing: 'ease-in-out' }}
+          value={score || 0}
+          transformTiming={{ duration: 1000, easing: 'ease-in-out' }}
+          spinTiming={{ duration: 2000, easing: 'ease-in-out' }}
+          opacityTiming={{ duration: 1000, easing: 'ease-in-out' }}
         />
       </p>
     </div>

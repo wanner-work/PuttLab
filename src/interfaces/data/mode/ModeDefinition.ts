@@ -1,6 +1,4 @@
-import type ModeCalculationParams from '@/interfaces/data/mode/ModeCalculationParams.ts'
 import type ModeStep from '@/interfaces/data/mode/ModeStep.ts'
-import type { FunctionComponent } from 'react'
 
 export default interface ModeDefinition {
   /**
@@ -18,17 +16,12 @@ export default interface ModeDefinition {
    * The category of the mode. Will be used to group modes in the UI and will maybe separate
    * free modes from paid ones in the future.
    */
-  category: 'standard' | 'champion'
+  category: 'standard' | 'champion' | 'focus'
 
   /**
    * A very brief description of the mode.
    */
   description: string
-
-  /**
-   * A React component that renders the icon of the mode.
-   */
-  icon: FunctionComponent<{ className?: string }>
 
   /**
    * The requirements you need to meet to use this specific mode.
@@ -40,7 +33,8 @@ export default interface ModeDefinition {
     availableDistance: number
 
     /**
-     * The minimum time the user must have available to use this mode, in minutes.
+     * The minimum time the user must have available to use this mode, in seconds.
+     * If `settings.countdown` is true, this will be used as the countdown time.
      */
     availableTime: number
 
@@ -52,7 +46,7 @@ export default interface ModeDefinition {
     /**
      * Additional information about the mode that will be displayed to the user.
      */
-    additionalInformation: string
+    additionalInformation?: string
   }
 
   /**
@@ -64,22 +58,7 @@ export default interface ModeDefinition {
      * If true, the `requirements.availableTime` will be used as the countdown time.
      */
     countdown: boolean
-    /**
-     * Whether the mode can be played infinitely (true) or not (false).
-     * If true, the mode will loop through the steps indefinitely until the user decides to stop or the countdown ends.
-     */
-    infinite: boolean
   }
-
-  /**
-   * Calculation function to determine the score of a session.
-   *
-   * It receives all the sessions of the mode, the ModeRun object as well as the elapsed time in ms and the entire mode definition.
-   * It should return a number representing the score of the session.
-   *
-   * Cut to 1 decimal place.
-   */
-  calculateScore: (params: ModeCalculationParams) => number
 
   /**
    * All the steps that make up this mode.
