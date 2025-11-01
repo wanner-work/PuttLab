@@ -10,6 +10,7 @@ import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import type ModeStep from '@/interfaces/data/mode/ModeStep'
 import NumberFlow from '@number-flow/react'
 import { CheckIcon, Loader2, Slash } from 'lucide-react'
+import { useMemo } from 'react'
 
 interface Props {
   step: ModeStep
@@ -24,7 +25,7 @@ export default function ModeRunActionStep({
   session,
   mode,
   onComplete
-}: Props) {
+}: Readonly<Props>) {
   const { mutate, isPending } = useSessionMutation(() => {
     onComplete(session)
   })
@@ -41,6 +42,10 @@ export default function ModeRunActionStep({
     mutate(session)
   }
 
+  const distance = useMemo(() => {
+    return getDistance(session.distance)
+  }, [session.distance, getDistance])
+
   return (
     <Grid
       key={`mode-run-step-${session.id}`}
@@ -51,10 +56,7 @@ export default function ModeRunActionStep({
       <div className="flex flex-col justify-evenly overflow-auto pt-6">
         <div className="text-center">
           <p className="font-mono text-xl font-bold text-neutral-400 uppercase">
-            <NumberFlow
-              value={getDistance(session.distance)}
-              suffix={' ' + unit}
-            />
+            <NumberFlow value={distance} suffix={' ' + unit} />
           </p>
           <p className="mt-8 mb-10 font-mono text-4xl font-bold uppercase">
             {step.label}

@@ -17,7 +17,7 @@ function RouteComponent() {
   const { modeRun, isLoading } = useModeRun(modeRunId)
 
   return (
-    <Layout rows={['auto', '1fr']}>
+    <Layout rows={['auto', '1fr']} backTo={`/modes/${modeId}`}>
       <Header backTo={`/modes/${modeId}`} className="sticky top-6" />
 
       <AnimateLoading

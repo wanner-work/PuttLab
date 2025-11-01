@@ -10,7 +10,7 @@ export default async function createModeRun(mode: ModeDefinition) {
   session.date = new Date().toISOString()
   session.attempts = 0
   session.hits = 0
-  session.distance = mode.steps[0].repetitions
+  session.distance = mode.steps[0].distance
   session.maxAttempts = mode.steps[0].repetitions
 
   const modeRun = new ModeRun()
