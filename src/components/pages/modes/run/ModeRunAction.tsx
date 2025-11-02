@@ -87,8 +87,9 @@ export default function ModeRunAction({ mode, modeRun }: Readonly<Props>) {
       animate={{ opacity: 1 }}
     >
       <ModeRunActionHeader
-        modeRun={modeRun}
         mode={mode}
+        modeRun={modeRun}
+        sessions={sessions}
         stepIndex={index || 0}
         isFinished={isFinished}
       />

@@ -1,5 +1,6 @@
 import QUERY from '@/constants/QUERY.ts'
 import type { ModeRun } from '@/data/entities/moderun.ts'
+import type { Session } from '@/data/entities/session.ts'
 import useModeRunDeletion from '@/hooks/data/mode/useModeRunDeletion.ts'
 import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
 import { Loader2Icon } from 'lucide-react'
@@ -17,6 +18,7 @@ import {
 interface Props extends DrawerProps {
   modeId: string
   modeRun: ModeRun
+  sessions: Session[]
 }
 
 export default function DeleteModeRunDrawer({
@@ -24,7 +26,8 @@ export default function DeleteModeRunDrawer({
   onOpenChange,
   onSuccess,
   modeId,
-  modeRun
+  modeRun,
+  sessions
 }: Props) {
   const { remove, isPending } = useModeRunDeletion(() => {
     QUERY.CLIENT.invalidateQueries({
@@ -34,6 +37,8 @@ export default function DeleteModeRunDrawer({
   })
 
   const handleAbort = () => {
+    modeRun.sessions = sessions
+
     remove(modeRun)
   }
 

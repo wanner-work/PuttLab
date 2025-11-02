@@ -2,6 +2,7 @@ import Icon from '@/components/brand/Icon'
 import AbortModeRunDrawer from '@/components/sessions/actions/AbortModeRunDrawer'
 import { Button } from '@/components/ui/button'
 import type { ModeRun } from '@/data/entities/moderun'
+import type { Session } from '@/data/entities/session.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
 import NumberFlow from '@number-flow/react'
 import { useNavigate } from '@tanstack/react-router'
@@ -9,8 +10,9 @@ import { ChevronLeft, CircleOff, Slash } from 'lucide-react'
 import { useState } from 'react'
 
 interface Props {
-  modeRun: ModeRun
   mode: ModeDefinition
+  modeRun: ModeRun
+  sessions: Session[]
   stepIndex: number
   isFinished?: boolean
 }
@@ -18,6 +20,7 @@ interface Props {
 export default function ModeRunActionHeader({
   mode,
   modeRun,
+  sessions,
   stepIndex,
   isFinished
 }: Props) {
@@ -52,6 +55,7 @@ export default function ModeRunActionHeader({
       <AbortModeRunDrawer
         modeId={mode.id}
         modeRun={modeRun}
+        sessions={sessions}
         open={abortDrawerOpen}
         onOpenChange={setAbortDrawerOpen}
         onSuccess={handleSuccess}
