@@ -5,6 +5,9 @@ const definition: ModeDefinition = {
   name: 'Circle Two',
   category: 'champion',
   description: 'The official circle two putting challenge.',
+  distanceDescription: {
+    words: 'C2'
+  },
   requirements: {
     availableDistance: 18,
     availableTime: 8 * 60,

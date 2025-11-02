@@ -5,6 +5,9 @@ const definition: ModeDefinition = {
   name: 'Dozen',
   category: 'focus',
   description: 'Dozen focus practice, dozen look that far... init mate?',
+  distanceDescription: {
+    meters: 12
+  },
   requirements: {
     availableDistance: 12,
     availableTime: 10 * 60,

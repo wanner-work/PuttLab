@@ -1,6 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card.tsx'
+import useUnit from '@/hooks/units/useUnit.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
 import { Link } from '@tanstack/react-router'
+import { useMemo } from 'react'
 import type { RowComponentProps } from 'react-window'
 import ModeTag from '../detail/ModeTag'
 
@@ -15,6 +17,22 @@ export default function ModeListItem({
 }: RowComponentProps<Props>) {
   const mode = modes[index]
 
+  const { getDistance, unit } = useUnit()
+
+  const distance = useMemo(() => {
+    if (!mode.distanceDescription) return null
+
+    if (mode.distanceDescription.words) {
+      return mode.distanceDescription.words
+    }
+
+    if (mode.distanceDescription.meters !== undefined) {
+      return `${getDistance(mode.distanceDescription.meters)} ${unit}`
+    }
+
+    return null
+  }, [mode.distanceDescription])
+
   return (
     <Link
       to="/modes/$modeId"
@@ -25,8 +43,15 @@ export default function ModeListItem({
     >
       <Card>
         <CardContent>
-          <ModeTag mode={mode.category} className="mb-2" />
-          <p className="text-xl">{mode.name}</p>
+          <div className="mb-3 flex items-center justify-between">
+            <ModeTag mode={mode.category} />
+            {distance && (
+              <p className="text-muted-foreground font-mono text-xs uppercase">
+                {distance}
+              </p>
+            )}
+          </div>
+          <p className="mb-1 text-xl">{mode.name}</p>
           <p className="max-w-52 text-sm text-neutral-400">
             {mode.description}
           </p>

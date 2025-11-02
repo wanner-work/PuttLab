@@ -5,6 +5,9 @@ const definition: ModeDefinition = {
   name: "Calvin's Tap in",
   category: 'focus',
   description: "Calvin's Tap in practice, can you bring them heim(burg)?",
+  distanceDescription: {
+    meters: 15
+  },
   requirements: {
     availableDistance: 15,
     availableTime: 10 * 60,

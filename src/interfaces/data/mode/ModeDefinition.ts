@@ -24,6 +24,23 @@ export default interface ModeDefinition {
   description: string
 
   /**
+   * An optional description of the total distance covered in this mode.
+   */
+  distanceDescription?: {
+    /**
+     * A description of the distance in plain words.
+     * E.g. C1X or something similar.
+     */
+    words?: string
+
+    /**
+     * The distance in meters.
+     * Will be formatted to the user's locale.
+     */
+    meters?: number
+  }
+
+  /**
    * The requirements you need to meet to use this specific mode.
    */
   requirements: {

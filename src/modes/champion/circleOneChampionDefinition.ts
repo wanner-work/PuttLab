@@ -5,6 +5,9 @@ const definition: ModeDefinition = {
   name: 'Circle One',
   category: 'champion',
   description: 'The official circle one putting challenge.',
+  distanceDescription: {
+    words: 'C1X'
+  },
   requirements: {
     availableDistance: 9,
     availableTime: 8 * 60,

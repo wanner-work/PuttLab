@@ -5,6 +5,9 @@ const definition: ModeDefinition = {
   name: 'Tap in',
   category: 'focus',
   description: 'Tap-In practice, can you handle the nerves?',
+  distanceDescription: {
+    meters: 7
+  },
   requirements: {
     availableDistance: 7,
     availableTime: 10 * 60,

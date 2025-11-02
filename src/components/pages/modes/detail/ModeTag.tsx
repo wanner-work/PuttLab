@@ -11,10 +11,17 @@ export default function ModeTag({
   className,
   ...props
 }: Readonly<Props>) {
+  const modeColorClassName = clsx(
+    mode === 'champion' && 'bg-[#363094]/20 text-[#363094] ',
+    mode === 'focus' && 'bg-[#946436]/20 text-[#946436] ',
+    mode === 'endurance' && 'bg-[#36946A]/20 text-[#36946A] '
+  )
+
   return (
     <motion.div
       className={clsx(
-        'inline-block rounded-lg bg-[#363094]/20 px-2 pt-1 pb-0.5 font-mono text-xs font-bold text-[#363094] uppercase',
+        'inline-block rounded-lg px-2 pt-1 pb-0.5 font-mono text-xs font-bold uppercase',
+        modeColorClassName,
         className
       )}
       {...props}
