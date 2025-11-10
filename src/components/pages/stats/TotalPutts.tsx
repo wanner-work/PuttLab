@@ -160,11 +160,11 @@ export default function EightyDistance() {
         <div className="relative">
           <div className="absolute flex size-full items-center justify-center">
             <div className="text-center">
-              <p className="-mb-0.5 text-center text-xs font-bold text-neutral-400 uppercase">
+              <p className="mx-auto -mb-0.5 text-center text-xs font-bold text-neutral-400 uppercase">
                 Total
               </p>
               <div className="flex items-center gap-2">
-                <p className="text text-center font-mono font-bold">
+                <p className="text mx-auto text-center font-mono font-bold">
                   <NumberFlow value={totalAttempts} />
                 </p>
               </div>
