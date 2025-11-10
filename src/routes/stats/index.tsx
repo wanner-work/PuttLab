@@ -14,11 +14,15 @@ export const Route = createFileRoute('/stats/')({
 
 function RouteComponent() {
   return (
-    <Layout rows={['auto', 'auto', '1fr']} backTo="/">
-      <Header backTo="/" />
-      <Headline title="Stats" subtitle="Analyze your putting game." />
+    <Layout rows={['1fr']} className="overflow-auto pb-0" backTo="/">
+      <Header backTo="/" className="sticky top-6" />
+      <Headline
+        title="Stats"
+        subtitle="Analyze your putting game."
+        className="mt-24 mb-16"
+      />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 pb-26">
         <EightyDistance />
         <ProjectedDistance />
         <TotalPutts />

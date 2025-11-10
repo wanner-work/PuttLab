@@ -7,14 +7,12 @@ import {
 } from '@/components/ui/card.tsx'
 import { type ChartConfig, ChartContainer } from '@/components/ui/chart.tsx'
 import useSessions from '@/hooks/data/sessions/useSessions.ts'
-import useUnit from '@/hooks/units/useUnit.ts'
 import NumberFlow from '@number-flow/react'
 import { useMemo } from 'react'
 import { Pie, PieChart } from 'recharts'
 
 export default function EightyDistance() {
   const { sessions } = useSessions(false)
-  const { unit, getDistance } = useUnit()
 
   const {
     circleOneAttempts,
