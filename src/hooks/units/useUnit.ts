@@ -1,5 +1,5 @@
 import QUERY from '@/constants/QUERY'
-import calculateFeet from '@/methods/calculations/calculateFeet'
+import getFeetFromMeter from '@/methods/calculations/getFeetFromMeter.ts'
 import getSettings from '@/methods/data/get/getSettings'
 import getUnitString from '@/methods/units/getUnitString'
 import { useQuery } from '@tanstack/react-query'
@@ -24,7 +24,7 @@ export default function useUnit() {
       if (settings?.metric) {
         return distance
       }
-      return calculateFeet(distance)
+      return getFeetFromMeter(distance)
     },
     [settings]
   )

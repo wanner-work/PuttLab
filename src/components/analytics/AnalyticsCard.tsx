@@ -1,5 +1,5 @@
 import QUERY from '@/constants/QUERY'
-import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import getPercentage from '@/methods/calculations/getPercentage.ts'
 import getSessions from '@/methods/data/get/getSessions'
 import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
@@ -90,19 +90,13 @@ export default function AnalyticsCard() {
   }, [sessions])
 
   const { circleOneAverage, circleTwoAverage, outsideAverage } = useMemo(() => {
-    const bullseyeAverage = calculatePercentage(bullseyeAttempts, bullseyeHits)
+    const bullseyeAverage = getPercentage(bullseyeAttempts, bullseyeHits)
 
-    const circleOneAverage = calculatePercentage(
-      circleOneAttempts,
-      circleOneHits
-    )
+    const circleOneAverage = getPercentage(circleOneAttempts, circleOneHits)
 
-    const circleTwoAverage = calculatePercentage(
-      circleTwoAttempts,
-      circleTwoHits
-    )
+    const circleTwoAverage = getPercentage(circleTwoAttempts, circleTwoHits)
 
-    const outsideAverage = calculatePercentage(outsideAttempts, outsideHits)
+    const outsideAverage = getPercentage(outsideAttempts, outsideHits)
 
     return {
       bullseyeAverage,

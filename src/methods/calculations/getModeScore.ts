@@ -1,7 +1,7 @@
 import type { ModeRun } from '@/data/entities/moderun.ts'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition.ts'
 
-export default function calculateModeScore(
+export default function getModeScore(
   run: ModeRun,
   mode: ModeDefinition
 ): number {

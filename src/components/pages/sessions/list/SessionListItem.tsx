@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import type { Session } from '@/data/entities/session'
 import useUnit from '@/hooks/units/useUnit'
-import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import getPercentage from '@/methods/calculations/getPercentage.ts'
 import { Link } from '@tanstack/react-router'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
@@ -21,7 +21,7 @@ export default function SessionListItem({
   const session = sessions[index]
 
   const percentage = useMemo(() => {
-    return calculatePercentage(session.attempts, session.hits)
+    return getPercentage(session.attempts, session.hits)
   }, [session.attempts, session.hits])
 
   const time = useMemo(() => {

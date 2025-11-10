@@ -1,6 +1,6 @@
 import type { ModeRun } from '@/data/entities/moderun'
 import type ModeDefinition from '@/interfaces/data/mode/ModeDefinition'
-import calculateModeScore from '@/methods/calculations/calculateModeScore.ts'
+import getModeScore from '@/methods/calculations/getModeScore.ts'
 import NumberFlow from '@number-flow/react'
 import { useEffect, useState } from 'react'
 
@@ -16,7 +16,7 @@ export default function ModeRunActionFinish({
   const [score, setScore] = useState(0)
 
   useEffect(() => {
-    setScore(calculateModeScore(modeRun, mode))
+    setScore(getModeScore(modeRun, mode))
   }, [mode, modeRun])
 
   return (

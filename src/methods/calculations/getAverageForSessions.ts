@@ -1,7 +1,7 @@
 import type { Session } from '@/data/entities/session'
-import calculatePercentage from './calculatePercentage'
+import getPercentage from './getPercentage.ts'
 
-export default function calculateDistanceAverage(sessions: Session[]) {
+export default function getAverageForSessions(sessions: Session[]) {
   if (sessions.length === 0) return 0
 
   const totalAttempts = sessions.reduce(
@@ -12,5 +12,5 @@ export default function calculateDistanceAverage(sessions: Session[]) {
 
   if (totalAttempts === 0) return 0
 
-  return calculatePercentage(totalAttempts, totalHits)
+  return getPercentage(totalAttempts, totalHits)
 }

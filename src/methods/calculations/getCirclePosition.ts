@@ -1,4 +1,4 @@
-export default function calculateCirclePosition(distance: number) {
+export default function getCirclePosition(distance: number) {
   if (distance <= 3) {
     return 'inside bullseye'
   } else if (distance < 10) {

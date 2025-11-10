@@ -1,4 +1,4 @@
-import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import getPercentage from '@/methods/calculations/getPercentage.ts'
 import NumberFlow from '@number-flow/react'
 import { memo, useMemo } from 'react'
 import { Pie, PieChart, Sector } from 'recharts'
@@ -14,7 +14,7 @@ export default memo(RecorderStatsChart)
 
 function RecorderStatsChart({ hits, attempts }: Readonly<Props>) {
   const percentage = useMemo(() => {
-    return calculatePercentage(attempts, hits)
+    return getPercentage(attempts, hits)
   }, [hits, attempts])
 
   const chartData = useMemo(() => {

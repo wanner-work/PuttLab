@@ -20,14 +20,14 @@ interface Props {
   onOpenChange: (open: boolean) => void
 }
 
-export default function SeedDrawer({ open, onOpenChange }: Props) {
+export default function SeedDrawer({ open, onOpenChange }: Readonly<Props>) {
   const { mutate: seed, isPending } = useMutation({
     mutationFn: () => seedSessions(),
     onSuccess: () => {
-      QUERY.CLIENT.invalidateQueries({
+      void QUERY.CLIENT.invalidateQueries({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
       })
-      QUERY.CLIENT.prefetchQuery({
+      void QUERY.CLIENT.prefetchQuery({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, 'all'],
         queryFn: () => getSessions()
       })
@@ -37,10 +37,10 @@ export default function SeedDrawer({ open, onOpenChange }: Props) {
   const { mutate: deleteAll, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteAllSessions(),
     onSuccess: () => {
-      QUERY.CLIENT.invalidateQueries({
+      void QUERY.CLIENT.invalidateQueries({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS]
       })
-      QUERY.CLIENT.prefetchQuery({
+      void QUERY.CLIENT.prefetchQuery({
         queryKey: [QUERY.CACHE_KEYS.ALL_SESSIONS, 'all'],
         queryFn: () => getSessions()
       })
