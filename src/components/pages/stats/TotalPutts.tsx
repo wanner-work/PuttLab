@@ -15,6 +15,7 @@ export default function EightyDistance() {
   const { sessions } = useSessions(false)
 
   const {
+    bullseyeAttempts,
     circleOneAttempts,
     circleTwoAttempts,
     outsideAttempts,
@@ -22,10 +23,10 @@ export default function EightyDistance() {
   } = useMemo(() => {
     const bullseyeSessions = sessions?.filter((s) => s.distance <= 3) || []
     const circleOneSessions =
-      sessions?.filter((s) => s.distance > 3 && s.distance <= 10) || []
+      sessions?.filter((s) => s.distance > 3 && s.distance <= 9) || []
     const circleTwoSessions =
-      sessions?.filter((s) => s.distance > 10 && s.distance <= 20) || []
-    const outsideSessions = sessions?.filter((s) => s.distance > 20) || []
+      sessions?.filter((s) => s.distance > 9 && s.distance <= 19) || []
+    const outsideSessions = sessions?.filter((s) => s.distance > 19) || []
 
     const totalAttempts =
       sessions?.reduce((sum, session) => sum + session.attempts, 0) || 0
@@ -53,6 +54,14 @@ export default function EightyDistance() {
 
   const attemptsData = useMemo(() => {
     const data = []
+
+    if (bullseyeAttempts > 0) {
+      data.push({
+        position: 'bullseye',
+        attempts: bullseyeAttempts,
+        fill: 'var(--chart-1)'
+      })
+    }
 
     if (circleOneAttempts > 0) {
       data.push({
@@ -119,11 +128,24 @@ export default function EightyDistance() {
     <Card>
       <CardHeader>
         <CardTitle>Attempts by position</CardTitle>
-        <CardDescription>Excluding Bullseye</CardDescription>
+        <CardDescription>
+          How many attempts you have made by position.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center justify-between gap-4 pb-0">
         <div className="shrink-0">
           <div>
+            <p className="-mb-0.5 text-xs font-bold text-neutral-400 uppercase">
+              Bullseye
+            </p>
+            <div className="flex items-center gap-2">
+              <div className="bg-chart-2 size-3 rounded" />
+              <p className="font-mono text-lg font-bold">
+                <NumberFlow value={bullseyeAttempts} />
+              </p>
+            </div>
+          </div>
+          <div className="mt-1">
             <p className="-mb-0.5 text-xs font-bold text-neutral-400 uppercase">
               C1X
             </p>
@@ -134,7 +156,7 @@ export default function EightyDistance() {
               </p>
             </div>
           </div>
-          <div className="mt-2">
+          <div className="mt-1">
             <p className="-mb-0.5 text-xs font-bold text-neutral-400 uppercase">
               C2
             </p>
@@ -145,7 +167,7 @@ export default function EightyDistance() {
               </p>
             </div>
           </div>
-          <div className="mt-2">
+          <div className="mt-1">
             <p className="-mb-0.5 text-xs font-bold text-neutral-400 uppercase">
               Outside
             </p>
