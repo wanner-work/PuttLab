@@ -21,6 +21,8 @@ export default function ProjectedDistance() {
     }
   } satisfies ChartConfig
 
+  console.log(data)
+
   return (
     <Card>
       <CardHeader>

@@ -27,6 +27,16 @@ export default function useProjectedDistanceAverages(
       if (existingAverage) {
         data.push(existingAverage)
       } else {
+        if (distance === 2) {
+          // for the 2 distance, just assume 100% average
+          data.push({
+            distance,
+            average: 100,
+            isProjected: true
+          })
+          break
+        }
+
         // Find the next higher distance with an average
         const nextHigher = averages
           .filter((avg) => avg.distance > distance)
