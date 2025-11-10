@@ -8,11 +8,13 @@ import Swipe from './Swipe'
 
 interface Props extends GridProps {
   backTo?: ToPathOption
+  forwardTo?: ToPathOption
 }
 
 export default function Layout({
   rows,
   backTo,
+  forwardTo,
   children,
   className,
   ...props
@@ -32,7 +34,7 @@ export default function Layout({
 
   return (
     <div className="relative h-full [view-transition-name:main-content]">
-      <Swipe backTo={backTo}>
+      <Swipe backTo={backTo} forwardTo={forwardTo}>
         <Screen
           rows={rows}
           className={clsx(containerClassName, className)}

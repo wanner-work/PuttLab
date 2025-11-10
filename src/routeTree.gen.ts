@@ -10,10 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StatsIndexRouteImport } from './routes/stats/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
+import { Route as StatsFilterIndexRouteImport } from './routes/stats/filter/index'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
 import { Route as ModesModeIdRunsRouteImport } from './routes/modes/$modeId/runs'
 import { Route as ModesModeIdModeRunIdIndexRouteImport } from './routes/modes/$modeId/$modeRunId/index'
@@ -22,6 +24,11 @@ import { Route as ModesModeIdModeRunIdResultRouteImport } from './routes/modes/$
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsIndexRoute = StatsIndexRouteImport.update({
+  id: '/stats/',
+  path: '/stats/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
@@ -42,6 +49,11 @@ const ModesIndexRoute = ModesIndexRouteImport.update({
 const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   id: '/sessions/$sessionId',
   path: '/sessions/$sessionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsFilterIndexRoute = StatsFilterIndexRouteImport.update({
+  id: '/stats/filter/',
+  path: '/stats/filter/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModesModeIdIndexRoute = ModesModeIdIndexRouteImport.update({
@@ -73,8 +85,10 @@ export interface FileRoutesByFullPath {
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/stats': typeof StatsIndexRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/stats/filter': typeof StatsFilterIndexRoute
   '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -84,8 +98,10 @@ export interface FileRoutesByTo {
   '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/stats': typeof StatsIndexRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/stats/filter': typeof StatsFilterIndexRoute
   '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -96,8 +112,10 @@ export interface FileRoutesById {
   '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/stats/': typeof StatsIndexRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
+  '/stats/filter/': typeof StatsFilterIndexRoute
   '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
   '/modes/$modeId/$modeRunId/': typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -109,8 +127,10 @@ export interface FileRouteTypes {
     | '/modes'
     | '/sessions'
     | '/settings'
+    | '/stats'
     | '/modes/$modeId/runs'
     | '/modes/$modeId'
+    | '/stats/filter'
     | '/modes/$modeId/$modeRunId/result'
     | '/modes/$modeId/$modeRunId'
   fileRoutesByTo: FileRoutesByTo
@@ -120,8 +140,10 @@ export interface FileRouteTypes {
     | '/modes'
     | '/sessions'
     | '/settings'
+    | '/stats'
     | '/modes/$modeId/runs'
     | '/modes/$modeId'
+    | '/stats/filter'
     | '/modes/$modeId/$modeRunId/result'
     | '/modes/$modeId/$modeRunId'
   id:
@@ -131,8 +153,10 @@ export interface FileRouteTypes {
     | '/modes/'
     | '/sessions/'
     | '/settings/'
+    | '/stats/'
     | '/modes/$modeId/runs'
     | '/modes/$modeId/'
+    | '/stats/filter/'
     | '/modes/$modeId/$modeRunId/result'
     | '/modes/$modeId/$modeRunId/'
   fileRoutesById: FileRoutesById
@@ -143,8 +167,10 @@ export interface RootRouteChildren {
   ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
+  StatsIndexRoute: typeof StatsIndexRoute
   ModesModeIdRunsRoute: typeof ModesModeIdRunsRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
+  StatsFilterIndexRoute: typeof StatsFilterIndexRoute
   ModesModeIdModeRunIdResultRoute: typeof ModesModeIdModeRunIdResultRoute
   ModesModeIdModeRunIdIndexRoute: typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -156,6 +182,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats/': {
+      id: '/stats/'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/': {
@@ -184,6 +217,13 @@ declare module '@tanstack/react-router' {
       path: '/sessions/$sessionId'
       fullPath: '/sessions/$sessionId'
       preLoaderRoute: typeof SessionsSessionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats/filter/': {
+      id: '/stats/filter/'
+      path: '/stats/filter'
+      fullPath: '/stats/filter'
+      preLoaderRoute: typeof StatsFilterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modes/$modeId/': {
@@ -223,8 +263,10 @@ const rootRouteChildren: RootRouteChildren = {
   ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
+  StatsIndexRoute: StatsIndexRoute,
   ModesModeIdRunsRoute: ModesModeIdRunsRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
+  StatsFilterIndexRoute: StatsFilterIndexRoute,
   ModesModeIdModeRunIdResultRoute: ModesModeIdModeRunIdResultRoute,
   ModesModeIdModeRunIdIndexRoute: ModesModeIdModeRunIdIndexRoute,
 }

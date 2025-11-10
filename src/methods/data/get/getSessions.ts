@@ -2,7 +2,10 @@ import { Session } from '@/data/entities/session'
 import PuttLabDataSource from '@/data/sources/PuttLabDataSource'
 import { IsNull } from 'typeorm'
 
-export default async function getSessions(distance: number | null = null) {
+export default async function getSessions(
+  distance: number | null = null,
+  excludeModeRuns: boolean = true
+) {
   const connection = PuttLabDataSource
 
   let sessions: Session[]
@@ -10,13 +13,13 @@ export default async function getSessions(distance: number | null = null) {
   if (distance === null) {
     sessions = await connection.manager.find(Session, {
       where: {
-        modeRun: IsNull()
+        modeRun: excludeModeRuns ? IsNull() : undefined
       },
       order: { date: 'DESC' }
     })
   } else {
     sessions = await connection.manager.find(Session, {
-      where: { distance, modeRun: IsNull() },
+      where: { distance, modeRun: excludeModeRuns ? IsNull() : undefined },
       order: { date: 'DESC' }
     })
   }

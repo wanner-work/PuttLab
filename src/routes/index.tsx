@@ -49,7 +49,7 @@ function Home() {
   }
 
   return (
-    <Layout rows={['auto', '1fr', 'auto']}>
+    <Layout rows={['auto', '1fr', 'auto']} forwardTo="/settings">
       <Header className="mt-4">
         <Link to="/settings" viewTransition={{ types: ['slide-left'] }}>
           <Button size="icon" variant="outline">
@@ -67,7 +67,10 @@ function Home() {
       <Intro animate={!internal && settings?.intro} />
 
       <div className="grid grid-cols-2 gap-3">
-        <Card onClick={() => setCreateDrawerOpen(true)}>
+        <Card
+          className="transition active:scale-95"
+          onClick={() => setCreateDrawerOpen(true)}
+        >
           <CardContent>
             <Plus />
             <p className="mt-5 text-lg font-medium select-none">
@@ -76,7 +79,7 @@ function Home() {
           </CardContent>
         </Card>
         <Link to="/modes" viewTransition={{ types: ['slide-left'] }}>
-          <Card>
+          <Card className="transition active:scale-95">
             <CardContent>
               <Gamepad2 />
               <p className="mt-5 text-lg font-medium select-none">
@@ -87,7 +90,7 @@ function Home() {
           </Card>
         </Link>
         <Link to="/sessions" viewTransition={{ types: ['slide-left'] }}>
-          <Card>
+          <Card className="transition active:scale-95">
             <CardContent>
               <Layers />
               <p className="mt-5 text-lg font-medium select-none">
@@ -97,13 +100,8 @@ function Home() {
             </CardContent>
           </Card>
         </Link>
-        <Link
-          to="/sessions"
-          viewTransition={{ types: ['slide-left'] }}
-          disabled
-          className="cursor-not-allowed opacity-50"
-        >
-          <Card>
+        <Link to="/stats" viewTransition={{ types: ['slide-left'] }}>
+          <Card className="transition active:scale-95">
             <CardContent>
               <ChartBar />
               <p className="mt-5 text-lg font-medium select-none">

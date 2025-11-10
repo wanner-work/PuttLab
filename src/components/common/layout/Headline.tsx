@@ -13,10 +13,12 @@ export default function Headline({
   ...props
 }: Readonly<Props>) {
   return (
-    <div className={clsx('mt-10 mb-6', className)} {...props}>
-      <h1 className="text-4xl">{title}</h1>
+    <div className={clsx('mt-10 mb-8', className)} {...props}>
+      <h1 className="text-center text-4xl font-bold">{title}</h1>
       {subtitle && (
-        <p className="text-muted-foreground mt-1 text-lg">{subtitle}</p>
+        <p className="text-muted-foreground mx-auto mt-3 max-w-[200px] text-center text-lg">
+          {subtitle}
+        </p>
       )}
     </div>
   )

@@ -9,7 +9,7 @@ import CreateSessionDrawer from '@/components/sessions/actions/CreateSessionDraw
 import { Button } from '@/components/ui/button'
 import type { Session } from '@/data/entities/session'
 import useSessions from '@/hooks/data/sessions/useSessions'
-import useSessionsFilter from '@/hooks/data/sessions/useSessionsFilter'
+import useSessionsLightFilter from '@/hooks/data/sessions/useSessionsLightFilter.ts'
 import { createFileRoute } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -29,7 +29,7 @@ function Sessions() {
   const [createDrawerOpen, setCreateDrawerOpen] = useState(false)
 
   const { isLoading, sessions } = useSessions()
-  const filteredSessions = useSessionsFilter(sessions || [], filter)
+  const filteredSessions = useSessionsLightFilter(sessions || [], filter)
 
   const onCreateSuccess = (session: Session | undefined) => {
     setCreateDrawerOpen(false)

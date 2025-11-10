@@ -46,15 +46,15 @@ export function useSwipe(
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
         setTouchEnd(currentX)
         setSwipeDistance(deltaX)
-      }
 
-      if (deltaX >= threshold) {
-        if (!playedHaptic) {
-          setPlayedHaptic(true)
-          await vibrate(ImpactStyle.Medium)
+        if (deltaX >= threshold) {
+          if (!playedHaptic) {
+            setPlayedHaptic(true)
+            await vibrate(ImpactStyle.Medium)
+          }
+        } else if (deltaX < threshold) {
+          setPlayedHaptic(false)
         }
-      } else if (deltaX < threshold) {
-        setPlayedHaptic(false)
       }
     }
 
@@ -63,7 +63,10 @@ export function useSwipe(
 
       const distance = touchEnd - touchStart
 
-      if (distance > threshold) {
+      if (
+        (threshold > 0 && distance > threshold) ||
+        (threshold < 0 && distance < threshold)
+      ) {
         callback?.(distance)
       } else {
         // only reset if swipe was below threshold

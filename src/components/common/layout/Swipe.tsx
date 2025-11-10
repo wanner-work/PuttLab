@@ -1,16 +1,18 @@
 import { useSwipe } from '@/hooks/ui/useSwipe'
-import { useNavigate, type ToPathOption } from '@tanstack/react-router'
+import { type ToPathOption, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { motion } from 'motion/react'
-import { useMemo, useRef, type PropsWithChildren } from 'react'
+import { type PropsWithChildren, useMemo, useRef } from 'react'
 
 interface Props {
   backTo?: ToPathOption
+  forwardTo?: ToPathOption
   className?: string
 }
 
 export default function Swipe({
   backTo,
+  forwardTo,
   children,
   className
 }: PropsWithChildren<Props>) {
@@ -18,7 +20,7 @@ export default function Swipe({
 
   const container = useRef<HTMLDivElement>(null)
 
-  const distance = useSwipe(
+  const distanceBack = useSwipe(
     container,
     backTo !== undefined,
     () => {
@@ -39,27 +41,73 @@ export default function Swipe({
     40
   )
 
+  const distanceForward = useSwipe(
+    container,
+    forwardTo !== undefined,
+    () => {
+      if (forwardTo) {
+        const search = {} as Record<string, string | boolean>
+
+        if (forwardTo === '/') {
+          search.internal = true
+        }
+
+        void navigate({
+          to: forwardTo,
+          search,
+          viewTransition: { types: ['slide-left'] }
+        })
+      }
+    },
+    -40
+  )
+
   const translateX = useMemo(() => {
-    if (distance <= 0) return 0
-
-    const threshold = 40
-
-    if (distance <= threshold) {
-      return distance
+    if (!backTo && !forwardTo) {
+      return 0
     }
 
-    const extra = distance - threshold
-    const elastic = threshold + Math.sqrt(extra) * 7 // tweak 5 for stiffness
+    if ((backTo && distanceBack <= 0) || (forwardTo && distanceForward >= 0)) {
+      return 0
+    }
 
-    return elastic
-  }, [distance])
+    let threshold: number
+
+    if (backTo) {
+      threshold = 40
+    } else {
+      threshold = -40
+    }
+
+    if (backTo && distanceBack <= threshold) {
+      return distanceBack
+    }
+
+    if (forwardTo && distanceForward >= threshold) {
+      return distanceForward
+    }
+
+    if (backTo) {
+      const extra = distanceBack - threshold
+      // tweak 5 for stiffness
+      return threshold + Math.sqrt(extra) * 7
+    }
+
+    if (forwardTo) {
+      const extra = distanceForward - threshold
+      // tweak 5 for stiffness
+      return threshold + Math.sqrt(-extra) * -7
+    }
+
+    return 0
+  }, [distanceBack, distanceForward])
 
   return (
     <motion.div
       ref={container}
       className={clsx('h-full', className)}
       animate={{
-        translateX: translateX
+        translateX
       }}
       transition={{
         duration: translateX === 0 ? 0.1 : 0,
