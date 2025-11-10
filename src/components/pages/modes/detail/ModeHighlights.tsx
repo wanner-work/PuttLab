@@ -51,11 +51,11 @@ export default function ModeHighlights({ modeRuns, mode }: Props) {
     <Card className="mb-4">
       <CardContent>
         <div className="flex items-center justify-between">
-          <div>
-            <p className="mb-0 text-xs font-bold text-neutral-400 uppercase">
+          <div className="-mt-2">
+            <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
               Highscore
             </p>
-            <p className="-mb-3 font-mono text-3xl font-bold">
+            <p className="-mb-3 font-mono text-xl font-bold">
               <span ref={ref}>
                 <NumberFlow value={highscoreRun?.score || 0} />
               </span>
