@@ -30,7 +30,7 @@ function RouteComponent() {
 
       <div className="fixed bottom-6 left-0 flex w-full justify-center">
         <Link
-          to="/stats/filter"
+          to="/stats/advanced"
           viewTransition={{
             types: ['slide-left']
           }}

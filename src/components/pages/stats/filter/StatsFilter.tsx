@@ -47,19 +47,30 @@ const years = (() => {
 const distances = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
 
 interface Props {
+  value?: FilterValue
   onChange: (filter: FilterValue) => void
 }
 
-export default function StatsFilter({ onChange }: Readonly<Props>) {
+export default function StatsFilter({ value, onChange }: Readonly<Props>) {
   const [timeframe, setTimeframe] = useState<'year' | 'month' | 'day' | 'all'>(
-    'all'
+    value?.timeframe || 'all'
   )
-  const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
-  const [month, setMonth] = useState(months[0])
-  const [year, setYear] = useState(years[0])
+  const [date, setDate] = useState(
+    value?.timeframe === 'month' ? value.date : dayjs().format('YYYY-MM-DD')
+  )
+  const [month, setMonth] = useState(
+    value?.timeframe === 'month' ? value.date : months[0]
+  )
+  const [year, setYear] = useState(
+    value?.timeframe === 'year' || value?.timeframe === 'month'
+      ? value.date
+      : years[0]
+  )
 
-  const [distanceMode, setDistanceMode] = useState<'dg' | 'unit'>('dg')
-  const [distance, setDistance] = useState('all')
+  const [distanceMode, setDistanceMode] = useState<'dg' | 'unit'>(
+    value?.distanceMode || 'dg'
+  )
+  const [distance, setDistance] = useState(value?.distance || 'all')
 
   const { unit, getDistance } = useUnit()
 
@@ -99,7 +110,7 @@ export default function StatsFilter({ onChange }: Readonly<Props>) {
   }, [filter])
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex w-full flex-col gap-3">
       {/* @ts-ignore because the timeframe is correctly typed */}
       <Select value={timeframe} onValueChange={onTimeframeChange}>
         <SelectTrigger className="w-full">
@@ -129,7 +140,7 @@ export default function StatsFilter({ onChange }: Readonly<Props>) {
       )}
 
       {(timeframe === 'year' || timeframe === 'month') && (
-        <div className="flex gap-3">
+        <div className="flex gap-3" data-vaul-no-drag>
           {timeframe === 'month' && (
             <WheelPickerWrapper className="rounded-3xl">
               <WheelPicker
@@ -186,16 +197,18 @@ export default function StatsFilter({ onChange }: Readonly<Props>) {
       )}
 
       {distanceMode === 'unit' && (
-        <WheelPickerWrapper className="rounded-3xl">
-          <WheelPicker
-            options={distances.map((distance) => ({
-              label: `${getDistance(Number(distance))} ${unit}`,
-              value: distance
-            }))}
-            value={distance}
-            onValueChange={(value) => setDistance(value)}
-          />
-        </WheelPickerWrapper>
+        <div data-vaul-no-drag>
+          <WheelPickerWrapper className="rounded-3xl">
+            <WheelPicker
+              options={distances.map((distance) => ({
+                label: `${getDistance(Number(distance))} ${unit}`,
+                value: distance
+              }))}
+              value={distance}
+              onValueChange={(value) => setDistance(value)}
+            />
+          </WheelPickerWrapper>
+        </div>
       )}
     </div>
   )

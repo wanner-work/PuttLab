@@ -1,12 +1,23 @@
 import { Card, CardContent } from '@/components/ui/card.tsx'
+import type { Session } from '@/data/entities/session.ts'
 import useSessions from '@/hooks/data/sessions/useSessions.ts'
 import useGuaranteedPutt from '@/hooks/data/stats/useGuaranteedPutt.ts'
 import useUnit from '@/hooks/units/useUnit.ts'
 import NumberFlow from '@number-flow/react'
 
-export default function EightyDistance() {
+interface Props {
+  useSpecificSessions?: boolean
+  specificSessions?: Session[] | null
+}
+
+export default function EightyDistance({
+  useSpecificSessions,
+  specificSessions
+}: Readonly<Props>) {
   const { sessions } = useSessions(false)
-  const distance = useGuaranteedPutt(sessions)
+  const distance = useGuaranteedPutt(
+    useSpecificSessions ? specificSessions || undefined : sessions
+  )
 
   const { unit, getDistance } = useUnit()
 

@@ -5,11 +5,11 @@ export default interface FilterValue {
    * If timeframe is 'month', format: 'YYYY-MM'
    * If timeframe is 'year', format: 'YYYY'
    */
-  date: string
+  date?: string
 
   distanceMode: 'dg' | 'unit'
   /**
-   * If distanceMode is 'dg', either: bullseye, c1x, c2, outside
+   * If distanceMode is 'dg', either: bullseye, c1x, c2, outside or all
    * If distanceMode is 'unit', format: string representing metric distance (e.g., "10" for 10 meters)
    */
   distance: string

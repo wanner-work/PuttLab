@@ -15,7 +15,7 @@ import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
 import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
-import { Route as StatsFilterIndexRouteImport } from './routes/stats/filter/index'
+import { Route as StatsAdvancedIndexRouteImport } from './routes/stats/advanced/index'
 import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
 import { Route as ModesModeIdRunsRouteImport } from './routes/modes/$modeId/runs'
 import { Route as ModesModeIdModeRunIdIndexRouteImport } from './routes/modes/$modeId/$modeRunId/index'
@@ -51,9 +51,9 @@ const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   path: '/sessions/$sessionId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StatsFilterIndexRoute = StatsFilterIndexRouteImport.update({
-  id: '/stats/filter/',
-  path: '/stats/filter/',
+const StatsAdvancedIndexRoute = StatsAdvancedIndexRouteImport.update({
+  id: '/stats/advanced/',
+  path: '/stats/advanced/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModesModeIdIndexRoute = ModesModeIdIndexRouteImport.update({
@@ -88,7 +88,7 @@ export interface FileRoutesByFullPath {
   '/stats': typeof StatsIndexRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
-  '/stats/filter': typeof StatsFilterIndexRoute
+  '/stats/advanced': typeof StatsAdvancedIndexRoute
   '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -101,7 +101,7 @@ export interface FileRoutesByTo {
   '/stats': typeof StatsIndexRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId': typeof ModesModeIdIndexRoute
-  '/stats/filter': typeof StatsFilterIndexRoute
+  '/stats/advanced': typeof StatsAdvancedIndexRoute
   '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
   '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -115,7 +115,7 @@ export interface FileRoutesById {
   '/stats/': typeof StatsIndexRoute
   '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
   '/modes/$modeId/': typeof ModesModeIdIndexRoute
-  '/stats/filter/': typeof StatsFilterIndexRoute
+  '/stats/advanced/': typeof StatsAdvancedIndexRoute
   '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
   '/modes/$modeId/$modeRunId/': typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -130,7 +130,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/modes/$modeId/runs'
     | '/modes/$modeId'
-    | '/stats/filter'
+    | '/stats/advanced'
     | '/modes/$modeId/$modeRunId/result'
     | '/modes/$modeId/$modeRunId'
   fileRoutesByTo: FileRoutesByTo
@@ -143,7 +143,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/modes/$modeId/runs'
     | '/modes/$modeId'
-    | '/stats/filter'
+    | '/stats/advanced'
     | '/modes/$modeId/$modeRunId/result'
     | '/modes/$modeId/$modeRunId'
   id:
@@ -156,7 +156,7 @@ export interface FileRouteTypes {
     | '/stats/'
     | '/modes/$modeId/runs'
     | '/modes/$modeId/'
-    | '/stats/filter/'
+    | '/stats/advanced/'
     | '/modes/$modeId/$modeRunId/result'
     | '/modes/$modeId/$modeRunId/'
   fileRoutesById: FileRoutesById
@@ -170,7 +170,7 @@ export interface RootRouteChildren {
   StatsIndexRoute: typeof StatsIndexRoute
   ModesModeIdRunsRoute: typeof ModesModeIdRunsRoute
   ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
-  StatsFilterIndexRoute: typeof StatsFilterIndexRoute
+  StatsAdvancedIndexRoute: typeof StatsAdvancedIndexRoute
   ModesModeIdModeRunIdResultRoute: typeof ModesModeIdModeRunIdResultRoute
   ModesModeIdModeRunIdIndexRoute: typeof ModesModeIdModeRunIdIndexRoute
 }
@@ -219,11 +219,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsSessionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/stats/filter/': {
-      id: '/stats/filter/'
-      path: '/stats/filter'
-      fullPath: '/stats/filter'
-      preLoaderRoute: typeof StatsFilterIndexRouteImport
+    '/stats/advanced/': {
+      id: '/stats/advanced/'
+      path: '/stats/advanced'
+      fullPath: '/stats/advanced'
+      preLoaderRoute: typeof StatsAdvancedIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modes/$modeId/': {
@@ -266,7 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   StatsIndexRoute: StatsIndexRoute,
   ModesModeIdRunsRoute: ModesModeIdRunsRoute,
   ModesModeIdIndexRoute: ModesModeIdIndexRoute,
-  StatsFilterIndexRoute: StatsFilterIndexRoute,
+  StatsAdvancedIndexRoute: StatsAdvancedIndexRoute,
   ModesModeIdModeRunIdResultRoute: ModesModeIdModeRunIdResultRoute,
   ModesModeIdModeRunIdIndexRoute: ModesModeIdModeRunIdIndexRoute,
 }
