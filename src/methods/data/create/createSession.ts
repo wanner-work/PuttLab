@@ -1,12 +1,20 @@
 import defaultConnection from '@/data/connections/defaultConnection'
+import type { ModeRun } from '@/data/entities/moderun'
 import { Session } from '@/data/entities/session'
 import PuttLabDataSource from '@/data/sources/PuttLabDataSource'
 import { Capacitor } from '@capacitor/core'
 
-export default async function createSession(
-  distance: number,
+interface Params {
+  distance: number
   maxAttempts?: number
-) {
+  modeRun?: ModeRun
+}
+
+export default async function createSession({
+  distance,
+  maxAttempts,
+  modeRun
+}: Params) {
   const session = new Session()
   session.date = new Date().toISOString()
   session.attempts = 0
@@ -15,6 +23,10 @@ export default async function createSession(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   session.maxAttempts = maxAttempts ?? null
+
+  if (modeRun) {
+    session.modeRun = modeRun
+  }
 
   await PuttLabDataSource.getRepository(Session).save(session)
 

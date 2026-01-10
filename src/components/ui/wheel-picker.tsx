@@ -14,7 +14,7 @@ function WheelPickerWrapper({
   return (
     <WheelPickerPrimitive.WheelPickerWrapper
       className={cn(
-        'w-56 rounded-lg border bg-white px-1 shadow-xs dark:bg-black',
+        'w-56 rounded-xl border bg-white px-1 shadow-xs dark:bg-black',
         '*:data-rwp:first:*:data-rwp-highlight-wrapper:rounded-s-md',
         '*:data-rwp:last:*:data-rwp-highlight-wrapper:rounded-e-md',
         className

@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/drawer'
 import { WheelPicker, WheelPickerWrapper } from '@/components/ui/wheel-picker'
 import useSettings from '@/hooks/data/settings/useSettings'
-import useSettingsMutate from '@/hooks/data/settings/useSettingsMutate'
-import type DrawerProps from '@/interfaces/ui/DrawerProps'
+import useSettingsMutation from '@/hooks/data/settings/useSettingsMutation'
+import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
 import { Loader2Icon } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -25,7 +25,7 @@ export default function RecorderControlBatchDrawer({
   onSuccess
 }: Props) {
   const { settings } = useSettings()
-  const { mutate: updateSettings, isPending } = useSettingsMutate(() =>
+  const { mutate: updateSettings, isPending } = useSettingsMutation(() =>
     onSuccess?.()
   )
 

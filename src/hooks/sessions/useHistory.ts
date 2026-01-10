@@ -4,12 +4,16 @@ import { useMemo, useState } from 'react'
 export default function useHistory() {
   const [history, setHistory] = useState<HistoryEntry[]>([])
 
+  const clearHistory = () => {
+    setHistory([])
+  }
+
   const addHistoryEntry = (attempts: number, hits: number) => {
     setHistory((prevHistory) => [...prevHistory, { attempts, hits }])
   }
 
   const getLastHistoryEntry = () => {
-    return history[history.length - 1]
+    return history.at(-1)!
   }
 
   const removeLastHistoryEntry = () => {
@@ -18,7 +22,7 @@ export default function useHistory() {
 
   const getLatest = (history: HistoryEntry[]) => {
     if (history.length === 0) return undefined
-    const lastEntry = history[history.length - 1]
+    const lastEntry = history.at(-1)!
     if (lastEntry.attempts === 1) {
       return lastEntry.hits === 1 ? ('hit' as const) : ('miss' as const)
     }
@@ -32,6 +36,7 @@ export default function useHistory() {
   return {
     history,
     latest,
+    clearHistory,
     getLatest,
     addHistoryEntry,
     getLastHistoryEntry,

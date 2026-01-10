@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 interface Props {
   className?: string
 }
@@ -5,7 +7,7 @@ interface Props {
 export default function Icon({ className }: Props) {
   return (
     <svg
-      className={className}
+      className={clsx(className, '[view-transition-name:app-icon]')}
       width="391"
       height="190"
       viewBox="0 0 391 190"

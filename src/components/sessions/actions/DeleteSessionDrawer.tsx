@@ -1,3 +1,4 @@
+import type DrawerProps from '@/interfaces/ui/drawer/DrawerProps.ts'
 import deleteSession from '@/methods/data/delete/deleteSession.ts'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2Icon } from 'lucide-react'
@@ -12,12 +13,9 @@ import {
   DrawerTitle
 } from '../../ui/drawer.tsx'
 
-interface Props {
+interface Props extends DrawerProps {
   sessionId: number
   attempts: number
-  onSuccess: () => void
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
 }
 
 export default function DeleteSessionDrawer({
@@ -29,7 +27,7 @@ export default function DeleteSessionDrawer({
 }: Props) {
   const { mutate: remove, isPending: isRemoving } = useMutation({
     mutationFn: deleteSession,
-    onSuccess
+    onSuccess: () => onSuccess?.()
   })
 
   return (
@@ -52,7 +50,7 @@ export default function DeleteSessionDrawer({
             {isRemoving && <Loader2Icon className="animate-spin" />}
             Delete
           </Button>
-          <DrawerClose>
+          <DrawerClose asChild>
             <Button variant="outline" className="w-full">
               Cancel
             </Button>

@@ -9,25 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as InfoRouteImport } from './routes/info'
-import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StatsIndexRouteImport } from './routes/stats/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SessionsIndexRouteImport } from './routes/sessions/index'
+import { Route as ModesIndexRouteImport } from './routes/modes/index'
 import { Route as SessionsSessionIdRouteImport } from './routes/sessions/$sessionId'
+import { Route as StatsAdvancedIndexRouteImport } from './routes/stats/advanced/index'
+import { Route as ModesModeIdIndexRouteImport } from './routes/modes/$modeId/index'
+import { Route as ModesModeIdRunsRouteImport } from './routes/modes/$modeId/runs'
+import { Route as ModesModeIdModeRunIdIndexRouteImport } from './routes/modes/$modeId/$modeRunId/index'
+import { Route as ModesModeIdModeRunIdResultRouteImport } from './routes/modes/$modeId/$modeRunId/result'
 
-const InfoRoute = InfoRouteImport.update({
-  id: '/info',
-  path: '/info',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnalyticsRoute = AnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsIndexRoute = StatsIndexRouteImport.update({
+  id: '/stats/',
+  path: '/stats/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SessionsIndexRoute = SessionsIndexRouteImport.update({
@@ -35,77 +41,161 @@ const SessionsIndexRoute = SessionsIndexRouteImport.update({
   path: '/sessions/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModesIndexRoute = ModesIndexRouteImport.update({
+  id: '/modes/',
+  path: '/modes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SessionsSessionIdRoute = SessionsSessionIdRouteImport.update({
   id: '/sessions/$sessionId',
   path: '/sessions/$sessionId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StatsAdvancedIndexRoute = StatsAdvancedIndexRouteImport.update({
+  id: '/stats/advanced/',
+  path: '/stats/advanced/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesModeIdIndexRoute = ModesModeIdIndexRouteImport.update({
+  id: '/modes/$modeId/',
+  path: '/modes/$modeId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesModeIdRunsRoute = ModesModeIdRunsRouteImport.update({
+  id: '/modes/$modeId/runs',
+  path: '/modes/$modeId/runs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesModeIdModeRunIdIndexRoute =
+  ModesModeIdModeRunIdIndexRouteImport.update({
+    id: '/modes/$modeId/$modeRunId/',
+    path: '/modes/$modeId/$modeRunId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ModesModeIdModeRunIdResultRoute =
+  ModesModeIdModeRunIdResultRouteImport.update({
+    id: '/modes/$modeId/$modeRunId/result',
+    path: '/modes/$modeId/$modeRunId/result',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/stats': typeof StatsIndexRoute
+  '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
+  '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/stats/advanced': typeof StatsAdvancedIndexRoute
+  '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
+  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/modes': typeof ModesIndexRoute
   '/sessions': typeof SessionsIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/stats': typeof StatsIndexRoute
+  '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
+  '/modes/$modeId': typeof ModesModeIdIndexRoute
+  '/stats/advanced': typeof StatsAdvancedIndexRoute
+  '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
+  '/modes/$modeId/$modeRunId': typeof ModesModeIdModeRunIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/info': typeof InfoRoute
   '/sessions/$sessionId': typeof SessionsSessionIdRoute
+  '/modes/': typeof ModesIndexRoute
   '/sessions/': typeof SessionsIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/stats/': typeof StatsIndexRoute
+  '/modes/$modeId/runs': typeof ModesModeIdRunsRoute
+  '/modes/$modeId/': typeof ModesModeIdIndexRoute
+  '/stats/advanced/': typeof StatsAdvancedIndexRoute
+  '/modes/$modeId/$modeRunId/result': typeof ModesModeIdModeRunIdResultRoute
+  '/modes/$modeId/$modeRunId/': typeof ModesModeIdModeRunIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/info' | '/sessions/$sessionId' | '/sessions'
+  fullPaths:
+    | '/'
+    | '/sessions/$sessionId'
+    | '/modes'
+    | '/sessions'
+    | '/settings'
+    | '/stats'
+    | '/modes/$modeId/runs'
+    | '/modes/$modeId'
+    | '/stats/advanced'
+    | '/modes/$modeId/$modeRunId/result'
+    | '/modes/$modeId/$modeRunId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/info' | '/sessions/$sessionId' | '/sessions'
+  to:
+    | '/'
+    | '/sessions/$sessionId'
+    | '/modes'
+    | '/sessions'
+    | '/settings'
+    | '/stats'
+    | '/modes/$modeId/runs'
+    | '/modes/$modeId'
+    | '/stats/advanced'
+    | '/modes/$modeId/$modeRunId/result'
+    | '/modes/$modeId/$modeRunId'
   id:
     | '__root__'
     | '/'
-    | '/analytics'
-    | '/info'
     | '/sessions/$sessionId'
+    | '/modes/'
     | '/sessions/'
+    | '/settings/'
+    | '/stats/'
+    | '/modes/$modeId/runs'
+    | '/modes/$modeId/'
+    | '/stats/advanced/'
+    | '/modes/$modeId/$modeRunId/result'
+    | '/modes/$modeId/$modeRunId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnalyticsRoute: typeof AnalyticsRoute
-  InfoRoute: typeof InfoRoute
   SessionsSessionIdRoute: typeof SessionsSessionIdRoute
+  ModesIndexRoute: typeof ModesIndexRoute
   SessionsIndexRoute: typeof SessionsIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  StatsIndexRoute: typeof StatsIndexRoute
+  ModesModeIdRunsRoute: typeof ModesModeIdRunsRoute
+  ModesModeIdIndexRoute: typeof ModesModeIdIndexRoute
+  StatsAdvancedIndexRoute: typeof StatsAdvancedIndexRoute
+  ModesModeIdModeRunIdResultRoute: typeof ModesModeIdModeRunIdResultRoute
+  ModesModeIdModeRunIdIndexRoute: typeof ModesModeIdModeRunIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/info': {
-      id: '/info'
-      path: '/info'
-      fullPath: '/info'
-      preLoaderRoute: typeof InfoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analytics': {
-      id: '/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof AnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats/': {
+      id: '/stats/'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sessions/': {
@@ -115,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/modes/': {
+      id: '/modes/'
+      path: '/modes'
+      fullPath: '/modes'
+      preLoaderRoute: typeof ModesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sessions/$sessionId': {
       id: '/sessions/$sessionId'
       path: '/sessions/$sessionId'
@@ -122,15 +219,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SessionsSessionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stats/advanced/': {
+      id: '/stats/advanced/'
+      path: '/stats/advanced'
+      fullPath: '/stats/advanced'
+      preLoaderRoute: typeof StatsAdvancedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$modeId/': {
+      id: '/modes/$modeId/'
+      path: '/modes/$modeId'
+      fullPath: '/modes/$modeId'
+      preLoaderRoute: typeof ModesModeIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$modeId/runs': {
+      id: '/modes/$modeId/runs'
+      path: '/modes/$modeId/runs'
+      fullPath: '/modes/$modeId/runs'
+      preLoaderRoute: typeof ModesModeIdRunsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$modeId/$modeRunId/': {
+      id: '/modes/$modeId/$modeRunId/'
+      path: '/modes/$modeId/$modeRunId'
+      fullPath: '/modes/$modeId/$modeRunId'
+      preLoaderRoute: typeof ModesModeIdModeRunIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/$modeId/$modeRunId/result': {
+      id: '/modes/$modeId/$modeRunId/result'
+      path: '/modes/$modeId/$modeRunId/result'
+      fullPath: '/modes/$modeId/$modeRunId/result'
+      preLoaderRoute: typeof ModesModeIdModeRunIdResultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnalyticsRoute: AnalyticsRoute,
-  InfoRoute: InfoRoute,
   SessionsSessionIdRoute: SessionsSessionIdRoute,
+  ModesIndexRoute: ModesIndexRoute,
   SessionsIndexRoute: SessionsIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+  StatsIndexRoute: StatsIndexRoute,
+  ModesModeIdRunsRoute: ModesModeIdRunsRoute,
+  ModesModeIdIndexRoute: ModesModeIdIndexRoute,
+  StatsAdvancedIndexRoute: StatsAdvancedIndexRoute,
+  ModesModeIdModeRunIdResultRoute: ModesModeIdModeRunIdResultRoute,
+  ModesModeIdModeRunIdIndexRoute: ModesModeIdModeRunIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

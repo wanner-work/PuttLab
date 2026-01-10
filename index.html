@@ -1,13 +1,86 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-dvh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/icon.png" />
+
+    <link
+      rel="preload"
+      href="/fonts/inter-variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-italic-variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/SpaceMono-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+
+    <style>
+      @font-face {
+        font-family: 'Inter Variable';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url('/fonts/inter-variable.ttf') format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Inter Variable';
+        font-style: italic;
+        font-display: swap;
+        font-weight: 100 900;
+        src: url('/fonts/inter-italic-variable.ttf') format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Space Mono';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src: url('/fonts/SpaceMono-Regular.ttf') format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Space Mono';
+        font-style: italic;
+        font-display: swap;
+        font-weight: 400;
+        src: url('/fonts/SpaceMono-Italic.ttf') format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Space Mono';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 700;
+        src: url('/fonts/SpaceMono-Bold.ttf') format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Space Mono';
+        font-style: italic;
+        font-display: swap;
+        font-weight: 700;
+        src: url('/fonts/SpaceMono-BoldItalic.ttf') format('truetype');
+      }
+    </style>
+
     <title>PuttLab</title>
   </head>
-  <body class="dark bg-black">
-    <div id="root"></div>
+  <body class="dark h-full bg-black">
+    <main class="h-full" data-vaul-drawer-wrapper id="root"></main>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

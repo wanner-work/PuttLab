@@ -9,8 +9,11 @@ import RecorderBatch from './RecorderControlBatch.tsx'
 import RecorderSingle from './RecorderControlSingle.tsx'
 
 interface Props {
+  maxPutters?: number
   session: Session | null | undefined
+  attempts: number
   history: HistoryEntry[]
+  disabled?: boolean
   hit: () => void
   miss: () => void
   batch: (attempts: number, hits: number) => void
@@ -20,19 +23,23 @@ interface Props {
 export default memo(RecorderControl)
 
 function RecorderControl({
+  maxPutters,
   session,
+  attempts,
   history,
+  disabled,
   hit,
   miss,
   batch,
   undo
 }: Readonly<Props>) {
-  const disabled = useMemo(() => {
+  const isDisabled = useMemo(() => {
     if (!session) return true
+    if (disabled) return true
     if (session.maxAttempts) {
-      return session.attempts >= session.maxAttempts
+      return attempts >= session.maxAttempts
     }
-  }, [session])
+  }, [session, attempts, disabled])
 
   const { getLatest } = useHistory()
 
@@ -48,22 +55,22 @@ function RecorderControl({
             <TabsTrigger
               value="byPutt"
               className="w-full p-2"
-              disabled={disabled}
+              disabled={isDisabled}
             >
               By Putt
             </TabsTrigger>
             <TabsTrigger
               value="byBatch"
               className="w-full p-2"
-              disabled={disabled}
+              disabled={isDisabled}
             >
               By Batch
             </TabsTrigger>
           </TabsList>
-          <div className="bg-card/30 text-card-foreground relative flex h-auto items-center justify-center rounded-lg border p-[3px] shadow-sm">
+          <div className="bg-card/30 text-card-foreground relative flex h-auto items-center justify-center rounded-2xl border p-[3px] shadow-sm">
             <Button
               variant="outline"
-              className="!bg-background size-[42px] rounded-md border border-transparent !px-2 disabled:!bg-transparent"
+              className="!bg-background size-[42px] border border-transparent !px-2 disabled:!bg-transparent"
               disabled={history?.length === 0}
               onClick={() => undo()}
             >
@@ -76,14 +83,17 @@ function RecorderControl({
           <RecorderSingle
             hit={hit}
             miss={miss}
-            disabled={disabled}
+            disabled={isDisabled}
             latest={typeof latest === 'string' ? latest : undefined}
           />
         </TabsContent>
         <TabsContent value="byBatch" className="flex flex-col gap-3">
           <RecorderBatch
+            maxPutters={maxPutters}
             batch={batch}
-            disabled={disabled}
+            attempts={attempts}
+            session={session}
+            disabled={isDisabled}
             latest={typeof latest === 'number' ? latest : undefined}
           />
         </TabsContent>

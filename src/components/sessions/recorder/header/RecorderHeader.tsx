@@ -1,6 +1,6 @@
 import type { Session } from '@/data/entities/session.ts'
 import useUnit from '@/hooks/units/useUnit.ts'
-import calculateCirclePosition from '@/methods/calculations/calculateCirclePosition.ts'
+import getCirclePosition from '@/methods/calculations/getCirclePosition.ts'
 import NumberFlow from '@number-flow/react'
 import { useMemo } from 'react'
 
@@ -13,7 +13,7 @@ export default function RecorderHeader({ session }: Readonly<Props>) {
 
   const position = useMemo(() => {
     if (!session) return '...'
-    return calculateCirclePosition(session.distance)
+    return getCirclePosition(session.distance)
   }, [session])
 
   return (

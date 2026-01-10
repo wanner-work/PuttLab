@@ -34,7 +34,7 @@ export default function SettingsDrawer({
   open,
   onOpenChange,
   onSuccess
-}: Props) {
+}: Readonly<Props>) {
   const { mutate, isPending } = useMutation({
     mutationFn: updateSettings,
     onSuccess: () => {
@@ -77,6 +77,26 @@ export default function SettingsDrawer({
                           <FormDescription>
                             Use metric units (meters), instead of freedom units
                             (feet).
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="intro"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between gap-4 rounded-lg border p-3 shadow-sm">
+                        <div className="space-y-0.5">
+                          <FormLabel>Show the intro animation</FormLabel>
+                          <FormDescription>
+                            Display the intro animation when launching the app.
                           </FormDescription>
                         </div>
                         <FormControl>

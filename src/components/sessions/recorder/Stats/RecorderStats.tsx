@@ -1,7 +1,7 @@
 import RecorderStatsChart from '@/components/sessions/recorder/Stats/RecorderStatsChart.tsx'
 import QUERY from '@/constants/QUERY.ts'
 import type { Session } from '@/data/entities/session.ts'
-import calculatePercentage from '@/methods/calculations/calculatePercentage.ts'
+import getPercentage from '@/methods/calculations/getPercentage.ts'
 import getSessionsSumsForDistance from '@/methods/data/get/getSessionsSumsForDistance.ts'
 import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
@@ -50,14 +50,14 @@ export default function RecorderStats({
   })
 
   const average = useMemo(() => {
-    return calculatePercentage(attempts, hits)
+    return getPercentage(attempts, hits)
   }, [hits, attempts])
 
   const totalAverage = useMemo(() => {
     if (!totalHits || !totalAttempts) {
       return 0
     }
-    return calculatePercentage(totalAttempts, totalHits)
+    return getPercentage(totalAttempts, totalHits)
   }, [totalHits, totalAttempts])
 
   const diff = useMemo(() => {

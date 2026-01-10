@@ -1,5 +1,5 @@
 import QUERY from '@/constants/QUERY'
-import calculatePercentage from '@/methods/calculations/calculatePercentage'
+import getPercentage from '@/methods/calculations/getPercentage.ts'
 import getSessions from '@/methods/data/get/getSessions'
 import NumberFlow from '@number-flow/react'
 import { useQuery } from '@tanstack/react-query'
@@ -89,25 +89,14 @@ export default function AnalyticsCard() {
     }
   }, [sessions])
 
-  const {
-    bullseyeAverage,
-    circleOneAverage,
-    circleTwoAverage,
-    outsideAverage
-  } = useMemo(() => {
-    const bullseyeAverage = calculatePercentage(bullseyeAttempts, bullseyeHits)
+  const { circleOneAverage, circleTwoAverage, outsideAverage } = useMemo(() => {
+    const bullseyeAverage = getPercentage(bullseyeAttempts, bullseyeHits)
 
-    const circleOneAverage = calculatePercentage(
-      circleOneAttempts,
-      circleOneHits
-    )
+    const circleOneAverage = getPercentage(circleOneAttempts, circleOneHits)
 
-    const circleTwoAverage = calculatePercentage(
-      circleTwoAttempts,
-      circleTwoHits
-    )
+    const circleTwoAverage = getPercentage(circleTwoAttempts, circleTwoHits)
 
-    const outsideAverage = calculatePercentage(outsideAttempts, outsideHits)
+    const outsideAverage = getPercentage(outsideAttempts, outsideHits)
 
     return {
       bullseyeAverage,
@@ -129,11 +118,6 @@ export default function AnalyticsCard() {
   const averageData = useMemo(() => {
     return [
       {
-        position: 'bullseye',
-        average: bullseyeAverage,
-        fill: 'var(--chart-1)'
-      },
-      {
         position: 'one',
         average: circleOneAverage,
         fill: 'var(--chart-2)'
@@ -145,18 +129,10 @@ export default function AnalyticsCard() {
       },
       { position: 'outside', average: outsideAverage, fill: 'var(--chart-4)' }
     ]
-  }, [bullseyeAverage, circleOneAverage, circleTwoAverage, outsideAverage])
+  }, [circleOneAverage, circleTwoAverage, outsideAverage])
 
   const attemptsData = useMemo(() => {
     const data = []
-
-    if (bullseyeAttempts > 0) {
-      data.push({
-        position: 'bullseye',
-        attempts: bullseyeAttempts,
-        fill: 'var(--chart-1)'
-      })
-    }
 
     if (circleOneAttempts > 0) {
       data.push({
@@ -191,7 +167,7 @@ export default function AnalyticsCard() {
     }
 
     return data
-  }, [bullseyeAttempts, circleOneAttempts, circleTwoAttempts, outsideAttempts])
+  }, [circleOneAttempts, circleTwoAttempts, outsideAttempts])
 
   const activityData = useMemo(() => {
     const data = []
@@ -225,9 +201,6 @@ export default function AnalyticsCard() {
       position: {
         label: 'Position'
       },
-      bullseye: {
-        label: 'Bullseye'
-      },
       one: {
         label: 'Circle One'
       },
@@ -255,18 +228,7 @@ export default function AnalyticsCard() {
         </CardHeader>
         <CardContent className="flex items-center justify-between gap-4 pb-0">
           <div className="shrink-0">
-            <div>
-              <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
-                Bullseye
-              </p>
-              <div className="flex items-center gap-2">
-                <div className="bg-chart-1 size-3 rounded" />
-                <p className="font-mono text-xl font-bold">
-                  <NumberFlow value={bullseyeAverage} suffix="%" />
-                </p>
-              </div>
-            </div>
-            <div className="mt-2">
+            <div className="">
               <p className="-mb-1 text-xs font-bold text-neutral-400 uppercase">
                 C1X
               </p>
