@@ -11,7 +11,6 @@ import 'reflect-metadata'
 
 import getSettings from '@/methods/data/get/getSettings.ts'
 import { Capacitor } from '@capacitor/core'
-import '@fontsource-variable/inter'
 import '@fontsource/erica-one'
 import './styles/style.css'
 import './styles/transitions.css'

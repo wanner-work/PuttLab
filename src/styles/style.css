@@ -42,6 +42,9 @@
 
   --font-serif: 'Erica One', serif;
   --font-sans: 'Inter Variable', sans-serif;
+  --font-mono:
+    'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
 }
 
 :root {
@@ -122,7 +125,8 @@
   }
 }
 
-.web [data-vaul-drawer][data-vaul-snap-points="false"][data-vaul-drawer-direction="bottom"] {
+.web
+  [data-vaul-drawer][data-vaul-snap-points='false'][data-vaul-drawer-direction='bottom'] {
   max-width: 440px;
   margin: 0 auto;
 }
