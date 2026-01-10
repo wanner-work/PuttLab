@@ -18,7 +18,7 @@ export default function Grid({
 
   return (
     <motion.div
-      className={clsx('grid h-full', className)}
+      className={clsx('grid h-full grid-cols-1', className)}
       {...props}
       style={{
         gridTemplateRows

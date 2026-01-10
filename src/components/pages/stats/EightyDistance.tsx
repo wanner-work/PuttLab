@@ -8,11 +8,13 @@ import NumberFlow from '@number-flow/react'
 interface Props {
   useSpecificSessions?: boolean
   specificSessions?: Session[] | null
+  className?: string
 }
 
 export default function EightyDistance({
   useSpecificSessions,
-  specificSessions
+  specificSessions,
+  className
 }: Readonly<Props>) {
   const { sessions } = useSessions(false)
   const distance = useGuaranteedPutt(
@@ -22,19 +24,21 @@ export default function EightyDistance({
   const { unit, getDistance } = useUnit()
 
   return (
-    <Card>
-      <CardContent>
-        <p className="font-mono text-2xl font-bold uppercase">
-          <NumberFlow
-            value={distance ? getDistance(distance) : 0}
-            suffix={` ${unit}`}
-          />
-        </p>
-        <p className="text-muted-foreground mt-1 text-sm">
-          ... is the distance, of where you have about a 80% chance to make the
-          putt.
-        </p>
-      </CardContent>
-    </Card>
+    <div className={className}>
+      <Card>
+        <CardContent>
+          <p className="font-mono text-2xl font-bold uppercase">
+            <NumberFlow
+              value={distance ? getDistance(distance) : 0}
+              suffix={` ${unit}`}
+            />
+          </p>
+          <p className="text-muted-foreground mt-1 text-sm">
+            ... is the distance, of where you have about a 80% chance to make
+            the putt.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

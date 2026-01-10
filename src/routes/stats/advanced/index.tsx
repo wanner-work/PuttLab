@@ -3,6 +3,9 @@ import Layout from '@/components/common/layout/Layout.tsx'
 import EightyDistance from '@/components/pages/stats/EightyDistance.tsx'
 import SelectedSessions from '@/components/pages/stats/filter/stats/SelectedSessions.tsx'
 import StatsFilterDrawer from '@/components/pages/stats/filter/StatsFilterDrawer.tsx'
+import MakePercentage from '@/components/pages/stats/MakePercentage.tsx'
+import MakePercentageByPosition from '@/components/pages/stats/MakePercentageByPosition.tsx'
+import MakePercentageTrend from '@/components/pages/stats/MakePercentageTrend.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import useSessionsFilter from '@/hooks/data/sessions/useSessionsFilter.ts'
 import type FilterValue from '@/interfaces/data/filter/FilterValue.ts'
@@ -21,15 +24,30 @@ function RouteComponent() {
     distance: 'all',
     timeframe: 'all'
   })
-  const { data, isLoading } = useSessionsFilter(filter)
+  const { data: specificSessions, isLoading } = useSessionsFilter(filter)
 
   return (
-    <Layout rows={['1fr']} className="overflow-auto pb-0" backTo="/stats">
-      <Header backTo="/stats" className="sticky top-6" />
+    <Layout
+      rows={['auto', '1fr']}
+      className="overflow-auto pb-0"
+      backTo="/stats"
+    >
+      <Header backTo="/stats" className="sticky" />
 
-      <div className="h-full">
-        <SelectedSessions isLoading={isLoading} sessions={data} />
-        <EightyDistance useSpecificSessions specificSessions={data} />
+      <div className="flex flex-col gap-3 py-6">
+        <SelectedSessions
+          isLoading={isLoading}
+          sessions={specificSessions}
+          filter={filter}
+        />
+        <MakePercentage specificSessions={specificSessions} />
+        <MakePercentageByPosition specificSessions={specificSessions} />
+        <MakePercentageTrend specificSessions={specificSessions} />
+        <EightyDistance
+          className="pb-24"
+          useSpecificSessions
+          specificSessions={specificSessions}
+        />
       </div>
 
       <div className="fixed bottom-6 left-0 flex w-full justify-center">
