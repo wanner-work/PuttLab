@@ -10,8 +10,7 @@ const definition: ModeDefinition = {
   },
   requirements: {
     availableDistance: 9,
-    availableTime: 8 * 60,
-    allowedPutters: 2
+    availableTime: 8 * 60
   },
   settings: {
     countdown: false

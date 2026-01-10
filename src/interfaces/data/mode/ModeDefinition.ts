@@ -56,11 +56,6 @@ export default interface ModeDefinition {
     availableTime: number
 
     /**
-     * The maximum number of putters the user is allowed to use while playing this mode.
-     */
-    allowedPutters: number
-
-    /**
      * Additional information about the mode that will be displayed to the user.
      */
     additionalInformation?: string
