@@ -23,7 +23,6 @@ interface Props {
 export default function ModeRunActionStep({
   step,
   session,
-  mode,
   onComplete
 }: Readonly<Props>) {
   const { mutate, isPending } = useSessionMutation(() => {
@@ -107,7 +106,6 @@ export default function ModeRunActionStep({
           </Button>
         )}
         <RecorderControl
-          maxPutters={mode.requirements.allowedPutters}
           session={session}
           attempts={attempts}
           history={history}
